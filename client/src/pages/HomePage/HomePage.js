@@ -14,10 +14,10 @@ const HomePage = (props) => {
         <Link to="/user">
           <Button ui inverted size="huge">Omat tiedot</Button>
         </Link>
-        <Link to="/Sivu2">
+        <Link to="/Page2">
           <Button ui inverted size="huge">Sivu 2</Button>
         </Link>
-        <Link to="/Sivu3">
+        <Link to="/Page3">
           <Button ui inverted size="huge">Sivu 3</Button>
         </Link>
       </div>

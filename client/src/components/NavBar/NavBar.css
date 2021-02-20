@@ -1,0 +1,44 @@
+.navbar {
+  height: 55px;
+  width: 100%;
+  margin: 0 !important;
+  display: block !important;
+}
+
+.navbar .dropdown-container {
+  height: 100%;
+  background-color: white; 
+  width: 20vw;
+  min-width: 100px;
+  max-width: 160px;
+  justify-content: space-between;
+  padding-right: 2%;
+  padding-top: 5px;
+  flex-wrap: nowrap;
+}
+
+.navbar .navbar-main {
+  height: 100%;
+  padding: 0;
+}
+
+.navbar .navbar-logo {
+  width: auto;
+  height: 100%;
+  object-fit: fill;
+}
+
+.navbar .dropdown-link {
+  color: var(--primary-color); 
+  font-weight: bold;
+}
+
+.navbar .dropdown-link-icon {
+  padding: 0;
+}
+
+@media (max-width: 767.98px) {
+  .navbar {
+    background-color: white !important;
+  }
+}

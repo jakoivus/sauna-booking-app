@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import  { NavBar }  from '../../components';
 import { BgContainer } from '../../containers';
-import  { HomePage }  from '../../pages';
-import { NavBar } from '../../components'
-const HomeRoute = (props) => {
+import { Page3 } from '../../pages'
+
+const Page3Route  = (props) => {
 
   useEffect(() => {
   });
@@ -12,7 +13,7 @@ const HomeRoute = (props) => {
     <div style={{height: "100%"}}>
      <NavBar />
       <BgContainer>
-        <HomePage />
+        <Page3 />
       </BgContainer>
     </div>
   );
@@ -27,4 +28,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeRoute);
+export default connect(mapStateToProps, mapDispatchToProps)(Page3Route);
