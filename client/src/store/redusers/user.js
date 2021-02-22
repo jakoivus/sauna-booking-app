@@ -12,8 +12,8 @@ const initialState = {
     },
   };
 
-  const upDateComments = (state, action) => {
-    console.log("UPDATECOMMENT")
+  const getComments = (state, action) => {
+    console.log("GETCOMMENTS")
     return {
 
       ...state,
@@ -23,7 +23,7 @@ const initialState = {
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
-      case actionTypes.UPDATE_COMMENTS: return upDateComments(state, action)
+      case actionTypes.GET_COMMENTS: return getComments(state, action)
     //   case actionTypes.UPDATE_USER_DATA: return updateUserData(state, action);
     //   case actionTypes.UPDATE_USER: return updateUser(state, action);
       default: return state;

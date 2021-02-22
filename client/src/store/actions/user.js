@@ -19,7 +19,7 @@ export const signOut = () => {
     };
   };
 
-  export const upDateComments = (comments) => { 
+  export const getComments = (comments) => { 
     {
       let newcomments = []
       newcomments = comments
@@ -27,7 +27,7 @@ export const signOut = () => {
     
   
     return {
-      type: actionTypes.UPDATE_COMMENTS,
+      type: actionTypes.GET_COMMENTS,
       payload: comments,
       
     };

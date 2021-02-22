@@ -14,7 +14,7 @@ class Page3 extends Component {
   handleClick = () => {
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
       .then(resp => {
-        this.props.upDateComments (resp.data) 
+        this.props.getComments (resp.data) 
       }
     )
   }      
@@ -35,7 +35,7 @@ class Page3 extends Component {
         }}
           >Lue data APIsta</Button> 
             {commentsArray.length ?  
-            <h1 className="page-content flex-column flex-justify-center paragraph-text">Taulukossa  dataa </h1>
+            <h1 className="paragraph-text">Taulukko luettu </h1>
             : <h1 className="paragraph-text">Taulukossa EI dataa</h1>}
           <EducationTable />     
       </div>  
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = (dispatch) => {
   return {
-    upDateComments: (comments) => dispatch(actions.upDateComments(comments))
+    getComments: (comments) => dispatch(actions.getComments(comments))
   };
 };
 
