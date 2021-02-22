@@ -8,13 +8,14 @@ import './App.css';
 
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
-import { AmplifySignOut, withAuthenticator } from '@aws-amplify/ui-react';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 
 Amplify.configure(awsconfig);
 
 export class App extends Component {
     state = {
     locale: 'fi',
+
   };
 
   logOut = () => {
@@ -23,7 +24,6 @@ export class App extends Component {
     return <Redirect to="/" />;
   }
 
-  
   render ()
   {
 
@@ -40,7 +40,6 @@ export class App extends Component {
 
       const appView = (
         <div>
-          <AmplifySignOut />
           {routes}
         </div>
       );
@@ -49,11 +48,6 @@ export class App extends Component {
       <div>
         {appView}
       </div>
-      // <div className="App">
-      //   <header className="App-header">
-      //     <h1>Tästä se taas alkaa</h1>
-      //   </header>
-      // </div>
     );
   }    
 }
@@ -61,7 +55,7 @@ export class App extends Component {
 
 const mapStateToProps = (state) => {
 return {
-};
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

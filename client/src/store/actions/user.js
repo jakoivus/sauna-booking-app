@@ -1,4 +1,4 @@
-// import * as actionTypes from './actionTypes';
+import * as actionTypes from './actionTypes';
 // import { User } from '../types';
 import { Auth } from "aws-amplify";
 
@@ -16,5 +16,19 @@ export const signOut = () => {
   export const clearReduxStore = () => {
     return {
       type: "CLEAR_REDUX_STORE",
+    };
+  };
+
+  export const upDateComments = (comments) => { 
+    {
+      let newcomments = []
+      newcomments = comments
+    }
+    
+  
+    return {
+      type: actionTypes.UPDATE_COMMENTS,
+      payload: comments,
+      
     };
   };

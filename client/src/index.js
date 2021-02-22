@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from "redux-thunk";
+import userReducer from './store/redusers/user';
 import 'semantic-ui-css/semantic.min.css'
 import './index.css';
 import App from './App';
@@ -13,14 +14,18 @@ if (process.env.REACT_APP_BUILD_TYPE !== "production") {
   composeEnhancers = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 }
 
-const appReducer = combineReducers({
-  // user: userReducer
+const appReducer = combineReducers ({
+  user: userReducer,
 })
 
-export const rootReducer = appReducer
+export const rootReducer = (state, action) => {
+  return appReducer(state, action)
+}
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk)))
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
-
+  console.log ("STATE:",store.getState())
 const app = (
   <Provider store={store}>
     <BrowserRouter>
