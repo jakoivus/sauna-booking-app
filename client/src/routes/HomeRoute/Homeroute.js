@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BgContainer } from '../../containers';
 import  { HomePage }  from '../../pages';
 import { NavBar } from '../../components'
-const HomeRoute = (props) => {
 
-  useEffect(() => {
-  });
+class HomeRoute extends Component { 
 
+render (){
   return (
     <div style={{height: "100%"}}>
      <NavBar />
@@ -16,6 +15,7 @@ const HomeRoute = (props) => {
       </BgContainer>
     </div>
   );
+  }
 }
 const mapStateToProps = (state) => {
   return {

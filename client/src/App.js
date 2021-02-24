@@ -14,8 +14,6 @@ Amplify.configure(awsconfig);
 
 export class App extends Component {
     state = {
-    locale: 'fi',
-
   };
 
   logOut = () => {
@@ -51,7 +49,6 @@ export class App extends Component {
     );
   }    
 }
-
 
 const mapStateToProps = (state) => {
 return {

@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, {Component } from 'react';
 import { connect } from 'react-redux';
 import  NavBar  from '../../components/NavBar/NavBar';
 import { BgContainer } from '../../containers';
 import { Page2 } from '../../pages';  
 
-const Page2Route= (props) => {
+class Page2Route extends Component {
 
-  useEffect(() => {
-  });
+render() {
 
   return (
     <div style={{height: "100%"}}>
@@ -17,7 +16,7 @@ const Page2Route= (props) => {
       </BgContainer>
     </div>
   );
-}
+}}
 const mapStateToProps = (state) => {
   return {
     };

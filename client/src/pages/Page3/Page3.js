@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react'
+import { Button, Table } from 'semantic-ui-react'
 import axios from "axios";
 import * as actions from "../../store/actions/index";
 import './Page3.css';
-import { EducationTable } from '../../components'
 import { Modal } from '../../components'
 
-class Page3 extends Component {
-// const Page3 = (props) => {
-  
+class Page3 extends Component {  
 
   handleClick = () => {
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
@@ -18,6 +15,54 @@ class Page3 extends Component {
       }
     )
   }      
+
+  renderTableHeader=() => {
+
+    {
+      let header = Object.keys(this.props.comments[0])
+      return header.map((key, index) => {
+         return <th key={index}>{key.toUpperCase()}</th>
+      })
+   }
+
+  }
+
+  renderTableData=() => {
+
+    const rows = (()  => {
+      let col = Object.keys(this.props.comments); 
+      return this.props.comments.map(comment => {
+        console.log(col);
+          return (
+            <Table.Row>
+              <Table.Cell>{comment.postId}</Table.Cell>
+              <Table.Cell> {comment.postId}</Table.Cell>
+              <Table.Cell> {comment.id}</Table.Cell>
+              <Table.Cell> {comment.name}</Table.Cell>
+              <Table.Cell> {comment.email}</Table.Cell>
+              <Table.Cell> {comment.body}</Table.Cell>
+            </Table.Row>
+          );
+      });
+    })
+  
+    return(
+      <Table >
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>PostId</Table.HeaderCell>
+            <Table.HeaderCell>id</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Body</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {rows()}
+        </Table.Body>
+        </Table>
+    )
+  }
   
   render ( ) {
 
@@ -27,17 +72,27 @@ class Page3 extends Component {
       <div className="home page-content flex-column flex-justify-center">
         <h1 className="main-header inverted-text">Sivu 3</h1>
           <h2>
-            <Modal ui inverted ></Modal>
+            <Modal ui inverted > </Modal>
           </h2>           
         <Button ui inverted size="huge" onClick={(props)=>{
           console.log ("CLICK")
           this.handleClick(props)
         }}
-          >Lue data APIsta</Button> 
-            {commentsArray.length ?  
-            <h1 className="paragraph-text">Taulukko luettu </h1>
-            : <h1 className="paragraph-text">Taulukossa EI dataa</h1>}
-          <EducationTable />     
+          >Tuo taulukko</Button> 
+            {commentsArray.length ?  this.renderTableData()
+            :  
+            <Table>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>PostId</Table.HeaderCell>
+                  <Table.HeaderCell>id</Table.HeaderCell>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell>Email</Table.HeaderCell>
+                  <Table.HeaderCell>Body</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+            </Table>
+            }
       </div>  
     );
   };

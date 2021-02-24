@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import './HomePage.css';
 
-const HomePage = (props) => {
-  //const {formatMessage} = props.intl;
+class HomePage extends Component {  
 
+  render (){
+    
   return (
     <div className="home page-content flex-column flex-justify-center">
       <h1 className="main-header inverted-text">JavaScript</h1>
@@ -23,9 +24,9 @@ const HomePage = (props) => {
       </div>
     </div>
   );
-}
+}}
+
 const mapStateToProps = (state) => {
-  conmments: 
   return {
   };
 }

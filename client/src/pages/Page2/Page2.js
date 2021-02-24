@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 
-const Page2 = (props) => {
-  //const {formatMessage} = props.intl;
+class Page2 extends Component {  
+
+  render () {
+    
   return (
     <div className="home page-content flex-column flex-justify-center">
       <h1 className="main-header inverted-text">Sivu 2</h1>
@@ -13,6 +15,7 @@ const Page2 = (props) => {
         </Link>
       </div>
   );
+}
 }
 
 export default (Page2);

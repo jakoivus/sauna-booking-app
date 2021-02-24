@@ -5,9 +5,8 @@ import { BgContainer } from '../../containers';
 import { Page3 } from '../../pages'
 
 class Page3Route extends Component {
-// class Page3Route   = (props) => {
 
-render(){
+render() {
 
   return (
     <div style={{height: "100%"}}>
