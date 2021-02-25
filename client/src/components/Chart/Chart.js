@@ -23,7 +23,7 @@ const data = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40]
+      data: [65, 59, 80, 181, 56, 55, 40]
     }
   ]
 };
@@ -32,7 +32,7 @@ export default class Chart extends Component {
   render() {
     return (
       <div className="chart">
-        <h2>Line Example</h2>
+        <h2 className="page-content" >Line Chart Example</h2>
         <Line ref="chart" data={data} />
       </div>
     );
@@ -40,7 +40,7 @@ export default class Chart extends Component {
 
   componentDidMount() {
     const { datasets } = this.refs.chart.chartInstance.data
-    console.log(datasets[0].data);
+    console.log("dataset=", datasets[0].data); 
   }
 }
 // import React, {Component} from 'react'

@@ -1,4 +1,8 @@
 .chart {
+    margin-top: 10px;
+    padding-top: 5px;
+    height: 50%;
+    width: 50%;
     margin-left: auto;
     margin-right: auto;
     background-color: #f0f8ff;
