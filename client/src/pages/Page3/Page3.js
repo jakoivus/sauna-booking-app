@@ -35,7 +35,6 @@ class Page3 extends Component {
         console.log(col);
           return (
             <Table.Row>
-              <Table.Cell>{comment.postId}</Table.Cell>
               <Table.Cell> {comment.postId}</Table.Cell>
               <Table.Cell> {comment.id}</Table.Cell>
               <Table.Cell> {comment.name}</Table.Cell>
@@ -47,7 +46,7 @@ class Page3 extends Component {
     })
   
     return(
-      <Table >
+      <Table celled >
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>PostId</Table.HeaderCell>
