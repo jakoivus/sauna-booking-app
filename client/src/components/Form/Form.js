@@ -20,15 +20,15 @@ class FormWithControl extends Component {
       <Form>
         <Form.Group widths='equal'>
           <Form.Input 
-            fluid label='First name' 
+            fluid label='Etunimi' 
             placeholder='Etunimi' />
           <Form.Input 
-            fluid label='Last name' 
+            fluid label='Sukunimi' 
             placeholder='Sukunimi' />
           <Form.Select
             fluid label='Puhuttelu'
             options={options}
-            placeholder='Gender'
+            placeholder='Titteli'
           />
         </Form.Group>
         <Form.Group width='200'>
@@ -42,27 +42,6 @@ class FormWithControl extends Component {
             
             />
                 
-        </Form.Group>
-        <Form.Group inline>
-          <label>Size</label>
-          <Form.Radio
-            label='Small'
-            value='sm'
-            checked={value === 'sm'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
-            label='Medium'
-            value='md'
-            checked={value === 'md'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
-            label='Large'
-            value='lg'
-            checked={value === 'lg'}
-            onChange={this.handleChange}
-          />
         </Form.Group>
         <Form.TextArea label='About' placeholder='Tell us more about you...' />
         <Form.Checkbox label='I agree to the Terms and Conditions' />
