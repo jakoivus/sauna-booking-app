@@ -2,15 +2,18 @@ import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 
 const options = [
-  { key: 'm', text: 'Male', value: 'Hra' },
-  { key: 'f', text: 'Female', value: 'Rva' },
-  { key: 'n', text: 'Neiti', value: 'Nt' },
-  { key: 'd', text: 'Female', value: 'Rva' },
-  { key: 'o', text: 'Other', value: 'other' },
+  { key: 'm', text: 'Mies', value: 'Hra' },
+  { key: 'f', text: 'Nainen', value: 'Rva' },
+  // { key: 'n', text: 'Neiti', value: 'Nt' },
+  // { key: 'd', text: 'Female', value: 'Rva' },
+  { key: 'o', text: 'Muu', value: 'other' },
 ]
 
 class FormWithControl extends Component {
   state = {}
+  handleClick = () => {
+    window.alert("lähetä nappia painettu")
+  } 
 
   handleChange = (e, { value }) => this.setState({ value })
 
@@ -28,7 +31,7 @@ class FormWithControl extends Component {
           <Form.Select
             fluid label='Puhuttelu'
             options={options}
-            placeholder='Titteli'
+            placeholder='Sukupuoli'
           />
         </Form.Group>
         <Form.Group width='200'>
@@ -43,9 +46,34 @@ class FormWithControl extends Component {
             />
                 
         </Form.Group>
-        <Form.TextArea label='About' placeholder='Tell us more about you...' />
-        <Form.Checkbox label='I agree to the Terms and Conditions' />
-        <Form.Button>Submit</Form.Button>
+        {/* <Form.Group inline>
+          <label>Size</label>
+          <Form.Radio
+            label='Small'
+            value='sm'
+            checked={value === 'sm'}
+            onChange={this.handleChange}
+          />
+          <Form.Radio
+            label='Medium'
+            value='md'
+            checked={value === 'md'}
+            onChange={this.handleChange}
+          />
+          <Form.Radio
+            label='Large'
+            value='lg'
+            checked={value === 'lg'}
+            onChange={this.handleChange}
+          />
+        </Form.Group> */}
+        <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
+        <Form.Checkbox label='Hyväksyn tietosuoja selosteen' />
+        <Form.Button onClick={(props)=>{
+          console.log ("CLICK")
+          this.handleClick(props)}}
+          >Lähetä</Form.Button>
+          
       </Form>
     )
   }
