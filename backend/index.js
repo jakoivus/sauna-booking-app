@@ -16,6 +16,12 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const express = require('express')
 const app = express()
 app.use(bodyParser.json({ strict: false }));
+// const cors = require('cors')
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+// app.use(cors(true)) 
 
 //////////////////////////
 // Hello World endpoint //

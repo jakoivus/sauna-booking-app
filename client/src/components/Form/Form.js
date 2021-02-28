@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+
 import { Form } from 'semantic-ui-react'
+import * as actions from '../../store/actions/index';
 
 const options = [
   { key: 'm', text: 'Mies', value: 'Hra' },
@@ -12,6 +15,7 @@ const options = [
 class FormWithControl extends Component {
   state = {}
   handleClick = () => {
+    this.props.helloWorld()
     window.alert("lähetä nappia painettu")
   } 
 
@@ -78,5 +82,17 @@ class FormWithControl extends Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    };
+}
 
-export default FormWithControl
+const mapDispatchToProps = (dispatch) => {
+  return {
+    helloWorld: () => dispatch(actions.helloWorld()),
+
+  }
+}
+
+
+export default (connect(mapStateToProps, mapDispatchToProps)(FormWithControl))

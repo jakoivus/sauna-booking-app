@@ -11,6 +11,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
+  profile: default
   region: eu-west-1
   stage: dev
   iamRoleStatements:
@@ -35,11 +36,11 @@ functions:
     handler: index.handler
     events:
       - http: ANY /
-        # authorizer: aws_iam
-        # cors: true
+        authorizer: aws_iam
+        cors: true
       - http: 'ANY /{proxy+}'
-        # authorizer: aws_iam
-        # cors: true
+        authorizer: aws_iam
+        cors: true
 
 resources:
   Resources:
