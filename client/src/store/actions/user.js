@@ -12,7 +12,7 @@ const BASE_URL = 'https://sqo8i17swa.execute-api.eu-west-1.amazonaws.com/dev'
 export const helloWorld =(props) => {
   return dispatch => {
     console.log("Hello World called")
-    axios.get(BASE_URL+'', props)
+    axios.get(BASE_URL+'/hello', props)
     .then (res => {
       window.alert("Hello World From EU-WEST-1",res)
       console.log(res)
@@ -24,15 +24,13 @@ export const helloWorld =(props) => {
   }
 }
 
-export const addUser = (props) => {
+export const addUser = (userData) => {
+  // const userData = {"userId":"jakoivus01", "name": "Jarmo Koivusaari" }
   return dispatch => {
-    console.log("AddUser...", props)
-    axios.post (BASE_URL+'users', props)
+    console.log("AddUser req:", userData)
+    axios.post (BASE_URL+'/users', userData)
     .then (res => {
-      console.log("ADD USER RESPONSE DATA", res.data)
-      // console.log ('CREATE ticket return data', ticket)
-      console.log("PROPS",props)
-      // dispatch(sendEmail(props))
+      console.log("ADD USER RESPONSE DATA", res)
     })
     .catch(error =>{ 
       console.log("Virhe:", error)
@@ -73,15 +71,17 @@ export const signOut = () => {
   };
 
   export const getComments = (comments) => { 
-    {
-      let newcomments = []
-      newcomments = comments
-    }
-    
-  
     return {
       type: actionTypes.GET_COMMENTS,
       payload: comments,
       
     };
   };
+
+  export const setUserData = (userData) => {
+    console.log("setuserdata")
+    return {
+      type: actionTypes.SET_USER_DATA,
+      payload: userData
+    }
+  }

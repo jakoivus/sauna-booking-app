@@ -19,6 +19,10 @@ app.use(bodyParser.json({ strict: false }));
 // const cors = require('cors')
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 // app.use(cors(true)) 
@@ -26,9 +30,45 @@ app.use((req, res, next) => {
 //////////////////////////
 // Hello World endpoint //
 //////////////////////////
-  app.get('/', function (req, res) {
+  app.get('/hello', function (req, res) {
+    console.log("Hello World")
     res.send('Hello World!')
   })
+
+///////////////////////////////////
+// Create AddUser endpoint       //
+///////////////////////////////////
+app.post('/users', function (req, res) {
+//   console.log("addUser")
+//   res.send('addUser')
+// })
+  // res.send('addUser')
+  console.log("addUser")
+  // res.send(req)
+  const { userId, name } = req.body;
+  if (typeof userId !== 'string') {
+    res.status(400).json({ error: '"userId" must be a string' });
+  } else if (typeof name !== 'string') {
+    res.status(400).json({ error: '"name" must be a string' });
+  }
+
+  const params = {
+    TableName: DYNAMODB_USERS_TABLE,
+    Item: {
+      userId: userId,
+      name: name,
+    },
+  };
+
+  dynamoDb.put(params, (error) => {
+    if (error) {
+      console.log(error);
+      res.status(400).json({ error: 'Could not create user' });
+    }
+    res.json({ userId, name });
+  });
+})
+
 
 ///////////////////////
 // Get User endpoint //
@@ -54,32 +94,5 @@ app.get('/users/:userId', function (req, res) {
   });
 })
 
-///////////////////////////////////
-// Create AddUser endpoint       //
-///////////////////////////////////
-app.post('/users', function (req, res) {
-  const { userId, name } = req.body;
-  if (typeof userId !== 'string') {
-    res.status(400).json({ error: '"userId" must be a string' });
-  } else if (typeof name !== 'string') {
-    res.status(400).json({ error: '"name" must be a string' });
-  }
-
-  const params = {
-    TableName: DYNAMODB_USERS_TABLE,
-    Item: {
-      userId: userId,
-      name: name,
-    },
-  };
-
-  dynamoDb.put(params, (error) => {
-    if (error) {
-      console.log(error);
-      res.status(400).json({ error: 'Could not create user' });
-    }
-    res.json({ userId, name });
-  });
-})
 
 module.exports.handler = serverless(app);

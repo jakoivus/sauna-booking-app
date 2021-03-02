@@ -7,92 +7,100 @@ import * as actions from '../../store/actions/index';
 const options = [
   { key: 'm', text: 'Mies', value: 'Hra' },
   { key: 'f', text: 'Nainen', value: 'Rva' },
-  // { key: 'n', text: 'Neiti', value: 'Nt' },
-  // { key: 'd', text: 'Female', value: 'Rva' },
   { key: 'o', text: 'Muu', value: 'other' },
 ]
 
 class FormWithControl extends Component {
-  state = {}
-  handleClick = () => {
-    this.props.helloWorld()
-    window.alert("lähetä nappia painettu")
+  state = {
+    firstName:"",
+    lastName:"",
+    salution:"",
+    userId:"",
+  }
+
+  componentDidMount() {
+    let userData = Object.assign({},this.props.userData)
+    console.log(typeof(userData))   
+    console.log(typeof(userData.userId))
+ 
+  }
+
+  handleChange = (e, { name, value }) => {
+    
+    // const { firstName, userId } = this.state
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit = () => {
+    let userData = {"userId": this.state.userId, "salution": this.state.salution, "name": this.state.firstName + ' ' + this.state.lastName}
+    // this.props.helloWorld()
+    this.props.addUser(userData)
+    this.props.setUserData(userData)
+    // window.alert("lähetä nappia painettu")
   } 
 
-  handleChange = (e, { value }) => this.setState({ value })
 
   render() {
-    const { value } = this.state
+    const { firstName, lastName, userId, salution } = this.state
     return (
-      <Form>
+      <Form >
         <Form.Group widths='equal'>
           <Form.Input 
             fluid label='Etunimi' 
-            placeholder='Etunimi' />
+            placeholder='Etunimi'
+            name='firstName'
+            value={firstName}
+            onChange={this.handleChange} 
+            /> 
           <Form.Input 
             fluid label='Sukunimi' 
-            placeholder='Sukunimi' />
+            placeholder='Sukunimi'
+            name='lastName'
+            value={lastName}
+            onChange={this.handleChange} />
           <Form.Select
             fluid label='Puhuttelu'
             options={options}
             placeholder='Sukupuoli'
+            name='salution'
+            value={salution}
+            onChange={this.handleChange} 
           />
         </Form.Group>
         <Form.Group width='200'>
             <Form.Input
               size='20'
-              fluid label='Sähköposti'
+              fluid label='Käyttäjänimi'
               iconPosition='left'
               icon='at'
-              placeholder='sähköposti osoite'
-              style={{width:'290px'}}
-            
-            />
-                
+              placeholder='Käyttäjänimi'
+              name='userId'
+              value={userId}
+              onChange={this.handleChange} 
+              style={{width:'290px'}} />
         </Form.Group>
-        {/* <Form.Group inline>
-          <label>Size</label>
-          <Form.Radio
-            label='Small'
-            value='sm'
-            checked={value === 'sm'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
-            label='Medium'
-            value='md'
-            checked={value === 'md'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
-            label='Large'
-            value='lg'
-            checked={value === 'lg'}
-            onChange={this.handleChange}
-          />
-        </Form.Group> */}
         <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
         <Form.Checkbox label='Hyväksyn tietosuoja selosteen' />
         <Form.Button onClick={(props)=>{
-          console.log ("CLICK")
-          this.handleClick(props)}}
-          >Lähetä</Form.Button>
-          
+          this.handleSubmit(props)}}
+          >Lisää käyttäjä</Form.Button>          
       </Form>
     )
   }
 }
 const mapStateToProps = (state) => {
   return {
+    userData: state.user.userData
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setUserData: (userData) => dispatch(actions.setUserData(userData)),
     helloWorld: () => dispatch(actions.helloWorld()),
+    addUser: (userData) => dispatch(actions.addUser(userData)),
 
   }
 }
 
-
-export default (connect(mapStateToProps, mapDispatchToProps)(FormWithControl))
+export default connect(mapStateToProps, mapDispatchToProps)(FormWithControl)
