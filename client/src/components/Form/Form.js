@@ -25,10 +25,9 @@ class FormWithControl extends Component {
  
   }
 
-  handleChange = (e, { name, value }) => {
-    
-    // const { firstName, userId } = this.state
+  handleChange = (event, { name, value }) => {
     this.setState({ [name]: value })
+    // const { userId, mame, salution } = this.state
   }
 
   handleSubmit = () => {
