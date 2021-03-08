@@ -20,8 +20,9 @@ class FormWithControl extends Component {
 
   componentDidMount() {
     let userData = Object.assign({},this.props.userData)
-    console.log(typeof(userData))   
-    console.log(typeof(userData.userId))
+    console.log(userData)
+    // console.log(typeof(userData))   
+    // console.log(typeof(userData.userId))
  
   }
 

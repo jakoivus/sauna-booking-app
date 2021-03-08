@@ -1,12 +1,49 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Button, Table } from 'semantic-ui-react'
+import { Button, Checkbox, StatusBubble, Table } from 'semantic-ui-react'
 import axios from "axios";
 import * as actions from "../../store/actions/index";
 import './Page3.css';
 import { Modal } from '../../components'
 
 class Page3 extends Component {  
+
+  state = {
+    show_1: false,
+    show_2: false,
+    requestState:""
+  }
+
+  filterRow = () => (
+    <div className="flex-row filter-container">
+      <div className="toggle-container">
+        <div className="flex-column">
+          <Checkbox 
+            onChange={()=>this.setState({show_1: !this.state.show_1})} 
+            checked={this.state.show_1} 
+            disabled={this.state.requestState === 'sending'}
+            toggle 
+          />
+        </div>
+        <div>
+          {/* <StatusBubble availability="available" /> */}
+        </div>
+      </div>
+      <div className="toggle-container">
+        <div className="flex-column">
+          <Checkbox
+            onChange={()=>this.setState({show_2: !this.state.show_2})} 
+            checked={this.state.show_2} 
+            disabled={this.state.requestState === 'sending'}
+            toggle
+          />
+        </div>
+        <div>
+          {/* <StatusBubble availability="soon available" /> */}
+        </div>
+      </div>
+    </div>
+  );
 
   handleClick = () => {
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
@@ -31,7 +68,10 @@ class Page3 extends Component {
 
     const rows = (()  => {
       let col = Object.keys(this.props.comments); 
-      return this.props.comments.map(comment => {
+
+      return this.props.comments
+      .filter(comment=>comment.id > 3)
+      .map(comment => {
         console.log(col);
           return (
             <Table.Row>
@@ -78,9 +118,10 @@ class Page3 extends Component {
           this.handleClick(props)
         }}
           >Tuo taulukko</Button> 
+            {this.filterRow()}
             {commentsArray.length ?  this.renderTableData()
             :  
-            <Table>
+            <Table celled>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>PostId</Table.HeaderCell>

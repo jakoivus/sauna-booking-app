@@ -2,3 +2,17 @@
     width: 180vw;
     opacity: 50;
 }
+
+.filter-container {
+    width: 100%; 
+  margin-bottom: 10px;;
+}
+
+.toggle-containet {
+    width: 100px; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: orange
+  }
