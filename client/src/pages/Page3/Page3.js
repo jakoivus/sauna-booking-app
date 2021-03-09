@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Button, Checkbox, StatusBubble, Table } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Grid, GridColumn, StatusBubble, Table } from 'semantic-ui-react'
 import axios from "axios";
 import * as actions from "../../store/actions/index";
 import './Page3.css';
@@ -11,66 +11,34 @@ class Page3 extends Component {
   state = {
     show_1: false,
     show_2: false,
-    requestState:""
+    requestState:"",
+    rowFilter:""
   }
 
-  filterRow = () => (
-    <div className="flex-row filter-container">
-      <div className="toggle-container">
-        <div className="flex-column">
-          <Checkbox 
-            onChange={()=>this.setState({show_1: !this.state.show_1})} 
-            checked={this.state.show_1} 
-            disabled={this.state.requestState === 'sending'}
-            toggle 
-          />
-        </div>
-        <div>
-          {/* <StatusBubble availability="available" /> */}
-        </div>
-      </div>
-      <div className="toggle-container">
-        <div className="flex-column">
-          <Checkbox
-            onChange={()=>this.setState({show_2: !this.state.show_2})} 
-            checked={this.state.show_2} 
-            disabled={this.state.requestState === 'sending'}
-            toggle
-          />
-        </div>
-        <div>
-          {/* <StatusBubble availability="soon available" /> */}
-        </div>
-      </div>
-    </div>
-  );
+  handleChange = (e, { name, value }) => {
+    console.log (name,value)
+    this.setState({[name]: value })}
 
   handleClick = () => {
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
       .then(resp => {
         this.props.getComments (resp.data) 
-      }
-    )
+      })
   }      
 
-  renderTableHeader=() => {
-
-    {
+  renderTableHeaders=() => {
       let header = Object.keys(this.props.comments[0])
       return header.map((key, index) => {
          return <th key={index}>{key.toUpperCase()}</th>
       })
-   }
-
   }
 
   renderTableData=() => {
-
     const rows = (()  => {
       let col = Object.keys(this.props.comments); 
 
       return this.props.comments
-      .filter(comment=>comment.id > 3)
+      .filter(comment=>comment.id > this.state.rowFilter)
       .map(comment => {
         console.log(col);
           return (
@@ -106,19 +74,36 @@ class Page3 extends Component {
   render ( ) {
 
     let commentsArray = this.props.comments
+    let rowFilter = this.state.rowFilter
 
     return (
       <div className="home page-content flex-column flex-justify-center">
         <h1 className="main-header inverted-text">Sivu 3</h1>
-          <h2>
+        <Grid columns={3} >
+          <GridColumn>
             <Modal ui inverted > </Modal>
-          </h2>           
-        <Button ui inverted size="huge" onClick={(props)=>{
-          console.log ("CLICK")
-          this.handleClick(props)
-        }}
-          >Tuo taulukko</Button> 
-            {this.filterRow()}
+          </GridColumn>
+          <GridColumn>
+            <Form >
+              <Form.Group>
+                <Form.Input
+                name='rowFilter' 
+                value={rowFilter}
+                onChange={this.handleChange} 
+                />
+              </Form.Group>
+            </Form>
+          </GridColumn>
+          <GridColumn>
+            <Button ui inverted size="huge" onClick={(props)=>{
+            console.log ("CLICK")
+            this.handleClick(props)
+            }}
+            >Tuo taulukko</Button>
+          </GridColumn>
+          
+        </Grid>
+    
             {commentsArray.length ?  this.renderTableData()
             :  
             <Table celled>

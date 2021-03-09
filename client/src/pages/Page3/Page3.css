@@ -8,11 +8,11 @@
   margin-bottom: 10px;;
 }
 
-.toggle-containet {
+.toggle-container {
+  color: orange;
     width: 100px; 
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    background-color: orange
   }

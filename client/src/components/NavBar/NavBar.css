@@ -29,7 +29,8 @@
 }
 
 .navbar .dropdown-link {
-  color: var(--primary-color); 
+  color:orange;
+  /* color: var(--primary-color);  */
   font-weight: bold;
 }
 
