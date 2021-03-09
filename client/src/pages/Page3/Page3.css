@@ -8,6 +8,12 @@
   margin-bottom: 10px;;
 }
 
+.grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 .toggle-container {
   color: orange;
     width: 100px; 

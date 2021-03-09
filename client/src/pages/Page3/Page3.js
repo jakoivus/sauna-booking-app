@@ -78,7 +78,7 @@ class Page3 extends Component {
 
     return (
       <div className="home page-content flex-column flex-justify-center">
-        <h1 className="main-header inverted-text">Sivu 3</h1>
+        <h1 className="main-header">Sivu 3</h1>
         <Grid columns={3} >
           <GridColumn>
             <Modal ui inverted > </Modal>
@@ -87,6 +87,8 @@ class Page3 extends Component {
             <Form >
               <Form.Group>
                 <Form.Input
+                style={{width: 125, height: 50, color: "seashell"}}
+                placeholder="Kirjoita numero"
                 name='rowFilter' 
                 value={rowFilter}
                 onChange={this.handleChange} 
@@ -99,9 +101,8 @@ class Page3 extends Component {
             console.log ("CLICK")
             this.handleClick(props)
             }}
-            >Tuo taulukko</Button>
-          </GridColumn>
-          
+            >Päivitä</Button>
+          </GridColumn>  
         </Grid>
     
             {commentsArray.length ?  this.renderTableData()
