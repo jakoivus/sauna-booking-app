@@ -78,6 +78,13 @@ export const signOut = () => {
     };
   };
 
+  export const removeComments = () => { 
+    return {
+      type: actionTypes.REMOVE_COMMENTS,
+      payload: [],
+    };
+  };
+
   export const setUserData = (userData) => {
     console.log("setuserdata")
     return {

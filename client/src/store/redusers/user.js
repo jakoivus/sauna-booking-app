@@ -9,8 +9,16 @@ const initialState = {
     },
   };
 
+  const removeComments = (state, action) => {
+    console.log("REMOVE_COMMENTS")
+    return {
+      ...state,
+      comments: [""],
+    }
+  }
+
   const getComments = (state, action) => {
-    console.log("GETCOMMENTS")
+    console.log("GET_COMMENTS")
     return {
       ...state,
       comments: action.payload,
@@ -30,6 +38,7 @@ const initialState = {
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
       case actionTypes.GET_COMMENTS: return getComments(state, action)
+      case actionTypes.REMOVE_COMMENTS: return removeComments(state, action)
       case actionTypes.SET_USER_DATA: return setUserData(state, action);
     //   case actionTypes.UPDATE_USER_DATA: return updateUserData(state, action);
     //   case actionTypes.UPDATE_USER: return updateUser(state, action);

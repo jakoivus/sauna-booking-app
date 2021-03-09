@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Button, Checkbox, Form, Grid, GridColumn, StatusBubble, Table } from 'semantic-ui-react'
+import { Button, Checkbox, Dropdown, Form, Grid, GridColumn, StatusBubble, Table } from 'semantic-ui-react'
 import axios from "axios";
 import * as actions from "../../store/actions/index";
 import './Page3.css';
@@ -18,6 +18,11 @@ class Page3 extends Component {
   handleChange = (e, { name, value }) => {
     console.log (name,value)
     this.setState({[name]: value })}
+
+  handleRemove = (props) => {
+    this.props.removeComments()
+    this.setState({[this.props.comments]: []})
+  }
 
   handleClick = () => {
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
@@ -75,34 +80,44 @@ class Page3 extends Component {
 
     let commentsArray = this.props.comments
     let rowFilter = this.state.rowFilter
+    let options =[ 
+      { key: '1', value: '1', text: '1' },
+      { key: '2', value: '2', text: '2' },
+      { key: '3', value: '3', text: '3' },
+      { key: '4', value: '4', text: '4' },
+    ]
 
     return (
       <div className="home page-content flex-column flex-justify-center">
         <h1 className="main-header">Sivu 3</h1>
-        <Grid columns={3} >
+        <Grid columns={4} >
           <GridColumn>
             <Modal ui inverted > </Modal>
           </GridColumn>
           <GridColumn>
-            <Form >
-              <Form.Group>
-                <Form.Input
-                style={{width: 125, height: 50, color: "seashell"}}
-                placeholder="Kirjoita numero"
-                name='rowFilter' 
-                value={rowFilter}
-                onChange={this.handleChange} 
-                />
-              </Form.Group>
-            </Form>
+            <Button ui inverted size="huge" onClick={(props)=>{
+            this.handleClick(props)
+            }}
+            >Lataa</Button>
           </GridColumn>
           <GridColumn>
             <Button ui inverted size="huge" onClick={(props)=>{
-            console.log ("CLICK")
-            this.handleClick(props)
+            this.handleRemove(props)
             }}
-            >Päivitä</Button>
-          </GridColumn>  
+            >Poista</Button>
+          </GridColumn>
+          <GridColumn>
+            <Form >
+              <Form.Group>
+                <Form.Select 
+                style={{minwidth: 50, height: 50, color: "black"}} 
+                placeholder="Valitse numero" 
+                name='rowFilter' 
+                options={options}
+                onChange ={this.handleChange} />
+              </Form.Group>
+            </Form>
+          </GridColumn>
         </Grid>
     
             {commentsArray.length ?  this.renderTableData()
@@ -132,7 +147,8 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = (dispatch) => {
   return {
-    getComments: (comments) => dispatch(actions.getComments(comments))
+    getComments: (comments) => dispatch(actions.getComments(comments)),
+    removeComments: () => dispatch(actions.removeComments())
   };
 };
 
