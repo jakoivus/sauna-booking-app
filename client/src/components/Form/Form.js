@@ -43,6 +43,7 @@ class FormWithControl extends Component {
   render() {
     const { firstName, lastName, userId, salution } = this.state
     return (
+      
       <Form >
         <Form.Group widths='equal'>
           <Form.Input 
@@ -69,7 +70,6 @@ class FormWithControl extends Component {
         </Form.Group>
         <Form.Group width='200'>
             <Form.Input
-              size='20'
               fluid label='Käyttäjänimi'
               iconPosition='left'
               icon='at'

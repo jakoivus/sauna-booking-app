@@ -17,7 +17,7 @@ class Page2 extends Component {
       <h2 className="sub-header inverted-text">Lipsum lpsum liirym</h2>
       
       <Link to="/home">
-            <Button ui inverted size="huge">Etusivu</Button>
+            <Button inverted size="huge">Etusivu</Button>
           </Link>
           <Chart />      
       </div>

@@ -13,13 +13,13 @@ class HomePage extends Component {
       <h2 className="sub-header inverted-text">Lipsum lpsum liirym laarum</h2>
       <div className="navi-button-container">
         <Link to="/user">
-          <Button ui inverted size="huge">Omat tiedot</Button>
+          <Button  inverted size="huge">Omat tiedot</Button>
         </Link>
         <Link to="/Page2">
-          <Button ui inverted size="huge">Sivu 2</Button>
+          <Button  inverted size="huge">Sivu 2</Button>
         </Link>
         <Link to="/Page3">
-          <Button ui inverted size="huge">Sivu 3</Button>
+          <Button  inverted size="huge">Sivu 3</Button>
         </Link>
       </div>
     </div>

@@ -18,9 +18,9 @@ const UserPage = (props) => {
         <div className="container">
           <FormWithControl />
         </div>
-        {/* </FormWithControl> */}
+        {/* <FormWithControl /> */}
         <Link to="/home">
-          <Button ui inverted size="huge">Etusivu</Button>
+          <Button inverted size="huge">Etusivu</Button>
         </Link>
 
       </div>

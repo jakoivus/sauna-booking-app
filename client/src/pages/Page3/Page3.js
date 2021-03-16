@@ -25,6 +25,7 @@ class Page3 extends Component {
   }
 
   handleClick = () => {
+
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
       .then(resp => {
         this.props.getComments (resp.data) 
@@ -34,7 +35,7 @@ class Page3 extends Component {
   renderTableHeaders=() => {
       let header = Object.keys(this.props.comments[0])
       return header.map((key, index) => {
-         return <th key={index}>{key.toUpperCase()}</th>
+         return <th>{key.toUpperCase()}</th>
       })
   }
 
@@ -47,7 +48,7 @@ class Page3 extends Component {
       .map(comment => {
         console.log(col);
           return (
-            <Table.Row>
+            <Table.Row >
               <Table.Cell> {comment.postId}</Table.Cell>
               <Table.Cell> {comment.id}</Table.Cell>
               <Table.Cell> {comment.name}</Table.Cell>
@@ -78,6 +79,12 @@ class Page3 extends Component {
   
   render ( ) {
 
+    let comment = {
+      id: 6,
+      name: "Jarmo Koivusaari",
+      email:"jakoivus",
+      body: "juupas joopas",
+    }
     let commentsArray = this.props.comments
     let rowFilter = this.state.rowFilter
     let options =[ 
@@ -90,18 +97,23 @@ class Page3 extends Component {
     return (
       <div className="home page-content flex-column flex-justify-center">
         <h1 className="main-header">Sivu 3</h1>
-        <Grid columns={4} >
-          <GridColumn>
-            <Modal ui inverted > </Modal>
+        <Grid columns={5} >
+        <GridColumn>
+            <Button inverted size="huge" onClick={(props)=>
+            this.props.addComment(comment)}
+            >Kommentti</Button>
           </GridColumn>
           <GridColumn>
-            <Button ui inverted size="huge" onClick={(props)=>{
+            <Modal inverted > </Modal>
+          </GridColumn>
+          <GridColumn>
+            <Button inverted size="huge" onClick={(props)=>{
             this.handleClick(props)
             }}
             >Lataa</Button>
           </GridColumn>
           <GridColumn>
-            <Button ui inverted size="huge" onClick={(props)=>{
+            <Button inverted size="huge" onClick={(props)=>{
             this.handleRemove(props)
             }}
             >Poista</Button>
@@ -109,12 +121,14 @@ class Page3 extends Component {
           <GridColumn>
             <Form >
               <Form.Group>
+                <div className="grid">
                 <Form.Select 
                 style={{minwidth: 50, height: 50, color: "black"}} 
                 placeholder="Valitse numero" 
                 name='rowFilter' 
                 options={options}
                 onChange ={this.handleChange} />
+                </div>
               </Form.Group>
             </Form>
           </GridColumn>
@@ -147,6 +161,7 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = (dispatch) => {
   return {
+    addComment: (comment) => dispatch(actions.addComment(comment)),
     getComments: (comments) => dispatch(actions.getComments(comments)),
     removeComments: () => dispatch(actions.removeComments())
   };

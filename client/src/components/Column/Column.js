@@ -18,7 +18,7 @@ class omaColumn extends Component {
         </Grid.Column> */}
         <Grid.Column>
         <Link to="/home">
-            <Button ui inverted size="huge">Etusivu</Button>
+            <Button inverted size="huge">Etusivu</Button>
           </Link>
         </Grid.Column>
       </Grid>

@@ -9,7 +9,7 @@ class commentsModal extends Component  {
         trigger={<Button inverted size="huge">Klikkaa</Button>}
         header='Modaali !!'
         content='Tässä mallin vuoksi tällänen modaali'
-        actions={['OK', { key: 'done', content: 'Peruuta', negative: true }]}
+        actions={['OK', { key: 'done', content: 'Peruuta', negative: 'true' }]}
       />
     )
   }

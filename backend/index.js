@@ -36,6 +36,37 @@ app.use((req, res, next) => {
   })
 
 ///////////////////////////////////
+// Create addComment endpoint       //
+///////////////////////////////////
+app.post('/addComment', function (req, res) {
+    console.log("addComment")
+    // res.send('addComment')
+    const  comment  = req.body;
+    // if (typeof userId !== 'string') {
+    //   res.status(400).json({ error: '"userId" must be a string' });
+    // } else if (typeof name !== 'string') {
+    //   res.status(400).json({ error: '"name" must be a string' });
+    // }
+  
+    const params = {
+      TableName: DYNAMODB_USERS_TABLE,
+      Item: {
+        userId: "jakoivus",
+        comment: comment,
+      },
+    };
+    console.log("comment", comment)
+    dynamoDb.put(params, (error) => {
+      if (error) {
+        console.log(error);
+        res.status(400).json({ error: 'Could not addComment' });
+      }
+      res.json({ comment });
+    });
+  })
+
+
+///////////////////////////////////
 // Create AddUser endpoint       //
 ///////////////////////////////////
 app.post('/users', function (req, res) {

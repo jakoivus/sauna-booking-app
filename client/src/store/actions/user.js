@@ -7,7 +7,7 @@ import { Auth } from "aws-amplify";
 // import {postRequest } from './request';
 
 
-const BASE_URL = 'https://sqo8i17swa.execute-api.eu-west-1.amazonaws.com/dev'
+const BASE_URL = 'https://oo8cnyct6j.execute-api.eu-west-1.amazonaws.com/dev'//users table
 
 export const helloWorld =(props) => {
   return dispatch => {
@@ -24,10 +24,25 @@ export const helloWorld =(props) => {
   }
 }
 
+export const addComment = (comment) => {
+  // const userData = {"userId":"jakoivus01", "name": "Jarmo Koivusaari" }
+  return dispatch => {
+    console.log("addComment req:", comment)
+    axios.post (BASE_URL+'/addComment', comment)
+    .then (res => {
+      console.log("ADD COMMENT RESPONSE DATA", res)
+    })
+    .catch(error =>{ 
+      console.log("Virhe:", error)
+      alert (error)
+    })
+  }
+}
+
 export const addUser = (userData) => {
   // const userData = {"userId":"jakoivus01", "name": "Jarmo Koivusaari" }
   return dispatch => {
-    console.log("AddUser req:", userData)
+    console.log("addUser req:", userData)
     axios.post (BASE_URL+'/users', userData)
     .then (res => {
       console.log("ADD USER RESPONSE DATA", res)
