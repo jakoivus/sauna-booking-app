@@ -3,11 +3,47 @@
     background-color: orange;    
 }
 
+.center {
+    position: relative;
+    margin: auto; 
+    margin-top: 20px;
+    width: 70%;
+    border: 3px solid green;
+    padding: 10px;
+    background-color: seashell;
+    border:5px solid #cccccc;
+}
+
+.column-container {
+    position: absolute;
+    margin: auto;
+    align-items: center;
+    left: 50px; 
+    top: 20px; 
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    height: auto;
+    min-width: 450px;
+    background-color: seashell;
+    border:5px solid #cccccc;
+}
+
+.container-content {
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    width:auto;
+    height: auto;
+    top: 10px;
+    left: 20px;
+}
+
 .page4-justify-center {
     text-align: center;
     justify-content: center;
-    background-color: orange;
-    color: white;
+    color: orange;
     flex-direction: column;
     align-items: center;
 }

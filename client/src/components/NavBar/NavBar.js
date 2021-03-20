@@ -18,7 +18,7 @@ const NavBar = (props) => {
   
   const userLinks = [
     {icon: "user", url: "/user", text: 'Omat tiedot'},
-    {icon: "id card", url: "/Sivu2", text: 'Sivu 2'},
+    {icon: "id card", url: "/Page2", text: 'Sivu 2'},
     {icon: "wrench", url: "/Page3", text: 'Sivu 3'},
     {icon: "table", url: "/Page4", text: 'Sivu 4'},
     {icon: "log out", url:"/logout", text: 'Kirjaudu ulos' }

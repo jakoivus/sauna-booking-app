@@ -8,7 +8,7 @@ import { Auth } from "aws-amplify";
 
 
 const BASE_URL = 'https://oo8cnyct6j.execute-api.eu-west-1.amazonaws.com/dev'//users table
-
+const BASE_URL_DATA = 'https://3fsjsmudsk.execute-api.eu-west-1.amazonaws.com/dev'//data table
 export const helloWorld =(props) => {
   return dispatch => {
     console.log("Hello World called")
@@ -25,7 +25,6 @@ export const helloWorld =(props) => {
 }
 
 export const addComment = (comment) => {
-  // const userData = {"userId":"jakoivus01", "name": "Jarmo Koivusaari" }
   return dispatch => {
     console.log("addComment req:", comment)
     axios.post (BASE_URL+'/addComment', comment)
@@ -43,7 +42,7 @@ export const addUser = (userData) => {
   // const userData = {"userId":"jakoivus01", "name": "Jarmo Koivusaari" }
   return dispatch => {
     console.log("addUser req:", userData)
-    axios.post (BASE_URL+'/users', userData)
+    axios.post (BASE_URL_DATA+'/addUser', userData)
     .then (res => {
       console.log("ADD USER RESPONSE DATA", res)
     })
@@ -54,14 +53,13 @@ export const addUser = (userData) => {
   }
 }
 
-export const  readUsers = () => {
+export const  getUserData = (email) => {
   return dispatch => {
-    axios.get (BASE_URL+'users',)
+    axios.post (BASE_URL_DATA+'/email', email)
       .then(
         res => {
-          console.log("RES Read USERS: ", res.data)
-          // const tickets = (res.data.Items)
-          // dispatch(renderTickets(tickets))
+          console.log("RES getUserData: ", res.data)
+          dispatch (setUserData(res.data))
         })
         .catch(error =>{ 
           console.log(error)
@@ -107,3 +105,11 @@ export const signOut = () => {
       payload: userData
     }
   }
+
+  // export const getUserData = (userData) => {
+  //   console.log("getuserdata")
+  //   return {
+  //     type: actionTypes.GET_USER_DATA,
+  //     payload: userData
+  //   }
+  // }

@@ -11,8 +11,10 @@ render() {
 
   return (
     <div style={{height: "100%"}}>
-     {/* <NavBar /> */}
-        <Page4 />
+      <BgContainer>
+        <NavBar />
+            <Page4 />
+      </BgContainer>
     </div>
   );
 }}

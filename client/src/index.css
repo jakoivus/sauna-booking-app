@@ -85,6 +85,9 @@ img {
   padding-left: 20px;
   padding-bottom: 10px;
   height: auto;
-  width: auto;
+  min-width: 400px;
+  /* width: auto; */
+  color:whitesmoke;
   background-color: seashell;
+  
 }

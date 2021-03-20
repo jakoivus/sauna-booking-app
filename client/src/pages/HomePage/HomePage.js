@@ -22,7 +22,7 @@ class HomePage extends Component {
           <Button  inverted size="huge">Sivu 3</Button>
         </Link>
       </div>
-    </div>
+   </div>
   );
 }}
 

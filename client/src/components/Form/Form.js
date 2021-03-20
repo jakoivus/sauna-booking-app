@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-
-import { Form } from 'semantic-ui-react'
+import { Auth, Predicates } from 'aws-amplify';
+import { Form, Icon } from 'semantic-ui-react'
+import { v4 as uuidv4 } from 'uuid'
 import * as actions from '../../store/actions/index';
 
 const options = [
@@ -11,19 +12,33 @@ const options = [
 ]
 
 class FormWithControl extends Component {
+  
   state = {
+    email: "",
     firstName:"",
     lastName:"",
     salution:"",
-    userId:"",
   }
 
   componentDidMount() {
+    let email = {
+      email: "jakoivus@live.com"
+    }
+    this.props.getUserData(email)
+
+    let session
+    session = Auth.currentSession()
+    .then(console.log("session: " ,session))
     let userData = Object.assign({},this.props.userData)
     console.log(userData)
-    // console.log(typeof(userData))   
-    // console.log(typeof(userData.userId))
- 
+  }
+
+  componentDidUpdate(prevprops) {
+    if (prevprops !== this.props) {
+      console.log ("NEW props")
+    }
+
+
   }
 
   handleChange = (event, { name, value }) => {
@@ -32,7 +47,13 @@ class FormWithControl extends Component {
   }
 
   handleSubmit = () => {
-    let userData = {"userId": this.state.userId, "salution": this.state.salution, "name": this.state.firstName + ' ' + this.state.lastName}
+    let userData = {
+      // "id": uuidv4(), 
+      "email": this.state.email, 
+      "salution": this.state.salution,
+      "firstName": this.state.firstName,
+      "lastName": this.state.lastName
+    } 
     // this.props.helloWorld()
     this.props.addUser(userData)
     this.props.setUserData(userData)
@@ -41,7 +62,7 @@ class FormWithControl extends Component {
 
 
   render() {
-    const { firstName, lastName, userId, salution } = this.state
+    const { firstName, lastName, email, salution } = this.state 
     return (
       
       <Form >
@@ -50,21 +71,21 @@ class FormWithControl extends Component {
             fluid label='Etunimi' 
             placeholder='Etunimi'
             name='firstName'
-            value={firstName}
+            defaultValue={this.props.userData.firstName}
             onChange={this.handleChange} 
             /> 
           <Form.Input 
             fluid label='Sukunimi' 
             placeholder='Sukunimi'
             name='lastName'
-            value={lastName}
+            defaultValue={this.props.userData.lastName}
             onChange={this.handleChange} />
-          <Form.Select
+          <Form.Input
             fluid label='Puhuttelu'
-            options={options}
+            // options={options}
             placeholder='Sukupuoli'
             name='salution'
-            value={salution}
+            defaultValue={this.props.userData.salution}
             onChange={this.handleChange} 
           />
         </Form.Group>
@@ -74,16 +95,29 @@ class FormWithControl extends Component {
               iconPosition='left'
               icon='at'
               placeholder='Käyttäjänimi'
-              name='userId'
-              value={userId}
+              name='email'
+              defaultValue={this.props.userData.email}
               onChange={this.handleChange} 
               style={{width:'290px'}} />
         </Form.Group>
-        <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
-        <Form.Checkbox label='Hyväksyn tietosuoja selosteen' />
+        <Form.Group>
+          <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
+          <Form.Checkbox label='Hyväksyn tietosuoja selosteen' />
+        </Form.Group>
+        <Form.Group>
+        <div className="flex-row">
         <Form.Button onClick={(props)=>{
           this.handleSubmit(props)}}
-          >Lisää käyttäjä</Form.Button>          
+          >Lisää käyttäjä</Form.Button>
+          <Form.Button
+            
+            onClick={(props)=>{
+            this.props.setUserData({})}}
+            >
+              <Icon name="trash" />
+              Poista tiedot  </Form.Button>
+        </div>
+        </Form.Group>
       </Form>
     )
   }
@@ -96,6 +130,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getUserData: (email) => dispatch(actions.getUserData(email)),
     setUserData: (userData) => dispatch(actions.setUserData(userData)),
     helloWorld: () => dispatch(actions.helloWorld()),
     addUser: (userData) => dispatch(actions.addUser(userData)),

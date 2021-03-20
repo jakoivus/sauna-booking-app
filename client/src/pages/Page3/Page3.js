@@ -9,6 +9,7 @@ import { Modal } from '../../components'
 class Page3 extends Component {  
 
   state = {
+    comment: [],
     show_1: false,
     show_2: false,
     requestState:"",
@@ -25,13 +26,20 @@ class Page3 extends Component {
   }
 
   handleClick = () => {
-
     axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
       .then(resp => {
         this.props.getComments (resp.data) 
       })
-  }      
+  }
 
+  handleEdit = (post) => {
+    this.props.togglePostForm(true, post)
+  }
+
+  updateField = (e, { name, value} ) => {
+    this.setState({[name]: value })
+  };
+  
   renderTableHeaders=() => {
       let header = Object.keys(this.props.comments[0])
       return header.map((key, index) => {
@@ -113,10 +121,11 @@ class Page3 extends Component {
             >Lataa</Button>
           </GridColumn>
           <GridColumn>
-            <Button inverted size="huge" onClick={(props)=>{
+            <Button inverted size="huge" icon="trash" onClick={(props)=>{
             this.handleRemove(props)
             }}
-            >Poista</Button>
+            ></Button>
+
           </GridColumn>
           <GridColumn>
             <Form >

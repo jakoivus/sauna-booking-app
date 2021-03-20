@@ -16,6 +16,10 @@ export class App extends Component {
     state = {
   };
 
+  componentDidMount() {
+    // this.props.getUserData();
+  }
+
   logOut = () => {
     console.log("Logout")
     this.props.signOut();
@@ -58,6 +62,7 @@ return {
 
 const mapDispatchToProps = (dispatch) => {
 return {
+  getUserData: () => dispatch(actions.getUserData()),
   signOut: () => dispatch(actions.signOut()),
 };
 };

@@ -9,11 +9,14 @@ const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
 
 // DynamoDb
+
+const DYNAMODB_DATA_TABLE = process.env.DYNAMODB_DATA_TABLE
 const DYNAMODB_USERS_TABLE = process.env.DYNAMODB_USERS_TABLE
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 // Express API 
-const express = require('express')
+const express = require('express');
+const { LakeFormation } = require('aws-sdk');
 const app = express()
 app.use(bodyParser.json({ strict: false }));
 // const cors = require('cors')
@@ -49,7 +52,7 @@ app.post('/addComment', function (req, res) {
     // }
   
     const params = {
-      TableName: DYNAMODB_USERS_TABLE,
+      TableName: DYNAMODB_DATA_TABLE,
       Item: {
         userId: "jakoivus",
         comment: comment,
@@ -69,34 +72,36 @@ app.post('/addComment', function (req, res) {
 ///////////////////////////////////
 // Create AddUser endpoint       //
 ///////////////////////////////////
-app.post('/users', function (req, res) {
-//   console.log("addUser")
-//   res.send('addUser')
-// })
-  // res.send('addUser')
-  console.log("addUser")
-  // res.send(req)
-  const { userId, name } = req.body;
-  if (typeof userId !== 'string') {
-    res.status(400).json({ error: '"userId" must be a string' });
-  } else if (typeof name !== 'string') {
-    res.status(400).json({ error: '"name" must be a string' });
-  }
+app.post('/addUser', function (req, res) {
+  console.log("addUser", req.body)
+  const  {id, salution, email, firstName, lastName}  = req.body;
+  
+  // console.log("Hello World from getUserData")
+  // res.send('Hello World! -- from getUserData')
+  // if (typeof userId !== 'string') {
+  //   res.status(400).json({ error: '"userId" must be a string' });
+  // } else if (typeof name !== 'string') {
+  //   res.status(400).json({ error: '"name" must be a string' });
+  // }
 
   const params = {
-    TableName: DYNAMODB_USERS_TABLE,
+    TableName: DYNAMODB_DATA_TABLE,
     Item: {
-      userId: userId,
-      name: name,
+      email: email,
+      salution: salution,
+      firstName: firstName,
+      lastName: lastName,
     },
   };
-
+  
+  console.log(" Email:",email)
   dynamoDb.put(params, (error) => {
+    console.log("Missä Missä")
     if (error) {
       console.log(error);
       res.status(400).json({ error: 'Could not create user' });
     }
-    res.json({ userId, name });
+    res.json({ id, email });
   });
 })
 
@@ -104,26 +109,32 @@ app.post('/users', function (req, res) {
 ///////////////////////
 // Get User endpoint //
 ///////////////////////
-app.get('/users/:userId', function (req, res) {
+app.post('/email', function (req, res) {
+  let email = "jakoivus@live.com"
+  console.log("let email:", email)
+  console.log("REQ body:", req.body.email)
+
+  // console.log("Hello World from getUserData")
+  // res.send('Hello World! -- from getUserData')
   const params = {
-    TableName: DYNAMODB_USERS_TABLE,
+    TableName: DYNAMODB_DATA_TABLE,
     Key: {
-      userId: req.params.userId,
-    },
+      email: req.body.email,
+    },  
   }
+
   dynamoDb.get(params, (error, result) => {
     if (error) {
       console.log(error);
       res.status(400).json({ error: 'Could not get user' });
     }
     if (result.Item) {
-      const {userId, name} = result.Item;
-      res.json({ userId, name });
+      const {item} = result.Item;
+      res.json(result.Item);
     } else {
       res.status(404).json({ error: "User not found" });
     }
   });
 })
-
 
 module.exports.handler = serverless(app);

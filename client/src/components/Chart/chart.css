@@ -1,10 +1,13 @@
 .chart {
-    margin-top: 10px;
+    position: relative;
+    margin-top: 50px;
+    margin-left: 20px;
     padding-top: 5px;
+    align-items: center;
     height: auto;
     width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: auto;
+    margin-right: auto; */
     padding-bottom: 10px;
     background-color: #f0f8ff;
     color: black;
