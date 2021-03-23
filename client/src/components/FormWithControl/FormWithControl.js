@@ -21,45 +21,28 @@ class FormWithControl extends Component {
   }
 
   componentDidMount() {
-    let email = {
-      email: "jakoivus@live.com"
-    }
-    this.props.getUserData(email)
-
-    let session
-    session = Auth.currentSession()
-    .then(console.log("session: " ,session))
-    let userData = Object.assign({},this.props.userData)
-    console.log(userData)
+    this.props.getUser(this.props.userData.email)
   }
 
-  componentDidUpdate(prevprops) {
-    if (prevprops !== this.props) {
-      console.log ("NEW props")
-    }
-
-
+  componentDidUpdate() {
   }
 
   handleChange = (event, { name, value }) => {
     this.setState({ [name]: value })
-    // const { userId, mame, salution } = this.state
   }
 
   handleSubmit = () => {
     let userData = {
-      // "id": uuidv4(), 
+      "id": uuidv4(), 
+      "role": 'user',
       "email": this.state.email, 
       "salution": this.state.salution,
       "firstName": this.state.firstName,
       "lastName": this.state.lastName
     } 
-    // this.props.helloWorld()
     this.props.addUser(userData)
     this.props.setUserData(userData)
-    // window.alert("lähetä nappia painettu")
-  } 
-
+    } 
 
   render() {
     const { firstName, lastName, email, salution } = this.state 
@@ -106,16 +89,9 @@ class FormWithControl extends Component {
         </Form.Group>
         <Form.Group>
         <div className="flex-row">
-        <Form.Button onClick={(props)=>{
-          this.handleSubmit(props)}}
-          >Lisää käyttäjä</Form.Button>
-          <Form.Button
-            
-            onClick={(props)=>{
-            this.props.setUserData({})}}
-            >
-              <Icon name="trash" />
-              Poista tiedot  </Form.Button>
+          <Form.Button onClick={(props)=>{
+            this.handleSubmit(props)}}
+            >Lisää käyttäjä</Form.Button>
         </div>
         </Form.Group>
       </Form>
@@ -130,8 +106,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getUser: () => dispatch(actions.getUser()),
     getUserData: (email) => dispatch(actions.getUserData(email)),
     setUserData: (userData) => dispatch(actions.setUserData(userData)),
+    updateUserData: (email) => dispatch(actions.updateUserData(email)),
     helloWorld: () => dispatch(actions.helloWorld()),
     addUser: (userData) => dispatch(actions.addUser(userData)),
 

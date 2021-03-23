@@ -12,14 +12,15 @@ const AWS = require('aws-sdk');
 
 const DYNAMODB_DATA_TABLE = process.env.DYNAMODB_DATA_TABLE
 const DYNAMODB_USERS_TABLE = process.env.DYNAMODB_USERS_TABLE
+const DYNAMODB_COMMENTS_TABLE = process.env.DYNAMODB_COMMENTS_TABLE
+
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 // Express API 
 const express = require('express');
-const { LakeFormation } = require('aws-sdk');
 const app = express()
 app.use(bodyParser.json({ strict: false }));
-// const cors = require('cors')
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
@@ -28,7 +29,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-// app.use(cors(true)) 
 
 //////////////////////////
 // Hello World endpoint //
@@ -39,12 +39,13 @@ app.use((req, res, next) => {
   })
 
 ///////////////////////////////////
-// Create addComment endpoint       //
+// Create addComment endpoint    //
 ///////////////////////////////////
 app.post('/addComment', function (req, res) {
     console.log("addComment")
     // res.send('addComment')
-    const  comment  = req.body;
+    const  comment = req.body;
+    console.log("addComment req.body:" ,req.body)
     // if (typeof userId !== 'string') {
     //   res.status(400).json({ error: '"userId" must be a string' });
     // } else if (typeof name !== 'string') {
@@ -52,10 +53,10 @@ app.post('/addComment', function (req, res) {
     // }
   
     const params = {
-      TableName: DYNAMODB_DATA_TABLE,
-      Item: {
-        userId: "jakoivus",
-        comment: comment,
+      TableName: DYNAMODB_COMMENTS_TABLE,
+      Item: comment,
+      Key:  {
+        id: comment.id
       },
     };
     console.log("comment", comment)
@@ -65,16 +66,87 @@ app.post('/addComment', function (req, res) {
         res.status(400).json({ error: 'Could not addComment' });
       }
       res.json({ comment });
-    });
+    }); 
   })
 
+  
+/////////////////////////////////////
+// Create deleteComment endpoint   //
+/////////////////////////////////////
+
+  app.post('/deleteComment', function (req, res) {
+    const comment = req.body
+    console.log("DELETE COMMENT:", comment)
+    const params = { 
+      TableName: DYNAMODB_COMMENTS_TABLE,
+      Key: {
+        id: comment.id
+      },  
+    };
+    dynamoDb.delete(params, (error) => {
+      if (error) {
+        console.log(error);
+        res.status(400).json({ error: 'Could not deleteComment' });
+      }
+      res.json({ comment });
+    });
+    res.send('Got a DELETE request at /user')
+  })  
+
+///////////////////////////////////
+// Create getComments endpoint   //
+///////////////////////////////////
+app.get('/getComments', function (req, res) {
+  const params = { 
+    TableName: DYNAMODB_COMMENTS_TABLE  
+  }
+  dynamoDb.scan (params,( error, comments ) => {
+    console.log("comments:",comments)
+    if (error) {
+      console.log(error);
+      res.status(400).json({ error: 'Could not read comments from DB' });
+    } else {
+      res.json (comments)
+    }
+  })
+})
+
+app.post('/updateUserData', function(req, res){
+  console.log("UPDATE_USER_DATA req.body", req.body)
+  // res.send('UDPDATE_USER_DATA')
+  
+  const  userData = req.body;
+
+  const params = {
+    TableName: DYNAMODB_USERS_TABLE,
+    Item: userData,
+    Key: {
+      email: userData.email,
+    },  
+  }
+  dynamoDb.get(params, (error, result) => {
+    console.log("MISSä MISSÄ")
+      if (error) {
+        console.log(error);
+        res.status(400).json({ error: 'Could not get user' });
+      }
+      if (result.Items) {
+        const {item} = result.Items;
+        res.json(result.Items);
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    });
+}
+)
 
 ///////////////////////////////////
 // Create AddUser endpoint       //
 ///////////////////////////////////
 app.post('/addUser', function (req, res) {
   console.log("addUser", req.body)
-  const  {id, salution, email, firstName, lastName}  = req.body;
+  const  userData  = req.body;
+  
   
   // console.log("Hello World from getUserData")
   // res.send('Hello World! -- from getUserData')
@@ -85,23 +157,20 @@ app.post('/addUser', function (req, res) {
   // }
 
   const params = {
-    TableName: DYNAMODB_DATA_TABLE,
-    Item: {
-      email: email,
-      salution: salution,
-      firstName: firstName,
-      lastName: lastName,
+    TableName: DYNAMODB_USERS_TABLE,
+    Item: userData,
+    Key: {
+      email: userData.email,
     },
   };
   
-  console.log(" Email:",email)
-  dynamoDb.put(params, (error) => {
+  dynamoDb.put(params, (error, resp) => {
     console.log("Missä Missä")
     if (error) {
       console.log(error);
       res.status(400).json({ error: 'Could not create user' });
     }
-    res.json({ id, email });
+    res.json({ resp });
   });
 })
 
@@ -109,32 +178,38 @@ app.post('/addUser', function (req, res) {
 ///////////////////////
 // Get User endpoint //
 ///////////////////////
-app.post('/email', function (req, res) {
-  let email = "jakoivus@live.com"
-  console.log("let email:", email)
-  console.log("REQ body:", req.body.email)
+app.post('/getUser', function (req, res) {
+  // res.send('addComment')
+  const  comment = req.body;
+  console.log("getComment req.body:" ,req.body)
+// app.post('/getUser', function (req, res) {
+  // let email = "jakoivus@live.com"
+  // console.log("let email:", email)
+  // const  userData  = req.body;
+  // const email = "jakoivus@live.com"
 
   // console.log("Hello World from getUserData")
-  // res.send('Hello World! -- from getUserData')
+  res.send('Hello World! -- from getUserData')
   const params = {
-    TableName: DYNAMODB_DATA_TABLE,
+    TableName: DYNAMODB_USERS_TABLE,
     Key: {
       email: req.body.email,
     },  
   }
-
-  dynamoDb.get(params, (error, result) => {
-    if (error) {
-      console.log(error);
-      res.status(400).json({ error: 'Could not get user' });
-    }
-    if (result.Item) {
-      const {item} = result.Item;
-      res.json(result.Item);
-    } else {
-      res.status(404).json({ error: "User not found" });
-    }
-  });
+  console.log("getUser", req.body)
+  
+  // dynamoDb.get(params, (error, result) => {
+  //   if (error) {
+  //     console.log(error);
+  //     res.status(400).json({ error: 'Could not get user' });
+  //   }
+  //   if (result.Items) {
+  //     const {item} = result.Items;
+  //     res.json(result.Items);
+  //   } else {
+  //     res.status(404).json({ error: "User not found" });
+  //   }
+  // });
 })
 
 module.exports.handler = serverless(app);

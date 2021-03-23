@@ -18,11 +18,9 @@ const UserPage = (props) => {
         <div className="container">
           <FormWithControl />
         </div>
-        {/* <FormWithControl /> */}
         <Link to="/home">
           <Button inverted size="huge">Etusivu</Button>
         </Link>
-
       </div>
      </div>
   );
@@ -30,7 +28,7 @@ const UserPage = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    };
+  };
 }
 
 const mapDispatchToProps = (dispatch) => {

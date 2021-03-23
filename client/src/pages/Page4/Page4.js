@@ -1,83 +1,113 @@
 import React, { Component } from 'react'
-import { Grid, Form, Table } from 'semantic-ui-react'
-import { Chart } from '../../components'
+import { connect } from 'react-redux';
+import { Grid, Form,  Button , Table} from 'semantic-ui-react'
+import { v4 as uuidv4 } from 'uuid'
+import * as actions from '../../store/actions/index';
 import './Page4.css'
 
-
 class Page4 extends Component {
+    
+    state = {
+        id:"",
+        title:"",
+        email:"",
+        comment:"",
+        }
+    
+    componentDidMount() {
+    }
+
+    componentDidUpdate() {
+    }
+    
+    handleChange = (event, { name, value }) => {
+        this.setState({ [name]: value })
+      }
+
+    handleAddComment () {
+        let comment = {
+            id:  uuidv4(),
+            title: this.state.title,
+            email: this.state.email,
+            comment: this.state.comment
+        }
+        this.props.addComment(comment)
+    }
+
     render () {
+
+        let options =[ 
+            { key: '1', value: '1', text: 'Idea' },
+            { key: '2', value: '2', text: 'tehtävä' },
+        ]
+        
+        let {title, email, comment} = this.state
+        comment = {
+            id: 6,
+            name: "Jarmo Koivusaari",
+            email:"jakoivus",
+            body: "juupas joopas",
+          }
         return (
-            <div className="home "
-            //  className="home page-content flex-column flex-justify-center"
-             >
-            {/* <h1 className="main-header">Kommentti sivu</h1> */}
-            <div >
-            <Grid columns={2} >
+            <div className="home flex-justify-center  ">
+                <h1></h1>
+            <h1 className="main-header inverted-text">Lisää kommentti</h1>
+            
+            <Grid columns={1} >
             <Grid.Column>
             <div  className="center" >
             <Form >
-                <div className="page4-flex-row ">
-                    <Form.Button onClick={(props)=>{
-                    window.alert("lisää kommentti")}}
-                    >Lisää kommentti</Form.Button>
-                    <Form.Button onClick={(props)=>{
-                    window.alert("poista kommentti")}}
-                    >poista kommentti</Form.Button>
-                </div>
                 <Form.Group widths="equal">
-                    {/* <Form.Input 
-                    placeholder="id"
-                    fluid label="ID"/> */}
-                    <Form.Input 
-                    placeholder="name"
-                    fluid label="Nimi"/>
-                    <Form.Input 
-                    placeholder="sähköposti"
-                    fluid label="sähköposti"
-                    icon="at"
-                    iconPosition="left" />
-                    <Form.Input 
-                    placeholder="body"
-                    fluid label="Kommentti"/>
+                    <Form.Button onClick={(props)=>{
+                      this.handleAddComment()}}
+                    >Lisää kommentti</Form.Button>
+                    <Form.Select 
+                        style={{minwidth: 50, height: 50, color: "black"}} 
+                        placeholder="Valitse" 
+                        name='rowFilter' 
+                        options={options}
+                        onChange={this.handleChange} />
                 </Form.Group>
+                <Form.Group widths="equal">
+                    <Form.Input 
+                    fluid label="Otsikko"
+                    placeholder="Otsikko"
+                    defaultValue={title}
+                    name='title'
+                    onChange={this.handleChange}/>
+                    <Form.Input 
+                    fluid label="sähköposti"
+                    placeholder="sähköposti"
+                    defaultValue={email}
+                    name='email'
+                    icon="at"
+                    iconPosition="left"
+                    onChange={this.handleChange} />
+                </Form.Group>
+                <Form.TextArea
+                    label="Kommentti" 
+                    placeholder="Kerro ajatuksesi"
+                    name='comment'
+                    onChange={this.handleChange}/>
             </Form>            
             </div>
             </Grid.Column>
-            <Grid.Column>
-            <div className="center">
-            <div className="page4-justify-center">  
-            Tähän lista kommenteista
-            {/* <Table celled>
-            <Table.Header>
-                <Table.Row >   
-                    <Table.HeaderCell>id</Table.HeaderCell>
-                    <Table.HeaderCell>Nimi</Table.HeaderCell>
-                    <Table.HeaderCell>s-Posti</Table.HeaderCell>
-                    <Table.HeaderCell>Kommentti</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Row >
-              <Table.Cell> {comment.id}</Table.Cell>
-              <Table.Cell> {comment.name}</Table.Cell>
-              <Table.Cell> {comment.email}</Table.Cell>
-              <Table.Cell> {comment.body}</Table.Cell>
-            </Table.Row>
-            </Table>
-            <Chart /> */}
-            </div>
-            </div>
-            </Grid.Column>
         </Grid>
-        
-            </div>
-            {/* <div className="paragraph-text">
-                Toinen
-            </div> */}
-        
         </div>
-              
-        // </div>
         )
     }
 }
-export default Page4
+
+const mapStateToProps = (state) => {
+    return {
+      comments: state.user.comments
+      };
+}
+  
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addComment: (comment) => dispatch(actions.addComment(comment)),
+        getComments: (comments) => dispatch(actions.getComments(comments)),
+    }
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(Page4)

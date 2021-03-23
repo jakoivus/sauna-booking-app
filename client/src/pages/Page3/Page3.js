@@ -9,36 +9,38 @@ import { Modal } from '../../components'
 class Page3 extends Component {  
 
   state = {
-    comment: [],
-    show_1: false,
-    show_2: false,
-    requestState:"",
+    comments: [],
     rowFilter:""
   }
 
+  componentDidMount() {
+    this.props.getComments()
+  }
+
+  componentDidUpdate(prevprops) {
+    if (prevprops.comments !== this.props.comments) {
+      // this.props.getComments()
+    }
+  }
+
   handleChange = (e, { name, value }) => {
-    console.log (name,value)
     this.setState({[name]: value })}
 
   handleRemove = (props) => {
     this.props.removeComments()
-    this.setState({[this.props.comments]: []})
   }
 
-  handleClick = () => {
-    axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
-      .then(resp => {
-        this.props.getComments (resp.data) 
-      })
+  handleLoad = () => {
+        this.props.getComments () 
   }
 
-  handleEdit = (post) => {
-    this.props.togglePostForm(true, post)
+  handleDeleteComment = (comment, index) => {
+    console.log("handleDelete:", comment, index)
+    let newComments = [...this.props.comments]
+    newComments.splice(index, 1)
+    this.props.deleteComment(comment)
+    this.props.removeComment(newComments)
   }
-
-  updateField = (e, { name, value} ) => {
-    this.setState({[name]: value })
-  };
   
   renderTableHeaders=() => {
       let header = Object.keys(this.props.comments[0])
@@ -49,19 +51,21 @@ class Page3 extends Component {
 
   renderTableData=() => {
     const rows = (()  => {
-      let col = Object.keys(this.props.comments); 
 
       return this.props.comments
       .filter(comment=>comment.id > this.state.rowFilter)
-      .map(comment => {
-        console.log(col);
+      .map((comment, index) => {
+        
           return (
-            <Table.Row >
-              <Table.Cell> {comment.postId}</Table.Cell>
-              <Table.Cell> {comment.id}</Table.Cell>
-              <Table.Cell> {comment.name}</Table.Cell>
+            <Table.Row key={index} id={index}>              
+              {/* <Table.Cell> {index}</Table.Cell> */}
+              <Table.Cell> {comment.title}</Table.Cell>
               <Table.Cell> {comment.email}</Table.Cell>
-              <Table.Cell> {comment.body}</Table.Cell>
+              <Table.Cell> {comment.comment}</Table.Cell>
+              <Table.Cell> 
+                <Button icon='trash'
+                  onClick={() =>{
+                    this.handleDeleteComment(comment, index)} }></Button> </Table.Cell>
             </Table.Row>
           );
       });
@@ -71,11 +75,11 @@ class Page3 extends Component {
       <Table celled >
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>PostId</Table.HeaderCell>
-            <Table.HeaderCell>id</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
+            {/* <Table.HeaderCell>index</Table.HeaderCell> */}
+            <Table.HeaderCell>Title</Table.HeaderCell>
             <Table.HeaderCell>Email</Table.HeaderCell>
-            <Table.HeaderCell>Body</Table.HeaderCell>
+            <Table.HeaderCell>Comment</Table.HeaderCell>
+            <Table.HeaderCell>Poista</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -87,12 +91,6 @@ class Page3 extends Component {
   
   render ( ) {
 
-    let comment = {
-      id: 6,
-      name: "Jarmo Koivusaari",
-      email:"jakoivus",
-      body: "juupas joopas",
-    }
     let commentsArray = this.props.comments
     let rowFilter = this.state.rowFilter
     let options =[ 
@@ -104,59 +102,8 @@ class Page3 extends Component {
 
     return (
       <div className="home page-content flex-column flex-justify-center">
-        <h1 className="main-header">Sivu 3</h1>
-        <Grid columns={5} >
-        <GridColumn>
-            <Button inverted size="huge" onClick={(props)=>
-            this.props.addComment(comment)}
-            >Kommentti</Button>
-          </GridColumn>
-          <GridColumn>
-            <Modal inverted > </Modal>
-          </GridColumn>
-          <GridColumn>
-            <Button inverted size="huge" onClick={(props)=>{
-            this.handleClick(props)
-            }}
-            >Lataa</Button>
-          </GridColumn>
-          <GridColumn>
-            <Button inverted size="huge" icon="trash" onClick={(props)=>{
-            this.handleRemove(props)
-            }}
-            ></Button>
-
-          </GridColumn>
-          <GridColumn>
-            <Form >
-              <Form.Group>
-                <div className="grid">
-                <Form.Select 
-                style={{minwidth: 50, height: 50, color: "black"}} 
-                placeholder="Valitse numero" 
-                name='rowFilter' 
-                options={options}
-                onChange ={this.handleChange} />
-                </div>
-              </Form.Group>
-            </Form>
-          </GridColumn>
-        </Grid>
-    
-            {commentsArray.length ?  this.renderTableData()
-            :  
-            <Table celled>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>PostId</Table.HeaderCell>
-                  <Table.HeaderCell>id</Table.HeaderCell>
-                  <Table.HeaderCell>Name</Table.HeaderCell>
-                  <Table.HeaderCell>Email</Table.HeaderCell>
-                  <Table.HeaderCell>Body</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-            </Table>
-            }
+        <h1 className="main-header">Kommentit</h1>
+            {this.renderTableData()}
       </div>  
     );
   };
@@ -171,8 +118,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addComment: (comment) => dispatch(actions.addComment(comment)),
+    deleteComment: (comment) => dispatch(actions.deleteComment(comment)),
     getComments: (comments) => dispatch(actions.getComments(comments)),
-    removeComments: () => dispatch(actions.removeComments())
+    removeComment: (newComment) => dispatch(actions.removeComment(newComment)),
+    removeComments: (comments) => dispatch(actions.removeComments(comments))
   };
 };
 

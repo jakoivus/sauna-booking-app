@@ -14,6 +14,13 @@
     border:5px solid #cccccc;
 }
 
+.comment {
+    position: relative;
+    margin: auto; 
+    margin-top: 20px;
+    width: 70%;
+    padding: 10px;
+}
 .column-container {
     position: absolute;
     margin: auto;

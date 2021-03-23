@@ -1,14 +1,16 @@
 import * as actionTypes from './actionTypes';
-// import { User } from '../types';
-
+// import { User } from '../types'
 import axios from "axios";
 import { Auth } from "aws-amplify";
 
 // import {postRequest } from './request';
 
 
-const BASE_URL = 'https://oo8cnyct6j.execute-api.eu-west-1.amazonaws.com/dev'//users table
+const BASE_URL = 'https://29fydiore5.execute-api.eu-west-1.amazonaws.com/dev'//users table
 const BASE_URL_DATA = 'https://3fsjsmudsk.execute-api.eu-west-1.amazonaws.com/dev'//data table
+const BASE_URL_COMMENTS = 'https://3fsjsmudsk.execute-api.eu-west-1.amazonaws.com/dev'//comments table
+
+
 export const helloWorld =(props) => {
   return dispatch => {
     console.log("Hello World called")
@@ -21,6 +23,17 @@ export const helloWorld =(props) => {
       console.log("Virhe:", error)
       alert (error)
     })
+  }
+}
+
+
+
+export const signOut = () => {
+  return function (dispatch) {
+    dispatch(clearReduxStore());
+    Auth.signOut()
+      .then((data) => window.location.reload())
+      .catch((err) => window.location.reload());
   }
 }
 
@@ -38,13 +51,62 @@ export const addComment = (comment) => {
   }
 }
 
-export const addUser = (userData) => {
-  // const userData = {"userId":"jakoivus01", "name": "Jarmo Koivusaari" }
+export const deleteComment = (comment) => { 
   return dispatch => {
-    console.log("addUser req:", userData)
-    axios.post (BASE_URL_DATA+'/addUser', userData)
+    console.log("DELETE COMMENT", comment)
+    axios.post (BASE_URL+'/deleteComment', comment)
+    .then( res => {
+      console.log("RESPONSE DELETE COMMENT", res)
+      // dispatch ((updateComments(res.data.Items)))
+    })
+    .catch(error =>{ 
+      console.log("Virhe:", error)
+      alert (error)
+    })
+  }
+};
+
+export const getComments = (comments) => { 
+  return dispatch => {
+    console.log("GET COMMENTS")
+    axios.get (BASE_URL+'/getComments', comments)
+    .then( res => {
+      console.log("RESPONSE GETCOMMENTS", res.data.Items)
+      dispatch ((updateComments(res.data.Items)))
+    })
+    .catch(error =>{ 
+      console.log("Virhe:", error)
+      alert (error)
+    })
+  }
+};
+
+export const updateComments = (comments) => {
+  return {
+    type: actionTypes.UPDATE_COMMENTS,
+    payload: comments,
+    
+  }
+}
+
+export const removeComment = (newComments) => { 
+  return {
+    type: actionTypes.REMOVE_COMMENT,
+    payload: newComments,
+  };
+};
+
+export const removeComments = () => { 
+  return {
+    type: actionTypes.REMOVE_COMMENTS,
+    payload: [],
+  };
+};
+
+export const addUser = (userData) => {
+  return dispatch => {
+    axios.post (BASE_URL+'/addUser', userData)
     .then (res => {
-      console.log("ADD USER RESPONSE DATA", res)
     })
     .catch(error =>{ 
       console.log("Virhe:", error)
@@ -53,9 +115,47 @@ export const addUser = (userData) => {
   }
 }
 
-export const  getUserData = (email) => {
+export const  getUser = (email) => {
   return dispatch => {
-    axios.post (BASE_URL_DATA+'/email', email)
+    return Auth.currentSession()
+    .then (data => {
+      let userData = {email: "", role: ""}
+      const idToken = data.getIdToken();
+      if (idToken && idToken.payload) {
+        userData.email = idToken.payload['email'];
+        userData.role = 'user';
+      }
+        dispatch (setUserData(userData))
+      })
+      .catch(error =>{ 
+        console.log(error)
+        alert (error)
+      })
+  }
+}
+
+export const  getUserData = (email) => {
+
+}
+
+// export const updateUserData = (userData) => {
+//   return dispatch => {
+//     console.log("update_user USERDATA", userData)
+//     axios.post (BASE_URL+'/updateUserData',userData)
+//     .then (res => {
+//       console.log("UPDATE_USER_DATA res:", res) 
+//     })
+//     .catch(error =>{ 
+//       console.log("Virhe:", error)
+//       alert (error)
+//     })
+//   }
+// }
+
+export const updateUserData = (email) => {
+  console.log("Mail", email)
+  return dispatch => {
+    axios.post (BASE_URL+'/getUser', email)
       .then(
         res => {
           console.log("RES getUserData: ", res.data)
@@ -68,36 +168,6 @@ export const  getUserData = (email) => {
   }
 }
 
-export const signOut = () => {
-    return function (dispatch) {
-      dispatch(clearReduxStore());
-      Auth.signOut()
-        .then((data) => window.location.reload())
-        .catch((err) => window.location.reload());
-    }
-  }
-  
-  export const clearReduxStore = () => {
-    return {
-      type: "CLEAR_REDUX_STORE",
-    };
-  };
-
-  export const getComments = (comments) => { 
-    return {
-      type: actionTypes.GET_COMMENTS,
-      payload: comments,
-      
-    };
-  };
-
-  export const removeComments = () => { 
-    return {
-      type: actionTypes.REMOVE_COMMENTS,
-      payload: [],
-    };
-  };
-
   export const setUserData = (userData) => {
     console.log("setuserdata")
     return {
@@ -106,10 +176,8 @@ export const signOut = () => {
     }
   }
 
-  // export const getUserData = (userData) => {
-  //   console.log("getuserdata")
-  //   return {
-  //     type: actionTypes.GET_USER_DATA,
-  //     payload: userData
-  //   }
-  // }
+  export const clearReduxStore = () => {
+    return {
+      type: "CLEAR_REDUX_STORE",
+    };
+  };

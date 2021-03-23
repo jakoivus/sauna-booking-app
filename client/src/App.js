@@ -17,6 +17,7 @@ export class App extends Component {
   };
 
   componentDidMount() {
+
     // this.props.getUserData();
   }
 
