@@ -15,7 +15,4 @@ class commentsModal extends Component  {
   }
 }
 
-// function ModalExampleShorthand() {
-  
-
 export default commentsModal

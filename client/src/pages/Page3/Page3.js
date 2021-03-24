@@ -17,10 +17,7 @@ class Page3 extends Component {
     this.props.getComments()
   }
 
-  componentDidUpdate(prevprops) {
-    if (prevprops.comments !== this.props.comments) {
-      // this.props.getComments()
-    }
+  componentDidUpdate() {
   }
 
   handleChange = (e, { name, value }) => {

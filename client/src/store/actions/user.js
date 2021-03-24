@@ -1,10 +1,6 @@
 import * as actionTypes from './actionTypes';
-// import { User } from '../types'
 import axios from "axios";
 import { Auth } from "aws-amplify";
-
-// import {postRequest } from './request';
-
 
 const BASE_URL = 'https://29fydiore5.execute-api.eu-west-1.amazonaws.com/dev'//users table
 const BASE_URL_DATA = 'https://3fsjsmudsk.execute-api.eu-west-1.amazonaws.com/dev'//data table
@@ -25,8 +21,6 @@ export const helloWorld =(props) => {
     })
   }
 }
-
-
 
 export const signOut = () => {
   return function (dispatch) {

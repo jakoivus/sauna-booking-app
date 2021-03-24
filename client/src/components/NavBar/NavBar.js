@@ -4,9 +4,6 @@ import {Link, useHistory} from 'react-router-dom';
 import './NavBar.css';
 import  logo from '../../assets/img/saunalogo.png';
 
-
-
-
 const NavBar = (props) => {
   
   const userLinks = [
