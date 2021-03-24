@@ -18,6 +18,7 @@ class Page4 extends Component {
     }
 
     componentDidUpdate() {
+    
     }
     
     handleChange = (event, { name, value }) => {
@@ -32,6 +33,8 @@ class Page4 extends Component {
             comment: this.state.comment
         }
         this.props.addComment(comment)
+        window.alert("Kommentti lisätty")
+        window.location.reload() // now reload while doing better solution
     }
 
     render () {
