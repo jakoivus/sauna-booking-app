@@ -1,6 +1,7 @@
 .page4 {
     color: black;
-    background-color: orange;    
+    background-color: orange;   
+    overflow-y: auto;
 }
 
 .center {

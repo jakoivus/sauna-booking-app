@@ -34,7 +34,6 @@ class Page4 extends Component {
         }
         this.props.addComment(comment)
         window.alert("Kommentti lisätty")
-        window.location.reload() // now reload while doing better solution
     }
 
     render () {
