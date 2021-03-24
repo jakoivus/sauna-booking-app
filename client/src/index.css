@@ -12,13 +12,6 @@ code {
     monospace;
 }
 
-/* .container {
-  opacity: 0;
-  color:red
-
-
-} */
-
 .page-content {
   margin: 0;
   padding: 0;
@@ -86,8 +79,14 @@ img {
   padding-bottom: 10px;
   height: auto;
   min-width: 400px;
-  /* width: auto; */
   color:whitesmoke;
   background-color: seashell;
-  
 }
+
+.blank-container {
+  position: relative;
+  height: auto;
+  min-height: 200px;
+  min-width: 400px;
+}
+ 

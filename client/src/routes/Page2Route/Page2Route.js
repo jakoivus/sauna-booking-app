@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import { connect } from 'react-redux';
-import  NavBar  from '../../components/NavBar/NavBar';
+import { NavBar, Footer } from '../../components';
 import { BgContainer } from '../../containers';
 import { Page2 } from '../../pages';  
 
@@ -10,10 +10,11 @@ render() {
 
   return (
     <div style={{height: "100%"}}>
-     <NavBar />
+    <NavBar />
       <BgContainer>
         <Page2 />
       </BgContainer>
+    <Footer />
     </div>
   );
 }}

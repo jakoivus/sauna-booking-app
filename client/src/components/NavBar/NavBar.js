@@ -1,20 +1,13 @@
 import React from 'react';
-// import { injectIntl} from "react-intl";
 import {Menu, Dropdown, Icon} from 'semantic-ui-react';
 import {Link, useHistory} from 'react-router-dom';
-
-// import {AmplifySignOut  } from '@aws-amplify/ui-react'; 
 import './NavBar.css';
-import { connect } from 'react-redux';
 import  logo from '../../assets/img/saunalogo.png';
 
-// const logo = require('../../assets/img/talo.svg') as string;
 
 
 
 const NavBar = (props) => {
-  
-  // const {formatMessage} = props.intl;
   
   const userLinks = [
     {icon: "user", url: "/user", text: 'Omat tiedot'},
@@ -63,12 +56,6 @@ const DropdownMenu = (props) => {
       </Dropdown.Menu>
     </Dropdown>
   );
-}
-
-const mapStateToProps = (state) => {
-  return {
-      userData: state.user.userData,
-  };
 }
 
 export default (NavBar);

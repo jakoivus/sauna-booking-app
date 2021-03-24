@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import  NavBar  from '../../components/NavBar/NavBar';
+import { NavBar, Footer } from '../../components';
 import { BgContainer } from '../../containers';
 import   { UserPage } from '../../pages'
 const UserRoute = (props) => {
@@ -10,10 +10,11 @@ const UserRoute = (props) => {
 
   return (
     <div style={{height: "100%"}}>
-     <NavBar />
+    <NavBar />
       <BgContainer>
         <UserPage />
       </BgContainer>
+    <Footer />
     </div>
   );
 }

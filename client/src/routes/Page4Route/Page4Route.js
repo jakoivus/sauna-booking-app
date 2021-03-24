@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import  { NavBar }  from '../../components';
+import  { NavBar, Footer }  from '../../components';
 import { BgContainer } from '../../containers';
 import { Page4 } from '../../pages'
 import './Page4Route.css'
@@ -15,6 +15,7 @@ render() {
         <NavBar />
             <Page4 />
       </BgContainer>
+      <Footer />
     </div>
   );
 }}

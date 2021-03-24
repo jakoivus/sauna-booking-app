@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import { Auth, Predicates } from 'aws-amplify';
-import { Form, Icon } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { Form, } from 'semantic-ui-react'
 import { v4 as uuidv4 } from 'uuid'
-import * as actions from '../../store/actions/index';
+import * as actions from '../../store/actions/index'
 
 const options = [
   { key: 'm', text: 'Mies', value: 'Hra' },

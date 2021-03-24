@@ -72,15 +72,15 @@ class Page3 extends Component {
     })
   
     return(
-      <Table celled >
-        <Table.Header>
-          <Table.Row>
-            {/* <Table.HeaderCell>index</Table.HeaderCell> */}
-            <Table.HeaderCell>Title</Table.HeaderCell>
-            <Table.HeaderCell>Email</Table.HeaderCell>
-            <Table.HeaderCell>Comment</Table.HeaderCell>
-            <Table.HeaderCell>Poista</Table.HeaderCell>
-          </Table.Row>
+        <Table celled >
+          <Table.Header>
+            <Table.Row>
+              {/* <Table.HeaderCell>index</Table.HeaderCell> */}
+              <Table.HeaderCell>Title</Table.HeaderCell>
+              <Table.HeaderCell>Email</Table.HeaderCell>
+              <Table.HeaderCell>Comment</Table.HeaderCell>
+              <Table.HeaderCell>Poista</Table.HeaderCell>
+            </Table.Row>
         </Table.Header>
         <Table.Body>
           {rows()}
@@ -102,8 +102,11 @@ class Page3 extends Component {
 
     return (
       <div className="home page-content flex-column flex-justify-center">
-        <h1 className="main-header">Kommentit</h1>
+        
+        <div><h1 className="main-header">Kommentit</h1></div>
+          <div className="overflow" > 
             {this.renderTableData()}
+          </div>
       </div>  
     );
   };
