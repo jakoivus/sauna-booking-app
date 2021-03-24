@@ -16,7 +16,6 @@ class Page2 extends Component {
         </Link>
         </div>
       </div>
-    
   );
 }
 }

@@ -1,7 +1,6 @@
 import React,  { Component } from 'react'
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 
-
 const initialState = {
   comments: []
 } 
@@ -13,7 +12,6 @@ class   DataTable extends Component {
   } 
   
   render () {
-    
     
     return(
       <Table celled>
@@ -27,12 +25,10 @@ class   DataTable extends Component {
         </Table.Header>
 
         <Table.Body>
-
          <Table.Row>
             <Table.Cell>
               <div>Tekniikan Tohtori, TkT
               <Label ribbon>Korkein</Label>
-              
               </div>        </Table.Cell>
             <Table.Cell>2000</Table.Cell>
             <Table.Cell>Oulun Yliopopisto</Table.Cell>

@@ -98,7 +98,6 @@ const reducer = ( state = initialState, action ) => {
       case actionTypes.UPDATE_COMMENTS: return updateComments(state, action)
       case actionTypes.GET_USER_DATA: return getUserData(state, action);
       case actionTypes.UPDATE_USER_DATA: return updateUserData(state, action);
-      
       case actionTypes.SET_USER_DATA: return setUserData(state, action);
     //   case actionTypes.UPDATE_USER_DATA: return updateUserData(state, action);
     //   case actionTypes.UPDATE_USER: return updateUser(state, action);
