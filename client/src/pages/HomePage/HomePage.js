@@ -15,12 +15,12 @@ class HomePage extends Component {
         <Link to="/user">
           <Button  inverted size="huge">Omat tiedot</Button>
         </Link>
-        <Link to="/Page2">
-          <Button  inverted size="huge">Sivu 2</Button>
+        <Link to="/booking">
+          <Button  inverted size="huge">Varaus</Button>
         </Link>
-        <Link to="/Page3">
+        {/* <Link to="/Page3">
           <Button  inverted size="huge">Sivu 3</Button>
-        </Link>
+        </Link> */}
       </div>
    </div>
   );

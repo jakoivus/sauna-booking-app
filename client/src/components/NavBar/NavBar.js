@@ -8,9 +8,7 @@ const NavBar = (props) => {
   
   const userLinks = [
     {icon: "user", url: "/user", text: 'Omat tiedot'},
-    {icon: "id card", url: "/Page2", text: 'Sivu 2'},
-    {icon: "wrench", url: "/Page3", text: 'Sivu 3'},
-    {icon: "table", url: "/Page4", text: 'Sivu 4'},
+    {icon: "wrench", url: "/booking", text: 'Varaus'},
     {icon: "log out", url:"/logout", text: 'Kirjaudu ulos' }
   ];
 

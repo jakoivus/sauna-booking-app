@@ -34,6 +34,7 @@ app.use((req, res, next) => {
 // Hello World endpoint //
 //////////////////////////
   app.get('/hello', function (req, res) {
+    
     console.log("Hello World")
     res.send('Hello World!')
   })

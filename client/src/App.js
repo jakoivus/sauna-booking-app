@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Route, withRouter, Redirect, Switch } from "react-router-dom";
-import { HomeRoute , Page2Route, Page3Route, Page4Route, UserRoute } from './routes/'
+import { HomeRoute , BookingRoute, UserRoute } from './routes/'
 import * as actions from './store/actions/index';
 import './App.css';
 
@@ -32,10 +32,11 @@ export class App extends Component {
 
     const routes = (
       <Switch>
-       <Route path="/home" exact component={HomeRoute} />       
-       <Route path="/Page2" exact component={Page2Route} />
+       <Route path="/home" exact component={HomeRoute} />
+       <Route path="/booking" exact component={BookingRoute} />
+       {/* <Route path="/Page2" exact component={Page2Route} />
        <Route path="/Page3" exact component={Page3Route} />
-       <Route path="/Page4" exact component={Page4Route} />
+       <Route path="/Page4" exact component={Page4Route} /> */}
        <Route path="/user" exact component={UserRoute} />
        <Route path="/logout" exact render={this.logOut} />
       <Redirect from="/" to="/home" />

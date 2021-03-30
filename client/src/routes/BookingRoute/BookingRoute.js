@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import  { NavBar, Footer }  from '../../components';
 import { BgContainer } from '../../containers';
-import { Page4 } from '../../pages'
-import './Page4Route.css'
+import { Booking } from '../../pages'
 
-class Page4Route extends Component {
+class BookingRoute extends Component {
 
 render() {
 
   return (
     <div style={{height: "100%"}}>
+     <NavBar />
       <BgContainer>
-        <NavBar />
-            <Page4 />
+        <Booking />
       </BgContainer>
-      <Footer />
+     <Footer />
     </div>
   );
 }}
@@ -29,4 +28,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page4Route);
+export default connect(mapStateToProps, mapDispatchToProps)(BookingRoute);

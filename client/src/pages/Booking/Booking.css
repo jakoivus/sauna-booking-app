@@ -35,3 +35,8 @@
     align-items: center;
     background-color: white;
   }
+
+  .cell-center {
+    position: relative;
+    margin: auto;
+  }

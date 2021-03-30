@@ -1,0 +1,108 @@
+
+.AuthenticatorFrame {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.Authenticator {
+  width: 30%;
+  min-width: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-radius: 1%;
+}
+
+.AuthenticatorInner {
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  padding-top: 1px;
+  padding-bottom: 10px;
+}
+
+.AuthenticatorMobile {
+  width: 90%;
+  left: 5%;
+  position: absolute;
+  margin-top: 10px;
+  border-radius: 1%;
+}
+
+/*
+.Authenticator img {
+  position: relative;
+  left: 37%;
+  margin-top: 20px;
+}
+*/
+
+.signFormDiv {
+  margin-top: 20px;
+  width: 50%;
+  position: relative;
+  left: 25%;
+}
+
+.signFormDivMobile {
+  margin-top: 10px;
+  width: 80%;
+  position: relative;
+  left: 10%;
+}
+
+.signFormDiv input {
+  margin-top: 5px;
+}
+
+.signFormDiv button {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.navi {
+  margin: 20px;
+  text-align: center;
+}
+
+.navi input {
+  margin-top: 0;
+}
+
+.navi a {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.langSelectAuth {
+  font-size: 12px;
+  font-weight: normal;
+  color: #006838;
+  cursor: pointer;
+  } 
+  .langSelectAuth:hover {
+    text-decoration: underline;
+  }
+
+.langSelectAuthSelected {
+  font-size: 12px;
+  font-weight: bold;
+  color: #006838;
+  cursor: pointer;
+  } 
+  .langSelectAuth:hover {
+    text-decoration: underline;
+  }
+
+.langSelectAuthSeparator {
+  font-size: 12px;
+  font-weight: normal;
+  color: #006838;
+  }
