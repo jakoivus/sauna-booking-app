@@ -35,7 +35,7 @@ class Booking extends Component {
     return (
       <div className="home page-content flex-justify-center"> 
       <div className="calendar-container">       
-        <Mycalendar locale="fi-fi"/>
+        <Mycalendar />
         </div>
       </div>  
     );
