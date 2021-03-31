@@ -33,8 +33,10 @@ class Booking extends Component {
   render ( ) {
 
     return (
-      <div className="home page-content flex-column flex-justify-center">        
-        <Mycalendar />
+      <div className="home page-content flex-justify-center"> 
+      <div className="calendar-container">       
+        <Mycalendar locale="fi-fi"/>
+        </div>
       </div>  
     );
   };

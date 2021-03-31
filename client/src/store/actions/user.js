@@ -109,7 +109,7 @@ export const addUser = (userData) => {
   }
 }
 
-export const  getUser = (email) => {
+export const  getUser = () => {
   return dispatch => {
     return Auth.currentSession()
     .then (data => {
@@ -128,9 +128,20 @@ export const  getUser = (email) => {
   }
 }
 
-export const  getUserData = (email) => {
-
+export const  getUserData = (userData) => {
+  return dispatch => {
+    axios.post (BASE_URL+'/getUserData', userData)
+    .then (res => {
+      dispatch (setUserData(res.data))
+      console.log("GET USERDATA:", res.data)}
+    )
+    .catch(error =>{ 
+      console.log("Virhe:", error)
+      alert (error)
+    })
+  }
 }
+
 
 // export const updateUserData = (userData) => {
 //   return dispatch => {

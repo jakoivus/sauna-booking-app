@@ -17,6 +17,7 @@ const DYNAMODB_COMMENTS_TABLE = process.env.DYNAMODB_COMMENTS_TABLE
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+
 // Express API 
 const express = require('express');
 const app = express()
@@ -112,34 +113,40 @@ app.get('/getComments', function (req, res) {
   })
 })
 
-app.post('/updateUserData', function(req, res){
-  console.log("UPDATE_USER_DATA req.body", req.body)
-  // res.send('UDPDATE_USER_DATA')
+
+///////////////////////////////////
+// Create getUserData endpoint   //
+///////////////////////////////////
+
+app.post('/getUserData', function(req, res){
+  console.log("GET_USER_DATA req.body", req.body)
+  // res.send('GET_USER_DATA')
   
-  const  userData = req.body;
+  const  email = req.body.email;
+  console.log("email:",email)
 
   const params = {
     TableName: DYNAMODB_USERS_TABLE,
-    Item: userData,
     Key: {
-      email: userData.email,
+      email: email,
     },  
   }
   dynamoDb.get(params, (error, result) => {
-    console.log("MISSä MISSÄ")
       if (error) {
         console.log(error);
         res.status(400).json({ error: 'Could not get user' });
       }
-      if (result.Items) {
-        const {item} = result.Items;
-        res.json(result.Items);
+      console.log("result.Item",result.Item)
+      if (result.Item) {
+        const item = result.Item;
+        console.log ("result:", result)
+        res.json(item);
       } else {
+        console.log("ERROR haara")
         res.status(404).json({ error: "User not found" });
       }
-    });
-}
-)
+  });
+})
 
 ///////////////////////////////////
 // Create AddUser endpoint       //
@@ -148,15 +155,6 @@ app.post('/addUser', function (req, res) {
   console.log("addUser", req.body)
   const  userData  = req.body;
   
-  
-  // console.log("Hello World from getUserData")
-  // res.send('Hello World! -- from getUserData')
-  // if (typeof userId !== 'string') {
-  //   res.status(400).json({ error: '"userId" must be a string' });
-  // } else if (typeof name !== 'string') {
-  //   res.status(400).json({ error: '"name" must be a string' });
-  // }
-
   const params = {
     TableName: DYNAMODB_USERS_TABLE,
     Item: userData,

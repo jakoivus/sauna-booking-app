@@ -10,10 +10,11 @@ class Mycalendar extends Component {
 
   render() {
     return (
-      <div>
+      <div className = "calendar-container">
         <Calendar
           onChange={this.onChange}
           value={this.state.date}
+          locale="fi-fi"
         />
       </div>
     );

@@ -1,8 +1,6 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Button} from 'semantic-ui-react';
 import { FormWithControl } from '../../components'
 import './UserPage.css';
 // import * as actions from '../store/actions/index';

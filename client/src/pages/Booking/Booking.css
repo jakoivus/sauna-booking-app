@@ -40,3 +40,14 @@
     position: relative;
     margin: auto;
   }
+  .calendar-container {
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    height: auto;
+    min-width: 400px;
+    max-width: 400px;
+    color:orange;
+    background-color: black;
+  }

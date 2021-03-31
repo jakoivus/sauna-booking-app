@@ -20,7 +20,10 @@ class FormWithControl extends Component {
   }
 
   componentDidMount() {
-    this.props.getUser(this.props.userData.email)
+    this.props.getUser().then( res =>{ 
+      let userData = {email: this.props.userData.email}
+      this.props.getUserData(userData)
+    })
   }
 
   componentDidUpdate() {
@@ -106,7 +109,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUser: () => dispatch(actions.getUser()),
-    getUserData: (email) => dispatch(actions.getUserData(email)),
+    getUserData: (userData) => dispatch(actions.getUserData(userData)),
     setUserData: (userData) => dispatch(actions.setUserData(userData)),
     updateUserData: (email) => dispatch(actions.updateUserData(email)),
     helloWorld: () => dispatch(actions.helloWorld()),
