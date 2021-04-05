@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { cloneElement, Component } from 'react'
 import { connect } from "react-redux";
 import { Route, withRouter, Redirect, Switch } from "react-router-dom";
 import { HomeRoute , BookingRoute, UserRoute } from './routes/'
@@ -18,7 +18,7 @@ export class App extends Component {
 
   componentDidMount() {
 
-    // this.props.getUserData();
+    this.props.helloWorld();
   }
 
   logOut = () => {
@@ -64,6 +64,7 @@ return {
 
 const mapDispatchToProps = (dispatch) => {
 return {
+  helloWorld: () => dispatch(actions.helloWorld()),
   getUserData: () => dispatch(actions.getUserData()),
   signOut: () => dispatch(actions.signOut()),
 };

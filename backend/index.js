@@ -4,6 +4,7 @@
 // Serverless framework
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // AWS
 const AWS = require('aws-sdk');
@@ -20,14 +21,16 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 // Express API 
 const express = require('express');
+// const cors = require('cors')
 const app = express()
+
+app.use(cors())
+
 app.use(bodyParser.json({ strict: false }));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+    "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept", 
+    "Access-Control-Allow-Methods", "OPTIONS,POST,GET" 
   next();
 });
 
@@ -36,8 +39,8 @@ app.use((req, res, next) => {
 //////////////////////////
   app.get('/hello', function (req, res) {
     
-    console.log("Hello World")
-    res.send('Hello World!')
+    console.log("Hello World!!", req)
+    res.send('Hello World!!')
   })
 
 ///////////////////////////////////
@@ -45,7 +48,7 @@ app.use((req, res, next) => {
 ///////////////////////////////////
 app.post('/addComment', function (req, res) {
     console.log("addComment")
-    // res.send('addComment')
+    res.send('addComment')
     const  comment = req.body;
     console.log("addComment req.body:" ,req.body)
     // if (typeof userId !== 'string') {

@@ -37,11 +37,12 @@ class FormWithControl extends Component {
     let userData = {
       "id": uuidv4(), 
       "role": 'user',
-      "email": this.state.email, 
-      "salution": this.state.salution,
-      "firstName": this.state.firstName,
-      "lastName": this.state.lastName
+      "email": this.props.userData.email, 
+      "salution": this.props.userData.salution,
+      "firstName": this.props.userData.firstName,
+      "lastName": this.props.userData.lastName
     } 
+    console.log("addUser", userData)
     this.props.addUser(userData)
     this.props.setUserData(userData)
     } 
@@ -93,7 +94,7 @@ class FormWithControl extends Component {
         <div className="flex-row">
           <Form.Button onClick={(props)=>{
             this.handleSubmit(props)}}
-            >Lisää käyttäjä</Form.Button>
+            >Päivitä käyttäjä</Form.Button>
         </div>
         </Form.Group>
       </Form>
@@ -111,7 +112,7 @@ const mapDispatchToProps = (dispatch) => {
     getUser: () => dispatch(actions.getUser()),
     getUserData: (userData) => dispatch(actions.getUserData(userData)),
     setUserData: (userData) => dispatch(actions.setUserData(userData)),
-    updateUserData: (email) => dispatch(actions.updateUserData(email)),
+    updateUserData: (userData) => dispatch(actions.updateUserData(userData)),
     helloWorld: () => dispatch(actions.helloWorld()),
     addUser: (userData) => dispatch(actions.addUser(userData)),
 

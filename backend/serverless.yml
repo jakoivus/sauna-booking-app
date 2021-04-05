@@ -1,8 +1,9 @@
 
-service: my-javascript-backend
+service: sauna-booking-backend
 
 custom:
-  tableName: 'my-javascript'
+  tableName: 'sauna-booking'
+  cognito_user_pool_arn: 'arn:aws:cognito-idp:eu-west-1:897378097038:userpool/eu-west-1_ez7TepndW'
 
 frameworkVersion: '2'
 
@@ -10,7 +11,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
-  profile: default
+  profile: jakoivus
   region: eu-west-1
   stage: dev
   iamRoleStatements:
@@ -25,26 +26,40 @@ provider:
         - dynamodb:DeleteItem
 #         - ses:SendEmail
       Resource:
-        - { "Fn::GetAtt": ["CommentsDynamoDBTable", "Arn" ] }
+        # - { "Fn::GetAtt": ["CommentsDynamoDBTable", "Arn" ] }
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
+    - Effect: Allow
+      Action:
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminAddUserToGroup
+        - cognito-idp:AdminUpdateUserAttributes
+        - cognito-idp:AdminDeleteUser
+        - cognito-idp:AdminGetUser
+      Resource: 
+        - 'arn:aws:cognito-idp:eu-west-1:897378097038:userpool/eu-west-1_ez7TepndW'
+      # - { "Fn::GetAtt": ["CognitoUserPool", "Arn"] } 
+      # - ${self:custom.cognito_user_pool_arn}
 
   environment:
     DYNAMODB_COMMENTS_TABLE: ${self:custom.tableName}-comments 
     DYNAMODB_USERS_TABLE: ${self:custom.tableName}-users 
 
-functions:
-  app:
-    handler: index.handler
-    events:
-      - http: ANY /
-        authorizer: aws_iam
-        cors: true
-      - http: 'ANY /{proxy+}'
-        authorizer: aws_iam
-        cors: true
+    COGNITO_REGION: eu-west-1
+    COGNITO_USER_POOL_ID: eu-west-1_ez7TepndW 
 
 resources:
   Resources:
+    ApiGatewayAuthorizer:
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: cognito-authorizer
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - ${self:custom.cognito_user_pool_arn}
+
     CommentsDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
@@ -74,3 +89,23 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableName}-users
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http: 
+          path: /
+          method: ANY 
+          cors: true
+          authorizer: 
+            type: COGNITO_USER_POOLS
+            authorizerId: 
+              Ref: ApiGatewayAuthorizer 
+      - http: 
+          path: "{proxy+}"
+          method: ANY 
+          cors: true
+          authorizer: 
+            type: COGNITO_USER_POOLS
+            authorizerId: 
+              Ref: ApiGatewayAuthorizer
