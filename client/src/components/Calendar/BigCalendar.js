@@ -6,7 +6,14 @@ import 'moment/locale/fi';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
-
+const messages ={
+  previous: '<',
+  next: '>',
+  today: 'Tänään',
+  week: 'Viikko',
+  month: 'Kuukausi',
+  agenda: 'Varaukset'
+  }
 class BigCalender extends Component {
   constructor(props) {
     super(props)
@@ -35,13 +42,14 @@ class BigCalender extends Component {
     this.state = {
       events
     };
+
   }
 
   render() {
     return (
         <div style={{ height: '300pt'}}>
-          <Calendar
-            // culture='fi-FI'
+          <Calendar messages={messages}
+            culture='fi-FI'
             // events={this.props.tasks}
             views={['month', 'week', 'agenda']}
             events={this.state.events}
