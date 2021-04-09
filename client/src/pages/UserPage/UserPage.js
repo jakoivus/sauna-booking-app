@@ -1,20 +1,26 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormWithControl } from '../../components'
-import './UserPage.css';
-// import * as actions from '../store/actions/index';
-// import { User } from '../store/types';
+import { FormWithControl, UserDataTable } from '../../components'
 
-const UserPage = (props) => {
+class UserPage extends Component  {
 
+  state={
+    showUserDataTable: false
+  }
+
+  render ()
+  {
   return (
-    
     <div className="user page-content">
     <div className="home page-content flex-column flex-justify-center">
-      <h1 className="main-header inverted-text">Omat Tiedot</h1>
+      {/* <h1 className="main-header inverted-text">Omat Tiedot</h1> */}
         <div className="container">
+          {this.props.showUserDataTable ?
+          <UserDataTable /> 
+          : 
           <FormWithControl />
+         }
         </div>
         {/* <Link to="/home">
           <Button inverted size="huge">Etusivu</Button>
@@ -22,10 +28,11 @@ const UserPage = (props) => {
       </div>
      </div>
   );
-}
+}}
 
 const mapStateToProps = (state) => {
   return {
+    showUserDataTable: state.user.showUserDataTable
   };
 }
 

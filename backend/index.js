@@ -25,7 +25,6 @@ const express = require('express');
 const app = express()
 
 app.use(cors())
-
 app.use(bodyParser.json({ strict: false }));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -40,7 +39,7 @@ app.use((req, res, next) => {
   app.get('/hello', function (req, res) {
     
     console.log("Hello World!!", req)
-    res.send('Hello World!!')
+    res.send('BACKEND: I am alive')
   })
 
 ///////////////////////////////////
@@ -123,15 +122,13 @@ app.get('/getComments', function (req, res) {
 
 app.post('/getUserData', function(req, res){
   console.log("GET_USER_DATA req.body", req.body)
-  // res.send('GET_USER_DATA')
-  
-  const  email = req.body.email;
-  console.log("email:",email)
+  const  data= req.body;
+  console.log("req.body:",data)
 
   const params = {
     TableName: DYNAMODB_USERS_TABLE,
     Key: {
-      email: email,
+      email: req.body.email,
     },  
   }
   dynamoDb.get(params, (error, result) => {
@@ -139,10 +136,9 @@ app.post('/getUserData', function(req, res){
         console.log(error);
         res.status(400).json({ error: 'Could not get user' });
       }
-      console.log("result.Item",result.Item)
       if (result.Item) {
         const item = result.Item;
-        console.log ("result:", result)
+        console.log ("Item:", result.Item)
         res.json(item);
       } else {
         console.log("ERROR haara")

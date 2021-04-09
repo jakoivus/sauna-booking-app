@@ -1,24 +1,27 @@
-import React, { cloneElement, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Route, withRouter, Redirect, Switch } from "react-router-dom";
 import { HomeRoute , BookingRoute, UserRoute } from './routes/'
 import * as actions from './store/actions/index';
 import './App.css';
+import { withAuthenticator } from 'aws-amplify-react';
 
-
+import { IntlProvider } from "react-intl";
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
-import { withAuthenticator } from '@aws-amplify/ui-react';
+
+import MySignIn from "./components/AuthHandler/AuthHandler";
 
 Amplify.configure(awsconfig);
+
 
 export class App extends Component {
     state = {
   };
 
   componentDidMount() {
-
-    this.props.helloWorld();
+    // this.props.helloWorld();
+    this.props.getUser()
   }
 
   logOut = () => {
@@ -65,10 +68,16 @@ return {
 const mapDispatchToProps = (dispatch) => {
 return {
   helloWorld: () => dispatch(actions.helloWorld()),
-  getUserData: () => dispatch(actions.getUserData()),
+  getUser: () => dispatch(actions.getUser()),
   signOut: () => dispatch(actions.signOut()),
 };
 };
 
-export default withRouter(withAuthenticator(connect(mapStateToProps, mapDispatchToProps)(App)))
-// export default App;
+export default withRouter(
+  withAuthenticator(connect(mapStateToProps, mapDispatchToProps)(App), 
+  false, 
+  [
+      <MySignIn/>
+  ])
+)
+

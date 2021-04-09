@@ -41,7 +41,7 @@ provider:
       # - ${self:custom.cognito_user_pool_arn}
 
   environment:
-    DYNAMODB_COMMENTS_TABLE: ${self:custom.tableName}-comments 
+    DYNAMODB_EVENTS_TABLE: ${self:custom.tableName}-events 
     DYNAMODB_USERS_TABLE: ${self:custom.tableName}-users 
 
     COGNITO_REGION: eu-west-1
@@ -73,7 +73,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:custom.tableName}-comments
+        TableName: ${self:custom.tableName}-events
 
     UsersDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'

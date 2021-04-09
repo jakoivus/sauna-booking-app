@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import { v4 as uuidv4 } from 'uuid'
 import * as actions from '../../store/actions/index'
 
@@ -16,15 +16,15 @@ class FormWithControl extends Component {
     email: "",
     firstName:"",
     lastName:"",
+    role:"",
     salution:"",
+    showUserDataTable: false
   }
 
   componentDidMount() {
-    this.props.getUser().then( res =>{ 
-      let userData = {email: this.props.userData.email}
-      this.props.getUserData(userData)
-    })
-  }
+    this.props.getUser()
+
+    }
 
   componentDidUpdate() {
   }
@@ -41,16 +41,21 @@ class FormWithControl extends Component {
       "salution": this.props.userData.salution,
       "firstName": this.props.userData.firstName,
       "lastName": this.props.userData.lastName
-    } 
-    console.log("addUser", userData)
+    }    
+    // this.setState({showUserDataTable: true}) 
+    console.log("Handle submite userData:", userData)
     this.props.addUser(userData)
-    this.props.setUserData(userData)
+    this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
+    // this.props.setUserData(userData)
     } 
+
 
   render() {
     const { firstName, lastName, email, salution } = this.state 
     return (
-      
+      <div >
+        
+      <h1 className="flex-column flex-justify-center">MUOKKAA TIEDOJA</h1>
       <Form >
         <Form.Group widths='equal'>
           <Form.Input 
@@ -58,7 +63,7 @@ class FormWithControl extends Component {
             placeholder='Etunimi'
             name='firstName'
             defaultValue={this.props.userData.firstName}
-            onChange={this.handleChange} 
+            // onChange={this.handleChange} 
             /> 
           <Form.Input 
             fluid label='Sukunimi' 
@@ -75,46 +80,51 @@ class FormWithControl extends Component {
             onChange={this.handleChange} 
           />
         </Form.Group>
-        <Form.Group width='200'>
+        <Form.Field className="flex-column flex-justify-center" width='200'>
             <Form.Input
               fluid label='Käyttäjänimi'
               iconPosition='left'
               icon='at'
               placeholder='Käyttäjänimi'
               name='email'
-              defaultValue={this.props.userData.email}
-              onChange={this.handleChange} 
+            
+              value={this.props.userData.email}
+              // onChange={this.handleChange} 
               style={{width:'290px'}} />
-        </Form.Group>
-        <Form.Group>
+        </Form.Field>
+        {/* <Form.Group>
           <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
           <Form.Checkbox label='Hyväksyn tietosuoja selosteen' />
-        </Form.Group>
-        <Form.Group>
+        </Form.Group> */}
+        <Form.Field>
         <div className="flex-row">
           <Form.Button onClick={(props)=>{
             this.handleSubmit(props)}}
-            >Päivitä käyttäjä</Form.Button>
+            >Päivitä tiedot</Form.Button>
         </div>
-        </Form.Group>
+        </Form.Field>
       </Form>
+      
+      </div>
     )
   }
 }
 const mapStateToProps = (state) => {
   return {
-    userData: state.user.userData
+    userData: state.user.userData,
+    showUserDataTable: state.user.showUserDataTable
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    addUser: (userData) => dispatch(actions.addUser(userData)),
     getUser: () => dispatch(actions.getUser()),
     getUserData: (userData) => dispatch(actions.getUserData(userData)),
     setUserData: (userData) => dispatch(actions.setUserData(userData)),
+    toggleShowUserDataTable: (data) => dispatch(actions.toggleShowUserDataTable(data)),
     updateUserData: (userData) => dispatch(actions.updateUserData(userData)),
     helloWorld: () => dispatch(actions.helloWorld()),
-    addUser: (userData) => dispatch(actions.addUser(userData)),
 
   }
 }

@@ -81,6 +81,7 @@ img {
   min-width: 400px;
   color:orange;
   background-color: seashell;
+  border-radius: 10px;
 }
 
 .blank-container {

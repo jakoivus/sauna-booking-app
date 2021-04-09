@@ -1,31 +1,16 @@
-
-.AuthenticatorFrame {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: auto;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.Authenticator {
-  width: 30%;
-  min-width: 450px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  border-radius: 1%;
-}
-
-.AuthenticatorInner {
-  background: rgba(255,255,255,0.95);
-  border-radius: 15px;
-  padding-top: 1px;
+.SignInContainer {
+  position:relative;
+  margin: auto;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
+  height: auto;
+  max-width: 600px;
+  min-width: 400px;
+  color:orange;
+  background-color: seashell;
+  border-radius: 10px;
 }
 
 .AuthenticatorMobile {
@@ -49,6 +34,7 @@
   width: 50%;
   position: relative;
   left: 25%;
+  border-radius: 10px;
 }
 
 .signFormDivMobile {
