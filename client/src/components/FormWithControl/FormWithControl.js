@@ -61,7 +61,7 @@ class FormWithControl extends Component {
     return (
       <div >
         
-      <h1 className="flex-column flex-justify-center">MUOKKAA TIEDOJA</h1>
+      <h1 className="flex-column flex-justify-center">MUOKKAA TIETOJA</h1>
       <Form >
         <Form.Group widths='equal'>
           <Form.Input 
