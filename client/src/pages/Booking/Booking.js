@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Button, Checkbox, Dropdown, Form, Grid, GridColumn, StatusBubble, Table } from 'semantic-ui-react'
-import axios from "axios";
 import * as actions from "../../store/actions/index";
 import './Booking.css';
-import { Modal, Mycalendar } from '../../components'
+import { DateTimeForm, Mycalendar, BigCalendar } from '../../components'
 
 class Booking extends Component {  
 
@@ -28,14 +26,15 @@ class Booking extends Component {
   handleLoad = () => {
   }
 
-
-  
   render ( ) {
 
     return (
       <div className="home page-content flex-justify-center"> 
-      <div className="calendar-container">       
-        <Mycalendar />
+      <div className="calendar-container">
+      <h1 className="flex-column flex-justify-center">VARAUS KALENTERI</h1>       
+        <BigCalendar />
+        {/* <Mycalendar />
+        <DateTimeForm /> */}
         </div>
       </div>  
     );
