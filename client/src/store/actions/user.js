@@ -29,7 +29,6 @@ export const helloWorld = () => {
   }
 }
 
-
   export const signOut = () => {
   return function (dispatch) {
     dispatch(clearReduxStore());
@@ -130,29 +129,48 @@ export const toggleShowUserDataTable = (data) => {
 }
 
 export const updateUserData = (userData) => {
-  return dispatch => {
-    return Auth.currentSession().then(credentials => {  
-      const headers = 
-        {
-          'Content-Type': 'application/json',
-          'Authorization': credentials.idToken.jwtToken
-        }
-  // console.log("headers", headers)
-  // return dispatch => {
-    axios.post (BASE_URL+'/updateUserData', userData,
-    { headers: headers } 
-    ).then (
-        res => {
-          // console.log("RES updateUserData: ", res.data)
-          dispatch (setUserData(res.data))
-          alert(res.data)
-        })
-        .catch(error =>{ 
-          console.log("Backend response error:", error)
-          alert (error)
-        })
-  })
-}}
+    console.log ("updateUserData userData" , userData)
+    return dispatch => {
+      return Auth.currentSession().then(credentials => {  
+        const headers = 
+          {
+            'Content-Type': 'application/json',
+            'Authorization': credentials.idToken.jwtToken
+          }
+      axios.post (BASE_URL+'/updateUserData', userData, 
+      { headers: headers }  
+      ).then (res => {
+        dispatch (setUserData(userData))
+      })
+      .catch(error =>{ 
+        console.log("Backend response error:", error)
+        alert (error)
+      })
+    })
+  }}
+//   return dispatch => {
+//     return Auth.currentSession().then(credentials => {  
+//       const headers = 
+//         {
+//           'Content-Type': 'application/json',
+//           'Authorization': credentials.idToken.jwtToken
+//         }
+//   // console.log("headers", headers)
+//   // return dispatch => {
+//     axios.post (BASE_URL+'/updateUserData', userData,
+//     { headers: headers } 
+//     ).then (
+//         res => {
+//           // console.log("RES updateUserData: ", res.data)
+//           dispatch (setUserData(res.data))
+//           alert(res.data)
+//         })
+//         .catch(error =>{ 
+//           console.log("Backend response error:", error)
+//           alert (error)
+//         })
+//   })
+// }}
   export const clearReduxStore = () => {
     return {
       type: "CLEAR_REDUX_STORE",

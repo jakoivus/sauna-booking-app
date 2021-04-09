@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    showUserDataTable: false,
+    showUserDataTable: true,
     email:"",
     role:"",
     
@@ -19,7 +19,6 @@ const initialState = {
       user: action.payload
     }
   }
-
 
   const setUserData = (state, action) => {
     let userData = Object.assign({}, action.payload)
@@ -44,25 +43,12 @@ const initialState = {
     }  
   }
 
-  const updateUserData= (state, action) => {
-    let updateuserData = action.payload
-    console.log("reducer updateUserData:", updateuserData)
-    return {
-      ...state,
-      userData: updateuserData
-    }
-  };
-  
-
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
       case actionTypes.SET_USER: return setUser(state, action)
       case actionTypes.GET_USER_DATA: return getUserData(state, action);
-      case actionTypes.UPDATE_USER_DATA: return updateUserData(state, action);
       case actionTypes.SET_USER_DATA: return setUserData(state, action);
       case actionTypes.TOGGLE_SHOW_USER_DATA_TABLE: return toggleShowUserDataTable(state, action)
-    //   case actionTypes.UPDATE_USER_DATA: return updateUserData(state, action);
-    //   case actionTypes.UPDATE_USER: return updateUser(state, action);
       default: return state;
     }
   };

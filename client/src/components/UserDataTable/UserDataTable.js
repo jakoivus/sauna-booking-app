@@ -14,7 +14,7 @@ class DataTable extends Component {
   } 
 
   handleSubmit = () => {
-    console.log("Handle submite userData:")
+    console.log("Handle edit userData:")
     this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
     } 
   
@@ -44,9 +44,15 @@ class DataTable extends Component {
             {/* <Table.Cell>Mikroelektroniikka ja materiaalifysiikka</Table.Cell> */}
           </Table.Row>
           <Table.Row>
+            <Table.Cell>Tekniikan tohtori, TkT</Table.Cell>
+            <Table.Cell>2000</Table.Cell>
+            <Table.Cell>Oulun Yliopisto</Table.Cell>
+            {/* <Table.Cell>Strategia ja Muutosjohtaminen</Table.Cell> */}
+          </Table.Row>
+          <Table.Row>
             <Table.Cell>Master or Business Administration,  MBA</Table.Cell>
             <Table.Cell>2007</Table.Cell>
-            <Table.Cell>Reading University, Henley Business School</Table.Cell>
+            <Table.Cell>Henley Business School</Table.Cell>
             {/* <Table.Cell>Strategia ja Muutosjohtaminen</Table.Cell> */}
           </Table.Row>
           <Table.Row>

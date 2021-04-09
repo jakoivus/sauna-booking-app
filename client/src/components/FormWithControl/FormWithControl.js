@@ -22,31 +22,37 @@ class FormWithControl extends Component {
   }
 
   componentDidMount() {
-    this.props.getUser()
-
+      this.props.getUser().then(res =>{
+      console.log("getUser res",res)
+      })
     }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevprops) {
+    if (this.props.userData != prevprops.userData) {
+    let userData = Object.assign({}, this.props.userData);
+    this.setState({
+      ...userData
+    })
+    }
   }
 
   handleChange = (event, { name, value }) => {
     this.setState({ [name]: value })
+    console.log("Etunimi:", this.state.firstName)
   }
 
   handleSubmit = () => {
     let userData = {
-      "id": uuidv4(), 
+      "id": this.props.userData.id, 
       "role": 'user',
       "email": this.props.userData.email, 
-      "salution": this.props.userData.salution,
-      "firstName": this.props.userData.firstName,
-      "lastName": this.props.userData.lastName
+      "salution": this.state.salution,
+      "firstName": this.state.firstName,
+      "lastName": this.state.lastName
     }    
-    // this.setState({showUserDataTable: true}) 
-    console.log("Handle submite userData:", userData)
-    this.props.addUser(userData)
+    console.log("Handle updataUserData userData:", userData)
+    this.props.updateUserData (userData)
     this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
-    // this.props.setUserData(userData)
     } 
 
 
@@ -62,35 +68,35 @@ class FormWithControl extends Component {
             fluid label='Etunimi' 
             placeholder='Etunimi'
             name='firstName'
-            defaultValue={this.props.userData.firstName}
-            // onChange={this.handleChange} 
+            defaultValue={this.state.firstName}
+            onChange={this.handleChange} 
             /> 
           <Form.Input 
             fluid label='Sukunimi' 
             placeholder='Sukunimi'
             name='lastName'
-            defaultValue={this.props.userData.lastName}
+            defaultValue={this.state.lastName}
             onChange={this.handleChange} />
           <Form.Input
             fluid label='Puhuttelu'
             // options={options}
             placeholder='Sukupuoli'
             name='salution'
-            defaultValue={this.props.userData.salution}
+            defaultValue={this.state.salution}
             onChange={this.handleChange} 
           />
         </Form.Group>
-        <Form.Field className="flex-column flex-justify-center" width='200'>
+        <Form.Field className="flex-column flex-justify-center">
             <Form.Input
               fluid label='Käyttäjänimi'
               iconPosition='left'
               icon='at'
               placeholder='Käyttäjänimi'
               name='email'
-            
-              value={this.props.userData.email}
-              // onChange={this.handleChange} 
-              style={{width:'290px'}} />
+              value={this.state.email}
+              onChange={this.handleChange} 
+              style={{width:'300px'}} 
+              />
         </Form.Field>
         {/* <Form.Group>
           <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
@@ -98,7 +104,9 @@ class FormWithControl extends Component {
         </Form.Group> */}
         <Form.Field>
         <div className="flex-row">
-          <Form.Button onClick={(props)=>{
+          <Form.Button
+            type="button"
+            onClick={(props)=>{
             this.handleSubmit(props)}}
             >Päivitä tiedot</Form.Button>
         </div>

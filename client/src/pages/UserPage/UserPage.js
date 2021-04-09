@@ -5,9 +5,7 @@ import { FormWithControl, UserDataTable } from '../../components'
 
 class UserPage extends Component  {
 
-  state={
-    showUserDataTable: false
-  }
+  
 
   render ()
   {
