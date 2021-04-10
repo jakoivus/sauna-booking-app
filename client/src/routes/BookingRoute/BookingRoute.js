@@ -1,31 +1,22 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import  { NavBar, Footer }  from '../../components';
 import { BgContainer } from '../../containers';
-import { Booking } from '../../pages'
+import { Booking } from '../../pages';
 
 class BookingRoute extends Component {
 
-render() {
+  render() {
 
-  return (
-    <div style={{height: "100%"}}>
-     <NavBar />
-      <BgContainer>
-        <Booking />
-      </BgContainer>
-     <Footer />
-    </div>
-  );
-}}
-const mapStateToProps = (state) => {
-  return {
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
+    return (
+      <div style={{height: "100%"}}>
+      <NavBar />
+        <BgContainer>
+          <Booking />
+        </BgContainer>
+      <Footer />
+      </div>
+    );
   }
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingRoute);
+export default (BookingRoute);

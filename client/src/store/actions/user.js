@@ -5,7 +5,7 @@ import AuthConfig from '../../aws-exports';
 
 Auth.configure(AuthConfig);
 
-const BASE_URL = 'https://2gp5vzsczl.execute-api.eu-west-1.amazonaws.com/dev'
+const BASE_URL = 'https://2gp5vzsczl.execute-api.eu-west-1.amazonaws.com/dev';
 
 export const helloWorld = () => {
   return dispatch => {
@@ -65,12 +65,11 @@ export const  getUser = () => {
     return Auth.currentSession()
     .then (data => {
       let userData = {email: "", role: ""}
-      const idToken = data.getIdToken();
+      const idToken = data.getIdToken()
       if (idToken && idToken.payload) {
-        userData.email = idToken.payload['email'];
+        userData.email = idToken.payload['email']
         userData.role = 'user';
       }
-      console.log("GET-USER", userData)
       dispatch (getUserData(userData))
     })
       .catch(error =>{ 
@@ -92,7 +91,6 @@ export const  getUserData = (userData) => {
     { headers: headers } 
     ).then (res => {
       dispatch (setUserData(res.data))
-      // console.log("GET USERDATA:", res.data)
     })
     .catch(error =>{ 
       console.log("Backend response error:", error)
@@ -105,7 +103,6 @@ export const  getUserData = (userData) => {
 }
 
 export const setUser = (user) => {
-  console.log("setuserdata action", user  )
   return {
     type: actionTypes.SET_USER_DATA,
     payload: user
@@ -113,7 +110,6 @@ export const setUser = (user) => {
 }
 
 export const setUserData = (userData) => {
-  // console.log("setuserdata action", userData  )
   return {
     type: actionTypes.SET_USER_DATA,
     payload: userData
@@ -121,7 +117,6 @@ export const setUserData = (userData) => {
 }
 
 export const toggleShowUserDataTable = (data) => {
-  console.log("toggleShowUserDataTable")
   return {
     type: actionTypes.TOGGLE_SHOW_USER_DATA_TABLE,
     payload: data
@@ -129,7 +124,6 @@ export const toggleShowUserDataTable = (data) => {
 }
 
 export const updateUserData = (userData) => {
-    console.log ("updateUserData userData" , userData)
     return dispatch => {
       return Auth.currentSession().then(credentials => {  
         const headers = 
@@ -148,29 +142,7 @@ export const updateUserData = (userData) => {
       })
     })
   }}
-//   return dispatch => {
-//     return Auth.currentSession().then(credentials => {  
-//       const headers = 
-//         {
-//           'Content-Type': 'application/json',
-//           'Authorization': credentials.idToken.jwtToken
-//         }
-//   // console.log("headers", headers)
-//   // return dispatch => {
-//     axios.post (BASE_URL+'/updateUserData', userData,
-//     { headers: headers } 
-//     ).then (
-//         res => {
-//           // console.log("RES updateUserData: ", res.data)
-//           dispatch (setUserData(res.data))
-//           alert(res.data)
-//         })
-//         .catch(error =>{ 
-//           console.log("Backend response error:", error)
-//           alert (error)
-//         })
-//   })
-// }}
+
   export const clearReduxStore = () => {
     return {
       type: "CLEAR_REDUX_STORE",

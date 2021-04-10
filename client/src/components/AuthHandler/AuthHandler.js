@@ -67,7 +67,7 @@ class AuthHandler extends Component {
 
     if (this.state.uiState === "signIn") {
       return (
-          <div className="home page-content flex-column flex-justify-center">
+          <div className="SingInPage flex-column">
             <div className="SignInContainer">
               <h1>Kirjaudu sisään</h1>
               <Form>

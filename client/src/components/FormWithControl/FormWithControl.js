@@ -1,14 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form } from 'semantic-ui-react'
-import { v4 as uuidv4 } from 'uuid'
 import * as actions from '../../store/actions/index'
-
-const options = [
-  { key: 'm', text: 'Mies', value: 'Hra' },
-  { key: 'f', text: 'Nainen', value: 'Rva' },
-  { key: 'o', text: 'Muu', value: 'other' },
-]
 
 class FormWithControl extends Component {
   
@@ -54,7 +47,6 @@ class FormWithControl extends Component {
     this.props.updateUserData (userData)
     this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
     } 
-
 
   render() {
     const { firstName, lastName, email, salution } = this.state 

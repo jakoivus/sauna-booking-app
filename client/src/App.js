@@ -1,12 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Route, withRouter, Redirect, Switch } from "react-router-dom";
-import { HomeRoute , BookingRoute, UserRoute } from './routes/'
+import { HomeRoute , BookingRoute, UserRoute } from './routes/';
 import * as actions from './store/actions/index';
-import './App.css';
 import { withAuthenticator } from 'aws-amplify-react';
-
-import { IntlProvider } from "react-intl";
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 
@@ -22,13 +19,13 @@ export class App extends Component {
   componentDidMount() {
     // this.props.helloWorld();
     this.props.getUser()
-  }
+  };
 
   logOut = () => {
     console.log("Logout")
     this.props.signOut();
     return <Redirect to="/" />;
-  }
+  };
 
   render ()
   {
@@ -57,20 +54,20 @@ export class App extends Component {
         {appView}
       </div>
     );
-  }    
-}
+  };    
+};
 
 const mapStateToProps = (state) => {
-return {
+  return {
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-return {
-  helloWorld: () => dispatch(actions.helloWorld()),
-  getUser: () => dispatch(actions.getUser()),
-  signOut: () => dispatch(actions.signOut()),
-};
+  return {
+    helloWorld: () => dispatch(actions.helloWorld()),
+    getUser: () => dispatch(actions.getUser()),
+    signOut: () => dispatch(actions.signOut()),
+  };
 };
 
 export default withRouter(
@@ -79,5 +76,5 @@ export default withRouter(
   [
       <MySignIn/>
   ])
-)
+);
 

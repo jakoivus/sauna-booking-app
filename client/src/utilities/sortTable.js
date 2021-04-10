@@ -15,14 +15,14 @@ export const  sortRows = (rows) => {
     const sortField = this.state.sortField;
     if(!sortField) return rows;
 
-    if(sortField.type === "number") {
+    if(sortField.type === "data_1") {
       return rows.sort((a, b) => {  
         const valueA = a[sortField.name] ? a[sortField.name] : -1;
         const valueB = b[sortField.name] ? b[sortField.name] : -1;
         return this.state.ascending ? valueA - valueB : valueB - valueA;
       }) ;
     }
-    else if(sortField.type === "skill") {
+    else if(sortField.type === "data_2") {
       return rows.sort((a,b) => {
         const valueA = a[sortField.name] ? (a[sortField.name] === 5 ? 0 : a[sortField.name]) : -1;
         const valueB = b[sortField.name] ? (b[sortField.name] === 5 ? 0 : b[sortField.name]) : -1;

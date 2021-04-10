@@ -1,12 +1,11 @@
 import React from 'react';
-import {Menu,} from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import './Footer.css'
-import  logo from '../../assets/img/saunalogo.png'
+// import  logo from '../../assets/img/saunalogo.png'
 
 
-const Footer = (props) => {
+const Footer = () => {
   
-
   return(    
     <Menu inverted fixed="bottom" color="orange" className="footer">
       <div className="footer-main">
