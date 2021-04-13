@@ -31,7 +31,6 @@ class FormWithControl extends Component {
 
   handleChange = (event, { name, value }) => {
     this.setState({ [name]: value })
-    console.log("Etunimi:", this.state.firstName)
   }
 
   handleSubmit = () => {

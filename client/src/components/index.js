@@ -1,5 +1,5 @@
 export  { default as Mycalendar } from './Calendar/Calendar';
-export  { default as DateTimeForm } from './Calendar/DataTimeForm';
+export  { default as EventModal } from './Calendar/EventModal';
 export  { default as BigCalendar } from './Calendar/BigCalendar';
 export { default as NavBar } from './NavBar/NavBar';
 export { default as Footer } from './Footer/Footer';
