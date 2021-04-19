@@ -5,6 +5,8 @@ import moment from 'moment';
 import 'moment/locale/fi';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Modal, Form } from 'semantic-ui-react'
+import * as actions from '../../store/actions/index'
+import { v4 as uuidv4 } from 'uuid'
 
 const localizer = momentLocalizer(moment);
 const messages ={
@@ -17,26 +19,27 @@ const messages ={
   agenda: 'Varaukset'
   }
 
+let persistedEvents = [] //  JSON.parse(localStorage.getItem("events"))
 
 class BigCalender extends Component {
 
     state = { 
       events: [
       {
-          id: 0,
+          id: "5421432öjölkjölk",
           title: 'Kokopäivä',
           allDay: true,
           start: new Date(2021, 3, 12, 12),
           end: new Date(2021, 3, 12, 13),
       },
       {
-          id: 1,
+          id: "rölkjölkjq6098572",
           title: 'Pitkä tapaaminen',
           start: new Date(2021, 3, 17),
           end: new Date(2021, 3, 20),
       },
       {
-          id: 2,
+          id: "ghfsaölkjöa6+5932+5",
           title: 'Juuri Nyt',
           start: new Date(2021, 3, 14),
           end: new Date(2021, 3, 14),
@@ -47,15 +50,29 @@ class BigCalender extends Component {
     };
 
   componentDidMount () {
+    // console.log("state.events:", this.state .events)
+      let userData = {email: ""}
+      userData.email = this.props.user.email
+      let eventsData = this.props.getEventsData(userData)
+      console.log ("Did Mount", eventsData)
+      // this.setState({
+      //   ...this.state,
+      //   events: [eventsData]
+      // })
+  }
+
+  componentDidUpdate(prevprops) {
+    if (prevprops.events != this.state.events){
+    }
   }
 
   handleChange = (event, { name, value }) => {
-    console.log (name)
     this.setState({ [name]: value })
   }
 
   handleAddEvent = () => {
-    
+    let email = this.props.user.email
+    console.log("handle AddEvent email", email)
     const {title, start, end} = this.state
     if(title) {
     // }
@@ -64,21 +81,30 @@ class BigCalender extends Component {
       events: [
         ...this.state.events,
         {
+          id: uuidv4(),
           title,
           start,
           end,
         },
       ],
+    }, () => {let eventsData = {
+      email: this.props.user.email,
+      events: this.state.events}
+      console.log("kukkuu",eventsData)
+      let event = this.state.events
+      this.props.addEvent(eventsData)
     })
+    // localStorage.setItem("events", JSON.stringify(this.state.events))
+
   }
 }
 
   toggleAddModal = ({start, end})  => {
     if (!this.state.isAddModalOpen) {
       this.setState({
+        ...this.state,
         isAddModalOpen: !this.state.isAddModalOpen,
-        events:  [...this.state.events,
-          ], 
+        // events:  [...this.state.events ], 
           start,
           end
       });
@@ -93,7 +119,6 @@ class BigCalender extends Component {
         isEditModalOpen: !this.state.isEditModalOpen,
       });
     }
-    console.log("state:", this.state.events[this.state.events.length])
   };
 
   render() {
@@ -101,7 +126,7 @@ class BigCalender extends Component {
     return (
       
         <div style={{ height: '300pt'}}>
-          {    console.log("STATE:", this.state)}
+          {console.log("this.state.events:", this.state.events)}
           <Calendar  messages={messages}
             selectable  
             // views={['month', 'week', 'day', 'agenda']}
@@ -125,7 +150,7 @@ class BigCalender extends Component {
                     fluid label='Varauksen Nimi' 
                     placeholder='Varauksen Nimi'
                     name='title'
-                    defaultValue= "Varauksen nimi"
+                    // defaultValue= "Varauksen nimi"
                     onChange={this.handleChange} 
                     /> 
                   <Form.Input 
@@ -164,11 +189,17 @@ class BigCalender extends Component {
 
 const mapStateToProps = (state) => {
     return {
-      user: state.user.userData.user,
-  }}  ;
+
+      user: state.user,
+      events: state.events
+  }}  
     
   const mapDispatchToProps = (dispatch) => {
     return {
+      addEvent: (eventData) => dispatch(actions.addEvent(eventData)),
+      getEventsData: (userData) => dispatch(actions.getEventsData(userData)),
+      getUser: () => dispatch(actions.getUser()),
+      helloWorld: () => dispatch(actions.helloWorld()),
     };
   };
 

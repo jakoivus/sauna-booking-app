@@ -26,7 +26,7 @@ provider:
         - dynamodb:DeleteItem
 #         - ses:SendEmail
       Resource:
-        # - { "Fn::GetAtt": ["CommentsDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["EventsDynamoDBTable", "Arn" ] }
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
     - Effect: Allow
       Action:
@@ -60,15 +60,15 @@ resources:
         ProviderARNs:
           - ${self:custom.cognito_user_pool_arn}
 
-    CommentsDynamoDBTable:
+    EventsDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: email
             AttributeType: S
 
         KeySchema:
-          - AttributeName: id
+          - AttributeName: email
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

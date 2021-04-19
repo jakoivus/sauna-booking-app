@@ -2,10 +2,11 @@ import * as actionTypes from './actionTypes';
 import axios from "axios";
 import { Auth } from 'aws-amplify';
 import AuthConfig from '../../aws-exports';
+import HeaderSubHeader from 'semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader';
 
 Auth.configure(AuthConfig);
 
-const BASE_URL = 'https://2gp5vzsczl.execute-api.eu-west-1.amazonaws.com/dev';
+const BASE_URL = 'https://y6ctpms7uh.execute-api.eu-west-1.amazonaws.com/dev';
 
 export const helloWorld = () => {
   return dispatch => {
@@ -20,7 +21,6 @@ export const helloWorld = () => {
         ).then (res => {
           console.log("Backend response success: ", res.data)
         })
-
     })
     .catch(error =>{ 
       console.log("Backend response error:", error)
@@ -35,6 +35,57 @@ export const helloWorld = () => {
     Auth.signOut()
       .then((data) => window.location.reload())
       .catch((err) => window.location.reload());
+  }
+}
+
+export const addEvent = (eventsData) => {
+  return dispatch => {
+    return Auth.currentSession().then(credentials => {  
+      const headers = 
+        {
+          'Content-Type': 'application/json',
+          'Authorization': credentials.idToken.jwtToken
+        }
+      axios.post (BASE_URL+'/addEvent', eventsData, 
+      { headers: headers }  
+      ).then( res => {
+        console.log("ADD EVENT ", res)
+        // dispatch(setEvents(events))
+      })
+      .catch(error =>{ 
+        console.log("Backend response error:", error)
+        alert (error)
+      })
+  })
+}}
+
+export const getEventsData = (userData) => {
+  return dispatch => {
+    return Auth.currentSession().then(credentials => {  
+      const headers = 
+        {
+          'Content-Type': 'application/json',
+          'Authorization': credentials.idToken.jwtToken
+        }
+        axios.post(BASE_URL+'/getEventsData', userData,
+        { headers: headers }  
+        ).then (res => {
+          console.log("getEventsData success: ", res.data.events)
+          dispatch(setEventsData(res.data.events))
+        })
+        })
+        .catch(error =>{ 
+          console.log("Backend response error:", error)
+          alert (error)
+        }) 
+  }
+}
+
+
+export const setEventsData = (eventsData) => {
+  return {
+    type: actionTypes.SET_EVENTS_DATA,
+    payload: eventsData
   }
 }
 
@@ -91,8 +142,7 @@ export const  getUserData = (userData) => {
     { headers: headers } 
     ).then (res => {
       dispatch (setUserData(res.data))
-    })
-    .catch(error =>{ 
+    }).catch(error =>{ 
       console.log("Backend response error:", error)
       dispatch (clearReduxStore())
       handleAuthSessionError(error)

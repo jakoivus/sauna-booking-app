@@ -13,6 +13,21 @@ const initialState = {
     },
   };
 
+  const setEventsData = (state, action) => {
+    let eventsData = action.payload
+    console.log ("eventsData", eventsData)
+    return {
+      ...state,
+      events: [...eventsData]
+    }
+  };
+
+  const getUserData = (state, action) => {
+    return {
+      ...state,
+      userData: action.payload,}
+  };
+
   const setUser = (state, action) => {
     return{
       ...state,
@@ -30,12 +45,6 @@ const initialState = {
     }
   };
 
-  const getUserData = (state, action) => {
-    return {
-      ...state,
-      userData: action.payload,}
-  };
-
   const toggleShowUserDataTable = (state, action) => {
     return {
     ...state,
@@ -48,6 +57,7 @@ const reducer = ( state = initialState, action ) => {
       case actionTypes.SET_USER: return setUser(state, action)
       case actionTypes.GET_USER_DATA: return getUserData(state, action);
       case actionTypes.SET_USER_DATA: return setUserData(state, action);
+      case actionTypes.SET_EVENTS_DATA: return setEventsData(state, action);
       case actionTypes.TOGGLE_SHOW_USER_DATA_TABLE: return toggleShowUserDataTable(state, action)
       default: return state;
     }

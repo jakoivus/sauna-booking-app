@@ -2,6 +2,7 @@
 export const GET_USER_DATA = "GET_USER_DATA"
 export const SET_USER = "SET_USER"
 export const SET_USER_DATA = "SET_USER_DATA"
+export const SET_EVENTS_DATA = "SET_EVENTS_DATA"
 export const TOGGLE_SHOW_USER_DATA_TABLE =  "TOGGLE_SHOW_USER_DATA_TABLE"
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 export const UPDATE_USER = 'UPDATE_USER';

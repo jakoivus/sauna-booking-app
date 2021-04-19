@@ -15,9 +15,7 @@ class FormWithControl extends Component {
   }
 
   componentDidMount() {
-      this.props.getUser().then(res =>{
-      console.log("getUser res",res)
-      })
+      this.props.getUser()
     }
 
   componentDidUpdate(prevprops) {
