@@ -16,7 +16,7 @@ const initialState = {
   const setEventsData = (state, action) => {
     let eventsData = action.payload
     // let eventsData = Object.assign({}, action.payload)
-    console.log ("eventsData", eventsData)
+    // console.log ("eventsData", eventsData)
     return {
       ...state,
       events: eventsData

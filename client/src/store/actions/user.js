@@ -2,6 +2,7 @@ import * as actionTypes from './actionTypes';
 import axios from "axios";
 import { Auth } from 'aws-amplify';
 import AuthConfig from '../../aws-exports';
+import moment from 'moment';
 
 Auth.configure(AuthConfig);
 
@@ -49,7 +50,7 @@ export const addEvent = (eventsData) => {
       { headers: headers }  
       ).then( res => {
         console.log("ADD EVENT ", res)
-        // dispatch(setEvents(events))
+        dispatch(setEventsData(eventsData.events))
       })
       .catch(error =>{ 
         console.log("Backend response error:", error)
@@ -70,7 +71,12 @@ export const getEventsData = (userData) => {
         { headers: headers }  
         ).then (res => {
           console.log("getEventsData success: ", res.data.events)
-          dispatch(setEventsData(res.data.events))
+          let events = res.data.events
+          for (let i = 0; i < events.length; i++) {
+            events[i].start = moment.utc(events[i].start).toDate();
+            events[i].end = moment.utc(events[i].end).toDate();
+          }
+          dispatch(setEventsData(events))
         })
         })
         .catch(error =>{ 

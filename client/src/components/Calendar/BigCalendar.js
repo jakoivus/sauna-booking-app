@@ -8,6 +8,7 @@ import { Modal, Form } from 'semantic-ui-react'
 import * as actions from '../../store/actions/index'
 import { v4 as uuidv4 } from 'uuid'
 
+moment.locale("fi-FI")
 const localizer = momentLocalizer(moment);
 const messages ={
   previous: '<',
@@ -27,22 +28,23 @@ class BigCalender extends Component {
       events: [
       {
           id: "5421432öjölkjölk",
-          title: 'Kokopäivä',
-          allDay: true,
-          start: new Date(2021, 3, 12, 12),
-          end: new Date(2021, 3, 12, 13),
+          title: 'Vappu marssi',
+          // allDay: true,
+          start: new Date(2021, 3, 30, 12, 0),
+          end: new Date(2021, 3, 30, 13, 0),
       },
       {
           id: "rölkjölkjq6098572",
-          title: 'Pitkä tapaaminen',
-          start: new Date(2021, 3, 17),
-          end: new Date(2021, 3, 20),
+          title: 'Silli aamiainen',
+          start: new Date(2021, 4, 1, 9 ,0),
+          end: new Date(2021, 4, 1, 10, 0),
       },
       {
           id: "ghfsaölkjöa6+5932+5",
           title: 'Juuri Nyt',
-          start: new Date(2021, 3, 14),
-          end: new Date(2021, 3, 14),
+          // start: moment().toDate(),
+          start: new Date(2021, 3, 30, 14),
+          end: new Date(2021, 3, 30, 15),
       },
     ],
     isAddModalOpen: false,
@@ -50,25 +52,19 @@ class BigCalender extends Component {
     };
 
   componentDidMount () {
-    // console.log("state.events:", this.state .events)
-    // this.props.getEventsData(userData)
-      let userData = {email: ""}
-      userData.email = this.props.user.email
-      let eventsData = Object.assign({}, this.props.getEventsData(userData))
-      console.log(eventsData)
-      this.setState({
-        ...this.state,
-        events: [this.props.events]
-      })
-      console.log ("Component Did Mount", )
-   
+    let userData = {email: ""}
+
+    userData.email = this.props.user.email
+    this.props.getEventsData(userData)
+    console.log ("Component Did Mount", )
   }
 
   componentDidUpdate(prevprops) {
     if (this.props.events != prevprops.events ){
+      // this.state.events = this.props.events
       this.setState({
         ...this.state,
-        events: this.props.events
+        events:[...this.props.events]
       })
       console.log ("Component Did update")
     }
@@ -79,27 +75,22 @@ class BigCalender extends Component {
   }
 
   handleAddEvent = () => {
-    let email = this.props.user.email
-    console.log("handle AddEvent email", email)
     const {title, start, end} = this.state
     if(title) {
-    // }
     this.setState({
       isAddModalOpen: !this.state.isAddModalOpen,
       events: [
         ...this.state.events,
         {
           id: uuidv4(),
-          title,
-          start,
           end,
+          start,
+          title,
         },
       ],
     }, () => {let eventsData = {
       email: this.props.user.email,
       events: this.state.events}
-      console.log("kukkuu",eventsData)
-      let event = this.state.events
       this.props.addEvent(eventsData)
     })
   }
@@ -110,7 +101,7 @@ class BigCalender extends Component {
       this.setState({
         ...this.state,
         isAddModalOpen: !this.state.isAddModalOpen,
-        // events:  [...this.state.events ], 
+        events:  [...this.state.events ], 
           start,
           end
       });
@@ -127,25 +118,31 @@ class BigCalender extends Component {
     }
   };
 
+  eventsData =() => {
+    return this.props.events
+  }
+
   render() {
+    
     let events = this.state.events
+    console.log("this.state.events:", this.state.events)
     let isAddModalOpen = this.state.isAddModalOpen
+    console.log("this.props.events:", this.props.events)
     return (
-      
         <div style={{ height: '300pt'}}>
           <Calendar  messages={messages}
-            selectable  
+            selectable
+            localizer={localizer}
             // views={['month', 'week', 'day', 'agenda']}
             defaultView={Views.WEEK}
             events={events}
             startAccessor="start"
             endAccessor="end"
-            defaultDate={moment().toDate()}
-            localizer={localizer}
-            // onSelectEvent={event => alert(event.title)}
+            // defaultDate={moment().toDate()}
+            date={new Date(Date.now())}
+            scrollToTime={moment() .set({ h: 9, m: 0 }) .toDate()}
             onSelectSlot={event => this.toggleAddModal(event) }
             onSelectEvent={event => this.toggleEditModal(event)}
-            // onSelectSlot={this.handleSelectSlot}
           />
             <Modal 
             open={this.state.isAddModalOpen}
@@ -200,7 +197,7 @@ const mapStateToProps = (state) => {
     return {
 
       user: state.user,
-      events: state.events
+      events: state.user.events
   }}  
     
   const mapDispatchToProps = (dispatch) => {
