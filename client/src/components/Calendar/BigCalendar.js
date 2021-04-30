@@ -26,26 +26,26 @@ class BigCalender extends Component {
 
     state = { 
       events: [
-      {
-          id: "5421432öjölkjölk",
-          title: 'Vappu marssi',
-          // allDay: true,
-          start: new Date(2021, 3, 30, 12, 0),
-          end: new Date(2021, 3, 30, 13, 0),
-      },
-      {
-          id: "rölkjölkjq6098572",
-          title: 'Silli aamiainen',
-          start: new Date(2021, 4, 1, 9 ,0),
-          end: new Date(2021, 4, 1, 10, 0),
-      },
-      {
-          id: "ghfsaölkjöa6+5932+5",
-          title: 'Juuri Nyt',
-          // start: moment().toDate(),
-          start: new Date(2021, 3, 30, 14),
-          end: new Date(2021, 3, 30, 15),
-      },
+      // {
+      //     id: "5421432öjölkjölk",
+      //     title: 'Vappu marssi',
+      //     // allDay: true,
+      //     start: new Date(2021, 3, 30, 12, 0),
+      //     end: new Date(2021, 3, 30, 13, 0),
+      // },
+      // {
+      //     id: "rölkjölkjq6098572",
+      //     title: 'Silli aamiainen',
+      //     start: new Date(2021, 4, 1, 9 ,0),
+      //     end: new Date(2021, 4, 1, 10, 0),
+      // },
+      // {
+      //     id: "ghfsaölkjöa6+5932+5",
+      //     title: 'Juuri Nyt',
+      //     // start: moment().toDate(),
+      //     start: new Date(2021, 3, 30, 14),
+      //     end: new Date(2021, 3, 30, 15),
+      // },
     ],
     isAddModalOpen: false,
     isEditModalOpen: false,
@@ -125,9 +125,7 @@ class BigCalender extends Component {
   render() {
     
     let events = this.state.events
-    console.log("this.state.events:", this.state.events)
     let isAddModalOpen = this.state.isAddModalOpen
-    console.log("this.props.events:", this.props.events)
     return (
         <div style={{ height: '300pt'}}>
           <Calendar  messages={messages}
@@ -139,7 +137,7 @@ class BigCalender extends Component {
             startAccessor="start"
             endAccessor="end"
             // defaultDate={moment().toDate()}
-            date={new Date(Date.now())}
+            // date={new Date(Date.now())}
             scrollToTime={moment() .set({ h: 9, m: 0 }) .toDate()}
             onSelectSlot={event => this.toggleAddModal(event) }
             onSelectEvent={event => this.toggleEditModal(event)}

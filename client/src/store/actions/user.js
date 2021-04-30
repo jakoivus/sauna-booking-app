@@ -70,7 +70,6 @@ export const getEventsData = (userData) => {
         axios.post(BASE_URL+'/getEventsData', userData,
         { headers: headers }  
         ).then (res => {
-          console.log("getEventsData success: ", res.data.events)
           let events = res.data.events
           for (let i = 0; i < events.length; i++) {
             events[i].start = moment.utc(events[i].start).toDate();
