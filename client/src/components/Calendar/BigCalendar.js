@@ -129,11 +129,10 @@ class BigCalender extends Component {
 
   render() {
     let events = this.state.events
-
+    let isAddModalOpen = this.state.isAddModalOpen
     return (
       
         <div style={{ height: '300pt'}}>
-          {console.log("this.state.events:", this.state.events)}
           <Calendar  messages={messages}
             selectable  
             // views={['month', 'week', 'day', 'agenda']}
@@ -148,7 +147,10 @@ class BigCalender extends Component {
             onSelectEvent={event => this.toggleEditModal(event)}
             // onSelectSlot={this.handleSelectSlot}
           />
-            <Modal open={this.state.isAddModalOpen}>
+            <Modal 
+            open={this.state.isAddModalOpen}
+            onClose={() => this.setState({isAddModalOpen: !isAddModalOpen})}
+            >
             <div className="container">
               <h1 className="flex-column flex-justify-center">LISÄÄ VARAUS</h1>
               <Form >
@@ -157,7 +159,7 @@ class BigCalender extends Component {
                     fluid label='Varauksen Nimi' 
                     placeholder='Varauksen Nimi'
                     name='title'
-                    // defaultValue= "Varauksen nimi"
+                    autoFocus
                     onChange={this.handleChange} 
                     /> 
                   <Form.Input 
