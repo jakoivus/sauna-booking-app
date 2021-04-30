@@ -67,7 +67,7 @@ app.post('/addEvent', function (req, res) {
       console.log ("RESULT:", result)
       res.json(item);
     } else {
-      console.log("ERROR haara")
+      console.log("addEvent ERROR haara")
       res.status(404).json({ error: "Could not add Event" });
       res.send('ERROR: addEventsData is alive')  
   }
@@ -100,7 +100,7 @@ app.post('/getEventsData', function (req, res) {
         console.log ("Item:", result.Item)
         res.json(item);
       } else {
-        console.log("ERROR haara")
+        console.log("getEvents ERROR haara")
         res.status(404).json({ error: "Could not get events" });
         res.send('ERROR: getEventsData is alive')  
     }
@@ -148,6 +148,7 @@ app.post('/getUserData', function(req, res){
     },  
   }
   dynamoDb.get(params, (error, result) => {
+      console.log("getUserData result from DymanoDB:", result)
       if (error) {
         console.log(error);
         res.status(400).json({ error: 'Could not get user' });
@@ -157,8 +158,8 @@ app.post('/getUserData', function(req, res){
         console.log ("Item:", result.Item)
         res.json(item);
       } else {
-        console.log("ERROR haara")
-        res.status(404).json({ error: "User not found" });
+        console.log("getUserData ERROR haara")
+        res.json({ MSG: "User not found" });
       }
   });
 })
