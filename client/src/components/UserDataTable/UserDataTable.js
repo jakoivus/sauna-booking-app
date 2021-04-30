@@ -14,7 +14,6 @@ class DataTable extends Component {
   } 
 
   handleSubmit = () => {
-    console.log("Handle edit userData:")
     this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
     } 
   

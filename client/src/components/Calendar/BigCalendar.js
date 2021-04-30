@@ -51,18 +51,26 @@ class BigCalender extends Component {
 
   componentDidMount () {
     // console.log("state.events:", this.state .events)
+    // this.props.getEventsData(userData)
       let userData = {email: ""}
       userData.email = this.props.user.email
-      let eventsData = this.props.getEventsData(userData)
-      console.log ("Did Mount", eventsData)
-      // this.setState({
-      //   ...this.state,
-      //   events: [eventsData]
-      // })
+      let eventsData = Object.assign({}, this.props.getEventsData(userData))
+      console.log(eventsData)
+      this.setState({
+        ...this.state,
+        events: [this.props.events]
+      })
+      console.log ("Component Did Mount", )
+   
   }
 
   componentDidUpdate(prevprops) {
-    if (prevprops.events != this.state.events){
+    if (this.props.events != prevprops.events ){
+      this.setState({
+        ...this.state,
+        events: this.props.events
+      })
+      console.log ("Component Did update")
     }
   }
 
@@ -94,8 +102,6 @@ class BigCalender extends Component {
       let event = this.state.events
       this.props.addEvent(eventsData)
     })
-    // localStorage.setItem("events", JSON.stringify(this.state.events))
-
   }
 }
 
@@ -122,6 +128,7 @@ class BigCalender extends Component {
   };
 
   render() {
+    let events = this.state.events
 
     return (
       
@@ -131,7 +138,7 @@ class BigCalender extends Component {
             selectable  
             // views={['month', 'week', 'day', 'agenda']}
             defaultView={Views.WEEK}
-            events={this.state.events}
+            events={events}
             startAccessor="start"
             endAccessor="end"
             defaultDate={moment().toDate()}

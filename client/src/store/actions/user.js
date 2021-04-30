@@ -2,7 +2,6 @@ import * as actionTypes from './actionTypes';
 import axios from "axios";
 import { Auth } from 'aws-amplify';
 import AuthConfig from '../../aws-exports';
-import HeaderSubHeader from 'semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader';
 
 Auth.configure(AuthConfig);
 

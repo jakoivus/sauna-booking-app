@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form } from 'semantic-ui-react'
 import * as actions from '../../store/actions/index'
+import { v4 as uuidv4 } from 'uuid'
 
 class FormWithControl extends Component {
   
@@ -33,20 +34,18 @@ class FormWithControl extends Component {
 
   handleSubmit = () => {
     let userData = {
-      "id": this.props.userData.id, 
+      "id": this.state.id || uuidv4(), 
       "role": 'user',
-      "email": this.props.userData.email, 
+      "email": this.state.email, 
       "salution": this.state.salution,
       "firstName": this.state.firstName,
       "lastName": this.state.lastName
     }    
-    console.log("Handle updataUserData userData:", userData)
     this.props.updateUserData (userData)
     this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
     } 
 
   render() {
-    const { firstName, lastName, email, salution } = this.state 
     return (
       <div >
         
@@ -87,10 +86,6 @@ class FormWithControl extends Component {
               style={{width:'300px'}} 
               />
         </Form.Field>
-        {/* <Form.Group>
-          <Form.TextArea label='Lisätiedot' placeholder='Muuta tietämisen arvoista...' />
-          <Form.Checkbox label='Hyväksyn tietosuoja selosteen' />
-        </Form.Group> */}
         <Form.Field>
         <div className="flex-row">
           <Form.Button

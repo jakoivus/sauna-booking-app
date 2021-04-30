@@ -19,6 +19,7 @@ export class App extends Component {
   componentDidMount() {
     // this.props.helloWorld();
     this.props.getUser()
+    // this.props.getEventsData()
   };
 
   logOut = () => {
@@ -66,6 +67,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     helloWorld: () => dispatch(actions.helloWorld()),
     getUser: () => dispatch(actions.getUser()),
+    getEventsData: (userData) => dispatch(actions.getEventsData(userData)),
     signOut: () => dispatch(actions.signOut()),
   };
 };
@@ -75,6 +77,7 @@ export default withRouter(
   false, 
   [
       <MySignIn/>
-  ])
+  ]
+  )
 );
 
