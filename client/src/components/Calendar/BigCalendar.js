@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/fi';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Modal, Form } from 'semantic-ui-react'
+import { Modal, Form, Button } from 'semantic-ui-react'
 import * as actions from '../../store/actions/index'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -20,7 +20,7 @@ const messages ={
   agenda: 'Varaukset'
   }
 
-let persistedEvents = [] //  JSON.parse(localStorage.getItem("events"))
+// let persistedEvents = [] //  JSON.parse(localStorage.getItem("events"))
 
 class BigCalender extends Component {
 
@@ -60,7 +60,7 @@ class BigCalender extends Component {
   }
 
   componentDidUpdate(prevprops) {
-    if (this.props.events != prevprops.events ){
+    if (this.props.events !== prevprops.events ){
       // this.state.events = this.props.events
       this.setState({
         ...this.state,
@@ -109,11 +109,16 @@ class BigCalender extends Component {
   }
 
 
-  toggleEditModal = event => {    
-    if (!this.state.isAddModalOpen) {
+  toggleEditModal = ({start, end, title}) => {    
+    if (!this.state.isEditModalOpen) {
       this.setState({
-        // currentEvent: event,
+        ...this.state,
+        currentEvent: this.state.event,
         isEditModalOpen: !this.state.isEditModalOpen,
+        events:  [...this.state.events ], 
+          start,
+          end,
+          title,
       });
     }
   };
@@ -126,6 +131,8 @@ class BigCalender extends Component {
     
     let events = this.state.events
     let isAddModalOpen = this.state.isAddModalOpen
+    let isEditModalOpen = this.state.isEditModalOpen
+    
     return (
         <div style={{ height: '300pt'}}>
           <Calendar  messages={messages}
@@ -138,9 +145,9 @@ class BigCalender extends Component {
             endAccessor="end"
             // defaultDate={moment().toDate()}
             // date={new Date(Date.now())}
-            scrollToTime={moment() .set({ h: 9, m: 0 }) .toDate()}
+            scrollToTime={moment().set({ h: 9, m: 0 }).toDate()}
             onSelectSlot={event => this.toggleAddModal(event) }
-            onSelectEvent={event => this.toggleEditModal(event)}
+            onSelectEvent={event => {this.toggleEditModal(event)}}
           />
             <Modal 
             open={this.state.isAddModalOpen}
@@ -174,7 +181,7 @@ class BigCalender extends Component {
                 <div className="flex-row">
                   <Form.Button
                     type="button"
-                    onClick={()=>{{this.handleAddEvent()}}}
+                    onClick={()=>{this.handleAddEvent()}}
                     >Lisää Varaus</Form.Button>
                 </div>
                 </Form.Field>
@@ -183,7 +190,51 @@ class BigCalender extends Component {
 
 
             </Modal>
-                <Modal open={this.state.isEditModalOpen} >
+            <Modal 
+            open={this.state.isEditModalOpen}
+            onClose={() => this.setState({isEditModalOpen: !isEditModalOpen})} >
+                <div className="container">
+
+                    {/* <h1 className="flex-column flex-justify-center">Muokkaa varausta</h1> */}
+                      <div className="row">
+                        <div className="column"></div>
+                        <div className="column">
+                          <h1>Muokkaa varausta</h1>
+                        </div>
+                        <div className="column">
+                          <Button basic color='orange' onClick={() => this.setState({isEditModalOpen: false})}> X
+                            {/* <Icon name='remove'/> */}
+                          </Button>
+                        </div>
+                        <div></div>
+                        {/* <Button basic color='red' onClick={() => this.setState({isEditModalOpen: false})}>
+                            <Icon name='remove'/>
+                          </Button> */}
+                      </div>
+              
+                <Form >
+                  <Form.Group widths='equal'>
+                    <Form.Input 
+                      fluid label='Varauksen Nimi' 
+                      placeholder='Varauksen Nimi'
+                      name='title'
+                      defaultValue={this.state.title}
+                      onChange={this.handleChange} />
+                    <Form.Input 
+                      fluid label='Aloitus aika' 
+                      placeholder='Aloitus aika'
+                      name='start'
+                      defaultValue={this.state.start}
+                      onChange={this.handleChange} />
+                    <Form.Input 
+                      fluid label='Lopetus aika' 
+                      placeholder='Lopetus aika'
+                      name='end'
+                      defaultValue={this.state.end}
+                      onChange={this.handleChange} />
+                  </Form.Group>
+                </Form>
+                </div>
             </Modal>
         </div>
     );

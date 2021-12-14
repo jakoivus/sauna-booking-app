@@ -84,6 +84,21 @@ img {
   border-radius: 10px;
 }
 
+.column {
+  
+  flex-direction: row;
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 100px; /* Should be removed. Only for demonstration */
+}
+.column3 {
+  float: right;
+  width: 33.33%;
+  padding: 10px;
+  align-items: right;
+  height: 100px; /* Should be removed. Only for demonstration */
+}
 .blank-container {
   position: relative;
   height: auto;
