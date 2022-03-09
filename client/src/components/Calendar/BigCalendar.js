@@ -202,7 +202,8 @@ class BigCalender extends Component {
                           <h1>Muokkaa varausta</h1>
                         </div>
                         <div className="column">
-                          <Button basic color='orange' onClick={() => this.setState({isEditModalOpen: false})}> X
+                          <Button basic color='orange' 
+                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}> X
                             {/* <Icon name='remove'/> */}
                           </Button>
                         </div>
