@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/fi';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Modal, Form, Button } from 'semantic-ui-react'
+import { Modal, Form, Button} from 'semantic-ui-react'
 import * as actions from '../../store/actions/index'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -53,20 +53,18 @@ class BigCalender extends Component {
 
   componentDidMount () {
     let userData = {email: ""}
-
     userData.email = this.props.user.email
     this.props.getEventsData(userData)
-    console.log ("Component Did Mount", )
+    console.log ("Component Did Mount" )
   }
 
   componentDidUpdate(prevprops) {
+    console.log ("Component Did update", this.state)
     if (this.props.events !== prevprops.events ){
-      // this.state.events = this.props.events
       this.setState({
         ...this.state,
         events:[...this.props.events]
       })
-      console.log ("Component Did update")
     }
   }
 
@@ -88,13 +86,26 @@ class BigCalender extends Component {
           title,
         },
       ],
-    }, () => {let eventsData = {
+      }, () => {let eventsData = {
       email: this.props.user.email,
       events: this.state.events}
       this.props.addEvent(eventsData)
     })
+    }
   }
-}
+
+  handleUpdateEvents = () => {      
+    var index = this.state.events.indexOf(this.state.currentEvent)
+    if (index > -1) {
+      this.state.events.splice(index, 1);
+    }
+    let eventsData = {
+      email: this.props.user.email,
+      events: this.state.events}
+    this.props.updateEvents(eventsData)}
+    // this.props.updateEvents({
+    //   email: this.props.user.email,
+    //   events: this.state.events})}
 
   toggleAddModal = ({start, end})  => {
     if (!this.state.isAddModalOpen) {
@@ -108,17 +119,14 @@ class BigCalender extends Component {
     }
   }
 
-
-  toggleEditModal = ({start, end, title}) => {    
+  toggleEditModal = (event) => {    
     if (!this.state.isEditModalOpen) {
       this.setState({
         ...this.state,
-        currentEvent: this.state.event,
+        currentEvent: event,
         isEditModalOpen: !this.state.isEditModalOpen,
         events:  [...this.state.events ], 
-          start,
-          end,
-          title,
+        event
       });
     }
   };
@@ -139,7 +147,7 @@ class BigCalender extends Component {
             selectable
             localizer={localizer}
             // views={['month', 'week', 'day', 'agenda']}
-            defaultView={Views.WEEK}
+            defaultView={Views.MONTH}
             events={events}
             startAccessor="start"
             endAccessor="end"
@@ -187,31 +195,30 @@ class BigCalender extends Component {
                 </Form.Field>
               </Form>        
             </div>
-
-
             </Modal>
+            
             <Modal 
             open={this.state.isEditModalOpen}
             onClose={() => this.setState({isEditModalOpen: !isEditModalOpen})} >
                 <div className="container">
 
-                    {/* <h1 className="flex-column flex-justify-center">Muokkaa varausta</h1> */}
-                      <div className="row">
+                    <h1 className="flex-column flex-justify-center">Muokkaa varausta</h1>
+                      {/* <div className="row">
                         <div className="column"></div>
                         <div className="column">
                           <h1>Muokkaa varausta</h1>
                         </div>
                         <div className="column">
                           <Button basic color='orange' 
-                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}> X
-                            {/* <Icon name='remove'/> */}
+                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}> 
+                            <Icon name='remove'/> 
                           </Button>
                         </div>
-                        <div></div>
-                        {/* <Button basic color='red' onClick={() => this.setState({isEditModalOpen: false})}>
+                        <Button basic color='red' 
+                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}>
                             <Icon name='remove'/>
-                          </Button> */}
-                      </div>
+                          </Button> 
+                      </div> */}
               
                 <Form >
                   <Form.Group widths='equal'>
@@ -235,7 +242,26 @@ class BigCalender extends Component {
                       onChange={this.handleChange} />
                   </Form.Group>
                 </Form>
-                </div>
+                  </div> 
+        
+                <Modal.Actions>
+                        <Button basic color='green' 
+                          // onClick={()=>{this.handleAddEvent()}}
+                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}
+                          positive
+                          icon='checkmark'>  
+                        </Button>
+                        <Button basic color='orange' 
+                            onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}
+                            icon='remove'> 
+                        </Button>
+                        <Button basic color='red' 
+                            onClick={()=>{this.handleUpdateEvents(this.state.events)
+                              // onClick={()=>{this.handleDeleteEvent(this.state.id)
+                                this.setState({isEditModalOpen: !isEditModalOpen})}}
+                            icon='trash'> 
+                        </Button>
+                </Modal.Actions>
             </Modal>
         </div>
     );
@@ -252,7 +278,8 @@ const mapStateToProps = (state) => {
     
   const mapDispatchToProps = (dispatch) => {
     return {
-      addEvent: (eventData) => dispatch(actions.addEvent(eventData)),
+      addEvent: (eventsData) => dispatch(actions.addEvent(eventsData)),
+      updateEvents: (eventsData) => dispatch(actions.updateEvents(eventsData)),
       getEventsData: (userData) => dispatch(actions.getEventsData(userData)),
       getUser: () => dispatch(actions.getUser()),
       helloWorld: () => dispatch(actions.helloWorld()),

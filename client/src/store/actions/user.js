@@ -59,6 +59,32 @@ export const addEvent = (eventsData) => {
   })
 }}
 
+export const updateEvents = (eventsData) => {
+  
+  return dispatch => {
+    return Auth.currentSession().then(credentials => {  
+      const headers = 
+      {
+        'Content-Type': 'application/json',
+        'Authorization': credentials.idToken.jwtToken
+      }
+      
+      axios.post (BASE_URL+'/updateEvents', eventsData,
+      { headers: headers }
+      ).then( res => {
+        console.log("UPDATE EVENTS ", res)
+        eventsData = eventsData.events
+        console.log("Events data",eventsData)
+        dispatch(setEventsData(eventsData))
+      })
+      .catch(error =>{ 
+        console.log("Backend response error:", error)
+        alert (error)
+      })
+   })
+  }
+}
+
 export const getEventsData = (userData) => {
   return dispatch => {
     return Auth.currentSession().then(credentials => {  
@@ -72,7 +98,7 @@ export const getEventsData = (userData) => {
         ).then (res => {
 
           let events = res.data.events
-          if (events!= undefined){
+          if (events!== undefined){
 
             for (let i = 0; i < events.length; i++) {
               events[i].start = moment.utc(events[i].start).toDate();

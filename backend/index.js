@@ -19,15 +19,15 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 // Express API 
 const express = require('express');
-// const cors = require('cors')
 const app = express()
 
 app.use(cors())
 app.use(bodyParser.json({ strict: false }));
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-    "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept", 
-    "Access-Control-Allow-Methods", "OPTIONS,POST,GET" 
+  res.header('Access-Control-Allow-Origin', '*',
+  'Access-Control-Allow-Credentials', 'true',
+  "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept", 
+  "Access-Control-Allow-Methods", "OPTIONS,POST,GET,PUT,POST");
   next();
 });
 
@@ -37,22 +37,21 @@ app.use((req, res, next) => {
   app.get('/hello', function (req, res) {
     
     console.log("Hello World!!", req)
-    res.send('BACKEND: I am alive')
+    res.send('BACKEND: I am alive again')
   })
 
-
-///////////////////////////////////
-// Create AddEvent endpoint       //
-///////////////////////////////////
+//////////////////////////////
+// Create AddEvent endpoint //
+//////////////////////////////
 app.post('/addEvent', function (req, res) {
   console.log("addEvent", req.body)
   const  eventsData  = req.body;
   
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,
-    Item: eventsData,
+    // Item: eventsData,
     Key: {
-      email: eventsData.email,
+      email: req.body.email,
     },
   };
   
@@ -69,10 +68,48 @@ app.post('/addEvent', function (req, res) {
     } else {
       console.log("addEvent ERROR haara")
       res.status(404).json({ error: "Could not add Event" });
-      res.send('ERROR: addEventsData is alive')  
+      res.send('ERROR: addEvent')  
   }
   });
 })
+
+/////////////////////////////////
+// Create UpdateEvent endpoint //
+/////////////////////////////////
+app.post('/updateEvents', function (req, res) {
+  console.log("UPDATE EVENTS", req.body)
+  const  eventsData  = req.body;
+  console.log("KEY:", req.body.email)
+
+  const params = {
+    TableName: DYNAMODB_EVENTS_TABLE,
+    Item: eventsData,
+    Key: {
+      email: eventsData.email,
+    },
+  };
+
+  dynamoDb.delete(params, (error, result))
+
+  dynamoDb.update(params, (error, result) => {
+    console.log("updateEvent Dynamo")
+    if (error) {
+      console.log(error);
+      res.status(400).json({ error: 'Could not update Events' });
+    }
+    if (result) {
+      const item = result;
+      console.log ("UPDATE RESULT:", result)
+      res.json(result);
+    } else {
+      console.log("updateEvent ERROR haara")
+      res.status(404).json({ error: "Could not update Events" });
+      res.send('ERROR: updateEvents')  
+  }
+  });
+
+})
+
 
 ///////////////////////////////////
 // Create getEventsData endpoint //
