@@ -20,7 +20,7 @@ class FormWithControl extends Component {
     }
 
   componentDidUpdate(prevprops) {
-    if (this.props.userData != prevprops.userData) {
+    if (this.props.userData !== prevprops.userData) {
     let userData = Object.assign({}, this.props.userData);
     this.setState({
       ...userData

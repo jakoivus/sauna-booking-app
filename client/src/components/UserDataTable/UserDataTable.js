@@ -1,11 +1,8 @@
 import React,  { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Label, Menu, Tab, Table } from 'semantic-ui-react'
+import { Button, Table } from 'semantic-ui-react'
 import * as actions from "../../store/actions/index";
 
-const initialState = {
-  comments: []
-} 
 
 class DataTable extends Component {
 
@@ -13,7 +10,7 @@ class DataTable extends Component {
     this.props.getUser()
   } 
 
-  handleSubmit = () => {
+  handleModifyUserData = () => {
     this.props.toggleShowUserDataTable(!this.props.showUserDataTable)
     } 
   
@@ -35,18 +32,14 @@ class DataTable extends Component {
 
         <Table.Body>
          <Table.Row>
-            <Table.Cell >
-              {this.props.user.lastName}
-                      </Table.Cell>
+            <Table.Cell >{this.props.user.lastName}</Table.Cell>
             <Table.Cell>{this.props.user.firstName}</Table.Cell>
             <Table.Cell>{this.props.user.email}</Table.Cell>
-            {/* <Table.Cell>Mikroelektroniikka ja materiaalifysiikka</Table.Cell> */}
           </Table.Row>
           <Table.Row>
             <Table.Cell>Tekniikan tohtori, TkT</Table.Cell>
             <Table.Cell>2000</Table.Cell>
             <Table.Cell>Oulun Yliopisto</Table.Cell>
-            {/* <Table.Cell>Strategia ja Muutosjohtaminen</Table.Cell> */}
           </Table.Row>
           <Table.Row>
             <Table.Cell>Master or Business Administration,  MBA</Table.Cell>
@@ -68,7 +61,7 @@ class DataTable extends Component {
         </Table.Footer>
       </Table>
               <div >
-              <Button className="flex-column flex-justify-center" onClick={(props)=>{this.handleSubmit(props)}}
+              <Button className="flex-column flex-justify-center" onClick={(props)=>{this.handleModifyUserData(props)}}
                 >Muokkaa tietoja  </Button>
             </div>
             </div>

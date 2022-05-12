@@ -36,9 +36,6 @@ export class App extends Component {
       <Switch>
        <Route path="/home" exact component={HomeRoute} />
        <Route path="/booking" exact component={BookingRoute} />
-       {/* <Route path="/Page2" exact component={Page2Route} />
-       <Route path="/Page3" exact component={Page3Route} />
-       <Route path="/Page4" exact component={Page4Route} /> */}
        <Route path="/user" exact component={UserRoute} />
        <Route path="/logout" exact render={this.logOut} />
       <Redirect from="/" to="/home" />

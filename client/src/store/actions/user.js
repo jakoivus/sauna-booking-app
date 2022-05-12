@@ -46,10 +46,13 @@ export const addEvent = (eventsData) => {
           'Content-Type': 'application/json',
           'Authorization': credentials.idToken.jwtToken
         }
-      axios.post (BASE_URL+'/addEvent', eventsData, 
+
+        console.log("ADD EVENT ")
+        axios.post (BASE_URL+'/addEvent', eventsData, 
       { headers: headers }  
       ).then( res => {
         console.log("ADD EVENT ", res)
+        window.alert("ADD EVENT")
         dispatch(setEventsData(eventsData.events))
       })
       .catch(error =>{ 
@@ -59,6 +62,28 @@ export const addEvent = (eventsData) => {
   })
 }}
 
+export const deleteEvent = (eventsData) => {
+  return dispatch => {
+    return Auth.currentSession().then(credentials => {  
+      const headers = 
+        {
+          'Content-Type': 'application/json',
+          'Authorization': credentials.idToken.jwtToken
+        }
+        window.alert("Calling Dynamo to delete events")
+      axios.put (BASE_URL+'/deleteEvent', eventsData, 
+      { headers: headers }  
+      )
+      .then( res => {
+        console.log("DELETE EVENT ", res)
+        // dispatch(setEventsData(eventsData))
+      })
+      .catch(error =>{ 
+        console.log("DELETE EVENT response error:", error)
+        alert (error)
+      })
+  })
+}}
 export const updateEvents = (eventsData) => {
   
   return dispatch => {

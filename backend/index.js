@@ -49,8 +49,9 @@ app.post('/addEvent', function (req, res) {
   
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,
-    // Item: eventsData,
-    Key: {
+    Item: eventsData,
+    Key: 
+    {
       email: req.body.email,
     },
   };
@@ -74,6 +75,32 @@ app.post('/addEvent', function (req, res) {
 })
 
 /////////////////////////////////
+// Create DeleteEvent endpoint //
+/////////////////////////////////
+app.put('/deleteEvent', function (req,res) {
+  
+  console.log ("DELETE EVENT")
+  const  eventsData  = req.body;
+  console.log ("req.body: ", req.body)
+  const params = {
+    TableName: DYNAMODB_EVENTS_TABLE,
+    Key: {
+      email: eventsData.email,
+    },
+  };
+
+dynamoDb.delete(params, (error, result) => {
+
+  
+  if (error) {
+    console.log("DELETE ERROR: ",error);
+    res.status(400).json({ error: 'Could not Delete Event' });
+  }
+  // res.send('DELETE EVENT: I am alive again')
+})
+}) 
+
+/////////////////////////////////
 // Create UpdateEvent endpoint //
 /////////////////////////////////
 app.post('/updateEvents', function (req, res) {
@@ -89,7 +116,7 @@ app.post('/updateEvents', function (req, res) {
     },
   };
 
-  dynamoDb.delete(params, (error, result))
+  dynamoDb.deleteItem(params, (error, result))
 
   dynamoDb.update(params, (error, result) => {
     console.log("updateEvent Dynamo")
@@ -117,8 +144,6 @@ app.post('/updateEvents', function (req, res) {
 
 app.post('/getEventsData', function (req, res) {
   console.log("GET_EVENTS_DATA req.body", req.body)
-  const  data= req.body;
-  console.log("req.body:",data)
 
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,

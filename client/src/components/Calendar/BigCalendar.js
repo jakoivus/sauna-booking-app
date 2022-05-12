@@ -94,6 +94,19 @@ class BigCalender extends Component {
     }
   }
 
+  handleDeleteEvent = () => {
+    var index = this.state.events.indexOf(this.state.currentEvent)
+
+    this.state.events.splice(index, 1);
+
+    let eventsData = {
+      email: this.props.user.email,
+      id: this.state.currentEvent.id
+    } 
+    this.props.deleteEvent(eventsData)
+
+  }
+
   handleUpdateEvents = () => {      
     var index = this.state.events.indexOf(this.state.currentEvent)
     if (index > -1) {
@@ -200,25 +213,9 @@ class BigCalender extends Component {
             <Modal 
             open={this.state.isEditModalOpen}
             onClose={() => this.setState({isEditModalOpen: !isEditModalOpen})} >
-                <div className="container">
+             <div className="container">
 
-                    <h1 className="flex-column flex-justify-center">Muokkaa varausta</h1>
-                      {/* <div className="row">
-                        <div className="column"></div>
-                        <div className="column">
-                          <h1>Muokkaa varausta</h1>
-                        </div>
-                        <div className="column">
-                          <Button basic color='orange' 
-                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}> 
-                            <Icon name='remove'/> 
-                          </Button>
-                        </div>
-                        <Button basic color='red' 
-                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}>
-                            <Icon name='remove'/>
-                          </Button> 
-                      </div> */}
+              <h1 className="flex-column flex-justify-center">Muokkaa varausta</h1>
               
                 <Form >
                   <Form.Group widths='equal'>
@@ -253,10 +250,10 @@ class BigCalender extends Component {
                         </Button>
                         <Button basic color='orange' 
                             onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}
-                            icon='remove'> 
+                            icon='close'> 
                         </Button>
                         <Button basic color='red' 
-                            onClick={()=>{this.handleUpdateEvents(this.state.events)
+                            onClick={()=>{this.handleDeleteEvent(this.state.events)
                               // onClick={()=>{this.handleDeleteEvent(this.state.id)
                                 this.setState({isEditModalOpen: !isEditModalOpen})}}
                             icon='trash'> 
@@ -279,6 +276,7 @@ const mapStateToProps = (state) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       addEvent: (eventsData) => dispatch(actions.addEvent(eventsData)),
+      deleteEvent: (eventsData) => dispatch(actions.deleteEvent(eventsData)),
       updateEvents: (eventsData) => dispatch(actions.updateEvents(eventsData)),
       getEventsData: (userData) => dispatch(actions.getEventsData(userData)),
       getUser: () => dispatch(actions.getUser()),
