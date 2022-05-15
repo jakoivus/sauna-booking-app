@@ -107,7 +107,6 @@ class BigCalender extends Component {
 
     let eventsData = {
       email: this.props.user.email,
-      id: this.state.currentEvent.id,
       events: this.state.events
     } 
     this.props.deleteEvent(eventsData)
