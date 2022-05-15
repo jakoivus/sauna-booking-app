@@ -60,7 +60,7 @@ class BigCalender extends Component {
     let userData = {email: ""}
     userData.email = this.props.user.email
     this.props.getEventsData(userData)
-    console.log ("Component Did Mount" )
+    console.log ("Component Did Mount", userData )
   }
 
   componentDidUpdate(prevprops) {
@@ -75,6 +75,7 @@ class BigCalender extends Component {
   }
 
   handleChange = (event, { name, value }) => {
+
     this.setState({ [name]: value })
   }
 
@@ -113,33 +114,36 @@ class BigCalender extends Component {
   }
 
   handleDisplayEvent = (event) => {
-    console.log("EVENT AT CALL",event)
     let  index = this.state.events.indexOf(event)
     let currentEvent = this.state.events[index]
-    console.log("INDEX", index)
-    console.log("CURRENTEVENT",  currentEvent)
     this.setState({
       ...this.state,
       isEditModalOpen: !this.state.isEditModalOpen,
       events:  [...this.state.events], 
       event: currentEvent,
-      }, () => {
-        console.log ("STATE:::", this.state)
-        // this.handleUpdateEvents()
-      })
-    }    
+    })
+  }    
 
-  handleUpdateEvents = (props) => {
-    var index = this.state.events.indexOf(this.state.currentEvent)
-    console.log("Current event: ", this.state.events[index])
-    window.alert("STOP")
-    // if (index > -1) {
-    //   this.state.events.splice(index, 1);
-    // }
+  handleUpdateEvent = (props) => {
+    let index = this.state.events.indexOf(props.event)
+    let currentEvent = {
+      end: props.end ? props.end : this.state.events[index].end,
+      id: this.state.events[index].id,
+      start: props.start ? props.start : this.state.events[index].start,
+      title: props.title ? props.title : this.state.events[index].title 
+    }
+
+    if (index > -1) {
+      this.state.events.splice(index, 1);
+      this.state.events.push(currentEvent)
+    }
     let eventsData = {
       email: this.props.user.email,
-      events: this.state.events}
-    this.props.updateEvents(eventsData)}
+      events: this.state.events
+    }
+    this.props.updateEvents(eventsData)
+  }
+    
 
   toggleAddModal = ({start, end})  => {
     if (!this.state.isAddModalOpen) {
@@ -180,7 +184,7 @@ class BigCalender extends Component {
           <Calendar  messages={messages}
             selectable
             localizer={localizer}
-            // views={['month', 'week', 'day', 'agenda']}
+            views={['month', 'week', 'day', 'agenda']}
             defaultView={Views.WEEK}
             events={events}
             startAccessor="start"
@@ -189,8 +193,6 @@ class BigCalender extends Component {
             // date={new Date(Date.now())}
             scrollToTime={moment().set({ h: 9, m: 0 }).toDate()}
             onSelectSlot={event => this.toggleAddModal(event) }
-            // onSelectEvent={event => {this.toggleEditModal(event)}}
-            
             onSelectEvent={(event) => this.handleDisplayEvent(event)}
           />
             <Modal 
@@ -267,9 +269,8 @@ class BigCalender extends Component {
         
                 <Modal.Actions>
                         <Button basic color='green' 
-                          // onClik={()=>{this.handleAddEvent()}}
                           onClick={() => {
-                            this.handleUpdateEvents(this.state.events)
+                            this.handleUpdateEvent(this.state)
                             this.setState({isEditModalOpen: !isEditModalOpen})}}
                           positive
                           icon='checkmark'>
@@ -279,7 +280,7 @@ class BigCalender extends Component {
                             icon='close'>   
                         </Button>
                         <Button basic color='red' 
-                            onClick={()=>{this.handleDeleteEvent(this.state.events)
+                            onClick={()=>{this.handleDeleteEvent(this.state.title, this.state.start, this.state.end)
                               // onClick={()=>{this.handleDeleteEvent(this.state.id)
                                 this.setState({isEditModalOpen: !isEditModalOpen})}}
                             icon='trash'> 

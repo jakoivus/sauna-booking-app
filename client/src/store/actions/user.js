@@ -82,6 +82,8 @@ export const deleteEvent = (eventsData) => {
 }}
 export const updateEvents = (eventsData) => {
   
+  console.log("Events data updat start",eventsData)
+  
   return dispatch => {
     return Auth.currentSession().then(credentials => {  
       const headers = 
@@ -95,7 +97,7 @@ export const updateEvents = (eventsData) => {
       ).then( res => {
         console.log("UPDATE EVENTS ", res)
         eventsData = eventsData.events
-        console.log("Events data",eventsData)
+        console.log("Events data after axios",eventsData)
         dispatch(setEventsData(eventsData))
       })
       .catch(error =>{ 
@@ -114,6 +116,7 @@ export const getEventsData = (userData) => {
           'Content-Type': 'application/json',
           'Authorization': credentials.idToken.jwtToken
         }
+        console.log("GET EVENTS DATA: ", userData)
         axios.post(BASE_URL+'/getEventsData', userData,
         { headers: headers }  
         ).then (res => {
@@ -176,6 +179,7 @@ export const  getUser = () => {
         userData.email = idToken.payload['email']
         userData.role = 'user';
       }
+  
       dispatch (getUserData(userData))
     })
       .catch(error =>{ 
@@ -188,6 +192,8 @@ export const  getUser = () => {
 
 export const  getUserData = (userData) => {
   return dispatch => {
+    
+    console.log ("GET USER DATA", userData )
     return Auth.currentSession().then(credentials => {  
       const headers = 
         {

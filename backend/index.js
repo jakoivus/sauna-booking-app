@@ -50,11 +50,11 @@ app.post('/addEvent', function (req, res) {
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,
     Item: eventsData,
-    // Key: 
-    // {
-    //   id: req.body.id,
-    //   // email: req.body.email,
-    // },
+    Key: 
+    {
+      // id: req.body.id,
+      email: req.body.email,
+    },
   };
   
   dynamoDb.put(params, (error, result) => {
@@ -66,11 +66,12 @@ app.post('/addEvent', function (req, res) {
     if (result) {
       const item = result.Item;
       console.log ("ADD EVENT RESULT:", result.Item)
-      res.json(item);
+      res.status(200).json({ SUCCESS: "Event added" });
+      // res.json(item);
     } else {
       console.log("addEvent ERROR haara")
       res.status(404).json({ error: "Could not add Event" });
-      res.send('ERROR: addEvent')  
+      // res.send('ERROR: addEvent')  
   }
   });
 })
@@ -106,10 +107,11 @@ app.put('/deleteEvent', function (req,res) {
         console.log("DELETE PUT PARAMS", params )
         if (result) {
           console.log ("DELETE PUT EVENT RESULT:", result)
+          res.status(200).json({ SUCCESS: "Event deleted" });
           res.json(result);
         } 
         if (error) {
-          console.log("DELETE PUT EVENT ERROR haara")
+          console.log("DELETE PUT EVENT ERROR")
           res.status(404).json({ error: "DELETE PUT EVENT FAILED" });
           // res.send('DELETE EVENT FAILEDs')  
         }
@@ -123,12 +125,12 @@ app.put('/deleteEvent', function (req,res) {
 }) 
 
 /////////////////////////////////
-// Create UpdateEvent endpoint //
+// Create UpdateEvents endpoint //
 /////////////////////////////////
 app.post('/updateEvents', function (req, res) {
-  console.log("UPDATE EVENTS STARTS", req.body)
+  // console.log("UPDATE EVENTS STARTS", req.body)
   const  eventsData  = req.body;
-  console.log("KEY:", req.body.email)
+  // console.log("KEY:", req.body.email)
 
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,
@@ -137,47 +139,46 @@ app.post('/updateEvents', function (req, res) {
       email: eventsData.email,
     },
   };
-  dynamoDb.update(params, (error, result) => {
-    console.log(" START updateEvent Dynamo")
+  dynamoDb.delete(params, (error, result) => {
+    console.log("UPDATE EVENTS DELETE START")
     if (result) {
-      console.log ("UPDATE RESULT:", result.Item)        
+      console.log ("UPDATE RESULT:", result.Item) 
+
+      dynamoDb.put(params, (error, result) => {
+        console.log("UPDATE EVENTS DYNAMO PUT")
+        if (result) {
+          console.log ("UPDATE RESULT:", result.Item)        
+          res.status(200).json({ SUCCESS: "Event updated" });
+        } 
+        if (error) {
+          console.log(error);
+          res.status(400).json({ error: 'Event updated FAILED' });
+        }
+      })
+
       res.status(200).json({ SUCCESS: "Event updated" });
-      //  res.json(result);
     } 
     if (error) {
-      console.log(error);
       res.status(400).json({ error: 'Event updated FAILED' });
     }
   })
-})
   // dynamoDb.delete(params, (error, result) => {
   //   console.log("UPDATE EVENT PARAMS", params )
   //   if (result) {
   //     console.log ("UPDATE EVENT DELETE RESULT:", result.Item)
 
-      // dynamoDb.update(params, (error, result) => {
-      //   console.log(" START updateEvent Dynamo")
-      //   if (result) {
-      //     console.log ("UPDATE RESULT:", result.Item)        
-      //     res.status(200).json({ SUCCESS: "Event updated" });
-      //     //  res.json(result);
-      //   } 
-      //   if (error) {
-      //     console.log(error);
-      //     res.status(400).json({ error: 'Event updated FAILED' });
-      //   }
-      // })
-  //     }  
-  //   });
-  // })
+
+  //   }  
+  // });
+})
+
+  
 
 ///////////////////////////////////
 // Create getEventsData endpoint //
 ///////////////////////////////////
-
 app.post('/getEventsData', function (req, res) {
   console.log("GET_EVENTS_DATA req.body", req.body)
-
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,
     Key: {
@@ -185,7 +186,6 @@ app.post('/getEventsData', function (req, res) {
     },  
   }
     dynamoDb.get(params, (error, result) => {
-    console.log("DynamoBD")
       if (error) {
         console.log(error);
         res.status(400).json({ error: 'Could not get events' });
@@ -197,7 +197,6 @@ app.post('/getEventsData', function (req, res) {
       } else {
         console.log("getEvents ERROR haara")
         res.status(404).json({ error: "Could not get events" });
-        res.send('ERROR: getEventsData is alive')  
     }
     })    
 })
@@ -245,15 +244,17 @@ app.post('/getUserData', function(req, res){
       console.log("getUserData result from DymanoDB:", result)
       if (error) {
         console.log(error);
-        res.status(400).json({ error: 'Could not get user' });
+        res.status(400).json({ error: 'get userData FAILED' });
       }
       if (result.Item) {
         const item = result.Item;
         console.log ("Item:", result.Item)
+        // res.status(200).json({ SUCCESS: "Get userData SUCCESS" });
         res.json(item);
       } else {
-        console.log("getUserData ERROR haara")
-        res.json({ MSG: "User not found" });
+        console.log("getUserData ELSE haara")
+        // res.status(200).json({ SUCCESS: "Get userData SUCCESS" });
+        res.json({ MSG: "get userData ELSE" });
       }
   });
 })
