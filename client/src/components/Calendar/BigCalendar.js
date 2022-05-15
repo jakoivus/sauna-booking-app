@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/fi';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Modal, Form, Button} from 'semantic-ui-react'
+import { Modal, Form,Button } from 'semantic-ui-react'
 import * as actions from '../../store/actions/index'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -25,6 +25,13 @@ const messages ={
 class BigCalender extends Component {
 
     state = { 
+      isAddModalOpen: false,
+      isEditModalOpen: false,
+      event: {id:"",
+              title: "",
+              start: "",
+              end:""
+    },
       events: [
       // {
       //     id: "5421432öjölkjölk",
@@ -47,8 +54,6 @@ class BigCalender extends Component {
       //     end: new Date(2021, 3, 30, 15),
       // },
     ],
-    isAddModalOpen: false,
-    isEditModalOpen: false,
     };
 
   componentDidMount () {
@@ -59,12 +64,13 @@ class BigCalender extends Component {
   }
 
   componentDidUpdate(prevprops) {
-    console.log ("Component Did update", this.state)
     if (this.props.events !== prevprops.events ){
       this.setState({
         ...this.state,
         events:[...this.props.events]
       })
+      
+    console.log ("Component Did Update" )
     }
   }
 
@@ -95,30 +101,46 @@ class BigCalender extends Component {
   }
 
   handleDeleteEvent = () => {
-    var index = this.state.events.indexOf(this.state.currentEvent)
-
+    let index = this.state.events.indexOf(this.state.currentEvent)
+    window.alert("STOP")
     this.state.events.splice(index, 1);
 
     let eventsData = {
       email: this.props.user.email,
-      id: this.state.currentEvent.id
+      id: this.state.currentEvent.id,
+      events: this.state.events
     } 
     this.props.deleteEvent(eventsData)
-
   }
 
-  handleUpdateEvents = () => {      
+  handleDisplayEvent = (event) => {
+    console.log("EVENT AT CALL",event)
+    let  index = this.state.events.indexOf(event)
+    let currentEvent = this.state.events[index]
+    console.log("INDEX", index)
+    console.log("CURRENTEVENT",  currentEvent)
+    this.setState({
+      ...this.state,
+      isEditModalOpen: !this.state.isEditModalOpen,
+      events:  [...this.state.events], 
+      event: currentEvent,
+      }, () => {
+        console.log ("STATE:::", this.state)
+        // this.handleUpdateEvents()
+      })
+    }    
+
+  handleUpdateEvents = (props) => {
     var index = this.state.events.indexOf(this.state.currentEvent)
-    if (index > -1) {
-      this.state.events.splice(index, 1);
-    }
+    console.log("Current event: ", this.state.events[index])
+    window.alert("STOP")
+    // if (index > -1) {
+    //   this.state.events.splice(index, 1);
+    // }
     let eventsData = {
       email: this.props.user.email,
       events: this.state.events}
     this.props.updateEvents(eventsData)}
-    // this.props.updateEvents({
-    //   email: this.props.user.email,
-    //   events: this.state.events})}
 
   toggleAddModal = ({start, end})  => {
     if (!this.state.isAddModalOpen) {
@@ -160,7 +182,7 @@ class BigCalender extends Component {
             selectable
             localizer={localizer}
             // views={['month', 'week', 'day', 'agenda']}
-            defaultView={Views.MONTH}
+            defaultView={Views.WEEK}
             events={events}
             startAccessor="start"
             endAccessor="end"
@@ -168,7 +190,9 @@ class BigCalender extends Component {
             // date={new Date(Date.now())}
             scrollToTime={moment().set({ h: 9, m: 0 }).toDate()}
             onSelectSlot={event => this.toggleAddModal(event) }
-            onSelectEvent={event => {this.toggleEditModal(event)}}
+            // onSelectEvent={event => {this.toggleEditModal(event)}}
+            
+            onSelectEvent={(event) => this.handleDisplayEvent(event)}
           />
             <Modal 
             open={this.state.isAddModalOpen}
@@ -212,7 +236,8 @@ class BigCalender extends Component {
             
             <Modal 
             open={this.state.isEditModalOpen}
-            onClose={() => this.setState({isEditModalOpen: !isEditModalOpen})} >
+            onClose={() => this.setState({isEditModalOpen: !isEditModalOpen})}
+            >
              <div className="container">
 
               <h1 className="flex-column flex-justify-center">Muokkaa varausta</h1>
@@ -223,19 +248,19 @@ class BigCalender extends Component {
                       fluid label='Varauksen Nimi' 
                       placeholder='Varauksen Nimi'
                       name='title'
-                      defaultValue={this.state.title}
+                      defaultValue={this.state.event.title}
                       onChange={this.handleChange} />
                     <Form.Input 
                       fluid label='Aloitus aika' 
                       placeholder='Aloitus aika'
                       name='start'
-                      defaultValue={this.state.start}
+                      defaultValue={this.state.event.start}
                       onChange={this.handleChange} />
                     <Form.Input 
                       fluid label='Lopetus aika' 
                       placeholder='Lopetus aika'
                       name='end'
-                      defaultValue={this.state.end}
+                      defaultValue={this.state.event.end}
                       onChange={this.handleChange} />
                   </Form.Group>
                 </Form>
@@ -243,14 +268,16 @@ class BigCalender extends Component {
         
                 <Modal.Actions>
                         <Button basic color='green' 
-                          // onClick={()=>{this.handleAddEvent()}}
-                          onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}
+                          // onClik={()=>{this.handleAddEvent()}}
+                          onClick={() => {
+                            this.handleUpdateEvents(this.state.events)
+                            this.setState({isEditModalOpen: !isEditModalOpen})}}
                           positive
-                          icon='checkmark'>  
+                          icon='checkmark'>
                         </Button>
                         <Button basic color='orange' 
                             onClick={() => this.setState({isEditModalOpen: !isEditModalOpen})}
-                            icon='close'> 
+                            icon='close'>   
                         </Button>
                         <Button basic color='red' 
                             onClick={()=>{this.handleDeleteEvent(this.state.events)
@@ -279,6 +306,7 @@ const mapStateToProps = (state) => {
       deleteEvent: (eventsData) => dispatch(actions.deleteEvent(eventsData)),
       updateEvents: (eventsData) => dispatch(actions.updateEvents(eventsData)),
       getEventsData: (userData) => dispatch(actions.getEventsData(userData)),
+      setEventsData: (eventsData) => dispatch (actions.setEventsData(eventsData)),
       getUser: () => dispatch(actions.getUser()),
       helloWorld: () => dispatch(actions.helloWorld()),
     };

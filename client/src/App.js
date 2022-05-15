@@ -17,8 +17,6 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    console.log("kukkuu")
-    // this.props.helloWorld();
     this.props.getUser()
     // this.props.getEventsData()
   };

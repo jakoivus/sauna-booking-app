@@ -6,7 +6,7 @@ import moment from 'moment';
 
 Auth.configure(AuthConfig);
 
-const BASE_URL = 'https://y6ctpms7uh.execute-api.eu-west-1.amazonaws.com/dev';
+const BASE_URL = 'https://twh2xvcrq5.execute-api.eu-west-1.amazonaws.com/dev';
 
 export const helloWorld = () => {
   return dispatch => {
@@ -46,13 +46,10 @@ export const addEvent = (eventsData) => {
           'Content-Type': 'application/json',
           'Authorization': credentials.idToken.jwtToken
         }
-
-        console.log("ADD EVENT ")
         axios.post (BASE_URL+'/addEvent', eventsData, 
       { headers: headers }  
       ).then( res => {
         console.log("ADD EVENT ", res)
-        window.alert("ADD EVENT")
         dispatch(setEventsData(eventsData.events))
       })
       .catch(error =>{ 
@@ -70,7 +67,6 @@ export const deleteEvent = (eventsData) => {
           'Content-Type': 'application/json',
           'Authorization': credentials.idToken.jwtToken
         }
-        window.alert("Calling Dynamo to delete events")
       axios.put (BASE_URL+'/deleteEvent', eventsData, 
       { headers: headers }  
       )
@@ -186,6 +182,7 @@ export const  getUser = () => {
         console.log(error)
         alert (error)
       })
+
   }
 }
 

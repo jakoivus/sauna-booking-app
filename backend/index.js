@@ -50,10 +50,11 @@ app.post('/addEvent', function (req, res) {
   const params = {
     TableName: DYNAMODB_EVENTS_TABLE,
     Item: eventsData,
-    Key: 
-    {
-      email: req.body.email,
-    },
+    // Key: 
+    // {
+    //   id: req.body.id,
+    //   // email: req.body.email,
+    // },
   };
   
   dynamoDb.put(params, (error, result) => {
@@ -64,7 +65,7 @@ app.post('/addEvent', function (req, res) {
     }
     if (result) {
       const item = result.Item;
-      console.log ("RESULT:", result)
+      console.log ("ADD EVENT RESULT:", result.Item)
       res.json(item);
     } else {
       console.log("addEvent ERROR haara")
@@ -78,33 +79,54 @@ app.post('/addEvent', function (req, res) {
 // Create DeleteEvent endpoint //
 /////////////////////////////////
 app.put('/deleteEvent', function (req,res) {
-  
-  console.log ("DELETE EVENT")
+  console.log ("DELETE EVENT START", )
+
   const  eventsData  = req.body;
-  console.log ("req.body: ", req.body)
-  const params = {
+  let params = {
     TableName: DYNAMODB_EVENTS_TABLE,
+    Item: eventsData,
     Key: {
       email: eventsData.email,
     },
   };
 
-dynamoDb.delete(params, (error, result) => {
-
-  
-  if (error) {
-    console.log("DELETE ERROR: ",error);
-    res.status(400).json({ error: 'Could not Delete Event' });
+  dynamoDb.delete(params, (error, result) => {
+    console.log("DELETE ALL EVENTS PARAMS", params )
+    if (result) {
+      console.log ("DELETE RESULT:", result.Item)
+      let params = {
+        TableName: DYNAMODB_EVENTS_TABLE,
+        Item: eventsData,
+        Key: {
+          email: eventsData.email,
+        },
+      }
+      
+      dynamoDb.put (params, (error, result) => {
+        console.log("DELETE PUT PARAMS", params )
+        if (result) {
+          console.log ("DELETE PUT EVENT RESULT:", result)
+          res.json(result);
+        } 
+        if (error) {
+          console.log("DELETE PUT EVENT ERROR haara")
+          res.status(404).json({ error: "DELETE PUT EVENT FAILED" });
+          // res.send('DELETE EVENT FAILEDs')  
+        }
+      })
+    }
+    if (error) {
+      console.log("DELETE ERROR: ",error);
+      res.status(400).json({ error: 'DELETE EVENT FAILED' });
   }
-  // res.send('DELETE EVENT: I am alive again')
-})
+  })
 }) 
 
 /////////////////////////////////
 // Create UpdateEvent endpoint //
 /////////////////////////////////
 app.post('/updateEvents', function (req, res) {
-  console.log("UPDATE EVENTS", req.body)
+  console.log("UPDATE EVENTS STARTS", req.body)
   const  eventsData  = req.body;
   console.log("KEY:", req.body.email)
 
@@ -115,28 +137,39 @@ app.post('/updateEvents', function (req, res) {
       email: eventsData.email,
     },
   };
-
-  dynamoDb.deleteItem(params, (error, result))
-
   dynamoDb.update(params, (error, result) => {
-    console.log("updateEvent Dynamo")
+    console.log(" START updateEvent Dynamo")
+    if (result) {
+      console.log ("UPDATE RESULT:", result.Item)        
+      res.status(200).json({ SUCCESS: "Event updated" });
+      //  res.json(result);
+    } 
     if (error) {
       console.log(error);
-      res.status(400).json({ error: 'Could not update Events' });
+      res.status(400).json({ error: 'Event updated FAILED' });
     }
-    if (result) {
-      const item = result;
-      console.log ("UPDATE RESULT:", result)
-      res.json(result);
-    } else {
-      console.log("updateEvent ERROR haara")
-      res.status(404).json({ error: "Could not update Events" });
-      res.send('ERROR: updateEvents')  
-  }
-  });
-
+  })
 })
+  // dynamoDb.delete(params, (error, result) => {
+  //   console.log("UPDATE EVENT PARAMS", params )
+  //   if (result) {
+  //     console.log ("UPDATE EVENT DELETE RESULT:", result.Item)
 
+      // dynamoDb.update(params, (error, result) => {
+      //   console.log(" START updateEvent Dynamo")
+      //   if (result) {
+      //     console.log ("UPDATE RESULT:", result.Item)        
+      //     res.status(200).json({ SUCCESS: "Event updated" });
+      //     //  res.json(result);
+      //   } 
+      //   if (error) {
+      //     console.log(error);
+      //     res.status(400).json({ error: 'Event updated FAILED' });
+      //   }
+      // })
+  //     }  
+  //   });
+  // })
 
 ///////////////////////////////////
 // Create getEventsData endpoint //
@@ -201,7 +234,6 @@ app.post('/addUser', function (req, res) {
 app.post('/getUserData', function(req, res){
   console.log("GET_USER_DATA req.body", req.body)
   const  data= req.body;
-  console.log("req.body:",data)
 
   const params = {
     TableName: DYNAMODB_USERS_TABLE,
