@@ -179,7 +179,7 @@ export const  getUser = () => {
         userData.email = idToken.payload['email']
         userData.role = 'user';
       }
-  
+      console.log("Dispatch geUserData")
       dispatch (getUserData(userData))
     })
       .catch(error =>{ 

@@ -58,10 +58,23 @@ class BigCalender extends Component {
 
   componentDidMount () {
     let userData = {email: ""}
-    userData.email = this.props.user.email
-    this.props.getEventsData(userData)
-    console.log ("Component Did Mount", userData )
-  }
+    userData.email = this.props.user.email 
+    if (this.props.user.email === '') {
+      this.props.getUser ().then ( res => {
+        // let userData = {email: ""}
+        userData.email = this.props.user.email 
+        this.props.getEventsData(userData)
+        console.log ("Component Did Mount IF", userData )
+      })
+
+    }
+    else {
+      let userData = {email: ""}
+      userData.email = this.props.user.email 
+      this.props.getEventsData(userData)
+      console.log ("Component Did Mount ELSE", userData )    
+    }
+   }
 
   componentDidUpdate(prevprops) {
     if (this.props.events !== prevprops.events ){
@@ -144,15 +157,15 @@ class BigCalender extends Component {
     this.props.updateEvents(eventsData)
   }
     
-
   toggleAddModal = ({start, end})  => {
+    console.log("start: ", new Date(start) )
     if (!this.state.isAddModalOpen) {
       this.setState({
         ...this.state,
         isAddModalOpen: !this.state.isAddModalOpen,
-        events:  [...this.state.events ], 
-          start,
-          end
+        events:  [...this.state.events], 
+          start: new Date(start),
+          end: new Date(end)
       });
     }
   }

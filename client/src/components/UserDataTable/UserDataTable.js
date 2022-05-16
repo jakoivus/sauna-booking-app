@@ -21,14 +21,6 @@ class DataTable extends Component {
         
       <h1 className="flex-column flex-justify-center">OMAT TIEDOT</h1>
       <Table >
-        {/* <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Tämä on Malli Taulukko </Table.HeaderCell>
-            <Table.HeaderCell>Vuosi</Table.HeaderCell>
-            <Table.HeaderCell>Oppilaitos</Table.HeaderCell>
-            <Table.HeaderCell>Pääaineet</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header> */}
 
         <Table.Body>
          <Table.Row>
